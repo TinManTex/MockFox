@@ -1,0 +1,14 @@
+MockFox changelog
+
+r40 - 2017-07-24
+MockFoxEngine.lua - Added NULL with some notes.
+
+AddMockModules - adds empty functions for metatable methods __call,__index,__newindex
+
+Deleted: MockFoxLua\initMock.lua startMock.lua, MockFox can now load them straight.
+
+loadfile,dofile hook to redirect fox lua relative paths as hosts will have different working directory.
+
+MoxFox can now load all unmodified/non IH set of data1 luas.
+
+r40 - 2017-07-23 - Initial public release

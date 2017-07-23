@@ -88,8 +88,7 @@ public class MockFoxManager : MonoBehaviour {
 
         Debug.Log("MockFoxManager: run tpp init.lua");
         try {
-            DynValue chunk = script.LoadFile(mockFoxPath + "\\initMock.lua");
-            // DynValue chunk = script.LoadFile(foxLuaPath + "\\init.lua");//tex not quite able to load it straight yet
+            DynValue chunk = script.LoadFile(foxLuaPath + "\\init.lua");//tex not quite able to load it straight yet
             script.Call(chunk);
         } catch (ScriptRuntimeException ex) {
             Debug.Log(string.Format("ScriptRuntimeException :{0}", ex.DecoratedMessage));
@@ -97,8 +96,7 @@ public class MockFoxManager : MonoBehaviour {
         Debug.Log("MockFoxManager: run tpp start.lua");
         DynValue startChunk=null;
         try {
-            startChunk = script.LoadFile(mockFoxPath + "\\startMock.lua");
-            //chunk = script.LoadFile(foxLuaPath + "\\Tpp\start.lua");//tex not quite able to load it straight yet
+            startChunk = script.LoadFile(foxLuaPath + "\\Tpp\\start.lua");//tex not quite able to load it straight yet
         } catch (ScriptRuntimeException ex) {
             Debug.Log(string.Format("ScriptRuntimeException :{0}", ex.DecoratedMessage));
         }
@@ -133,6 +131,8 @@ public class MockFoxManager : MonoBehaviour {
         foreach (string path in packPaths) {
             Debug.Log(path);
         }
+
+        Debug.Log("done");
     }
 	
 	void Update () {

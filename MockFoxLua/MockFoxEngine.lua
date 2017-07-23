@@ -1,18 +1,34 @@
 -- MockFoxEngine.lua
 
 --library modules
-if luaHostType=="LDT" then
-  bit=require"bit"
-else 
---TODO: for moonSharp redirect to its standard lib which I think has bit32 module
-  bit={}
-  bit.bnot=function()end
-  bit.band=function()end
-  bit.bor=function()end
-  bit.bxor=function()end
-end
 
---engine side
+--tex mgstpp uses bitops http://bitop.luajit.org/
+--if luaHostType=="LDT" then
+--  bit=require"bit"
+--else
+--tex TODO: for moonSharp redirect to its standard lib which I think has bit32 module
+bit={}
+bit.bnot=function()end
+bit.band=function()end
+bit.bor=function()end
+bit.bxor=function()end
+--end
+
+--userdata
+--tex possible return value of some module GetInstance or equivalent functions (see gmpEarnMissions.lua)
+--see Entity.lua
+--or for fox data functions (see Tpp.lua GetDataWithIdentifier)
+--the Entity system use via lua was a lot more prevalent in Ground Zeros
+--tostring on real module returns 'NULL ENTITY'
+NULL={}
+setmetatable(
+  NULL,
+  {
+    __tostring=function(t)
+      return "NULL ENTITY"
+    end
+  }
+)
 
 --tex mock module definitions to fill out stuff missed by Dump
 --or to add actual functionality instead of empty functions
@@ -143,7 +159,7 @@ Script.LoadLibrary=function(scriptPath)
     return
   end
 
-  local ret=dofile(foxLuaPath..scriptPath)
+  local ret=dofile(scriptPath)
 
   local module=ret--DEBUGNOWmoduleChunk()
   if not module then
@@ -412,6 +428,11 @@ TppCommand.Weather.SetClockTimeScale=function(newTimeScale)
 end
 TppCommand.Weather.UnregisterAllClockMessages=function()end
 
+UiDaemon={}
+UiDaemon.GetInstance=function()
+  return UiDaemon
+end
+
 --tex manually pulled together since my references scraper doesnt handle tables
 --filled out further by checking out exe section
 Vehicle={
@@ -607,7 +628,13 @@ mvars={}
 svars={}
 gvars={}
 
---tex merge with mock modules build from DebugIHDump
+--tex merge with mock modules built via IHTearDown
+local metafunctions={
+  __call=true,
+  __index=true,
+  __newindex=true,
+}
+
 local mockModules=require"MockModules"
 if mockModules then
   for moduleName,mockModule in pairs(mockModules)do
@@ -615,13 +642,37 @@ if mockModules then
 
     local module=_G[moduleName] or {}
     _G[moduleName]=module
+
+    local metaTable=nil
+
     for k,v in pairs(mockModule)do
       --DEBUGNOW
       if type(module)=="function" then--TODO: fix above modules that I've made functions (Application etc
         print("warning module "..moduleName.." is function")
+      elseif type(module)=="userdata" and metafunctions[k] then--DEBUGNOW KLUDGE workaround moonsharp userdata TODO can you add keys to userdata from lua in other vms?
+        
       elseif module[k]==nil then
         if v=="<function>" then
-          module[k]=function()end
+          if metafunctions[k] then
+            metaTable=metaTable or {}
+
+            if k=="__call" then
+              metaTable[k]=function(self,...)
+                return self--tex since this seems mostly used for instance creation this works ok
+              end
+            elseif k=="__index" then
+              metaTable[k]=function(self,k)
+                return rawget(self,k)--tex just do what would be done anyway
+              end
+            elseif k=="__newindex" then
+              metaTable[k]=function(self,k,v)
+                rawset(self,k,v)--tex just do what would be done anyway
+              end
+            end
+
+          else
+            module[k]=function(...)end
+          end
         elseif v=="<table>" then
           print("warning key "..k.." is table")
         else
@@ -629,5 +680,11 @@ if mockModules then
         end
       end
     end
+
+    if metaTable~=nil then
+      setmetatable(module,metaTable)
+    end
   end
+
+  
 end

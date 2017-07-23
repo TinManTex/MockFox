@@ -1,23 +1,24 @@
---loadLDT.lua
+----loadLDT.lua
 
 --tex MockFox host stuff
 luaHostType="LDT"
 
 foxGamePath="C:/GamesSD/MGS_TPP/"
-foxLuaPath="D:/Projects/MGS/!InfiniteHeaven/!modlua/Data1Lua/"--tex path of tpps scripts (qar luas)
+foxLuaPath="D:/Projects/MGS/!InfiniteHeaven/!modlua/Data1Lua/"--tex path of tpps scripts (qar luas) -- IH
+--foxLuaPath=[[J:\GameData\MGS\filetype\lua\data1_dat\]]--tex path of tpps scripts (qar luas) -- unmodified
 mockFoxPath="D:/Projects/MGS/!InfiniteHeaven/!modlua/MockFoxLua/"--tex path of MockFox scripts
 
 package.path=nil--KLUDGE have mockfox default package path code run, will kill existing / LDT provided package.path
 package.cpath=mockFoxPath.."?.dll"--tex for bit.dll TODO: build equivalent cpath.
 --
-dofile(mockFoxPath.."/loadMockFox.lua")
 
-dofile(mockFoxPath.."/initMock.lua")
---dofile(foxLuaPath.."/init.lua")--tex not quite ready to run straight yet
+dofile(mockFoxPath.."/loadMockFox.lua")
+--GOTCHA dofile,loadfile redirected to DoFile,LoadFile, see loadMockFox WORKAROUND
+
+DoFile(foxLuaPath.."/init.lua")
 
 do
-  local chunk,err=loadfile(mockFoxPath.."/startMock.lua")
-  --local chunk,err=loadfile(foxLuaPath.."/Tpp/start.lua")--tex not quite ready to run straight yet
+  local chunk,err=LoadFile(foxLuaPath.."/Tpp/start.lua")
   if err then
     print(err)
   else

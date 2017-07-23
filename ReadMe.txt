@@ -1,4 +1,4 @@
-MockFox r40 
+MockFox r41 
 
 MockFox is a framework to load/compile MGSV TPP lua scripts including Infinite Heaven outside of the games exe itself by providing mock versions of the mgstpp internal modules.
 May be useful for analysing data in the scripts.
@@ -9,10 +9,11 @@ Host - the lua vm/interpreter that will be loading/running the fox engine script
 
 Dependencies:
 
-Data1 luas
+Complete set of lua files from data1.dat
+
+If you want to run Infinite Heaven (not actually nessesary) you can get the full set by:
 Grab from https://github.com/TinManTex/mgsv-deminified-lua
 Unzip somewhere
-
 Infinite Heaven
 Unzip .mgsv, copy Assets,Tpp,init.lua into data1 luas folder, replacing any files.
 
@@ -42,3 +43,7 @@ Add MoonSharp unity package to project
 Copy the files in MockFox zip Unity\Assets to your projects Assets folder.
 Add MockFoxManager.cs as a script component to a Unity entity.
 Change Mock Fox Path, Fox Lua Path, Game Path to folder of Mock Fox luas, data1 luas, MGS_TOO game folder respectively.
+
+Building:
+Not nessesary (the generated files are already included), but IHTearDown.lua in MGS_TPP\mod\modules can be used with IH to generate MockModules.lua and vars.lua as well as dump some intermediary info by running DumpModules and DumpVars respectively while mgstpp/IH is loaded.
+
