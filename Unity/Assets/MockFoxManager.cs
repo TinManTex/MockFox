@@ -65,6 +65,9 @@ public class MockFoxManager : MonoBehaviour {
         script.Globals["os"] = new MSOS();
         script.Globals["io"] = new MSIO();
 
+        //tex should be part of Fox module, but I'm already defining a bunch of that in lua
+        script.Globals["HashingGzsTool"] = new HashingGzsTool();
+
         //tex register tpp c# modules
         Mission missionInstance = new Mission();
         script.Globals["Mission"] = missionInstance;
@@ -131,6 +134,14 @@ public class MockFoxManager : MonoBehaviour {
         foreach (string path in packPaths) {
             Debug.Log(path);
         }
+
+        //DEBUGNOW TEST
+        script.DoString(@";
+        InfCore.PrintInspect(Fox.StrCode32('bleh'), 'str32 bleh')
+        InfCore.PrintInspect(Fox.PathFileNameCode32('bleh'), 'path32 bleh')
+        InfCore.PrintInspect(Fox.PathFileNameCode32('/Tpp/start.lua'), 'path32 /Tpp/start.lua')
+        InfCore.PrintInspect(Fox.PathFileNameCode32('/Tpp/start'), 'path32 /Tpp/start')
+        ");
 
         Debug.Log("done");
     }

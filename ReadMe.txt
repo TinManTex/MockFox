@@ -1,4 +1,4 @@
-MockFox r41 
+MockFox
 
 MockFox is a framework to load/compile MGSV TPP lua scripts including Infinite Heaven outside of the games exe itself by providing mock versions of the mgstpp internal modules.
 May be useful for analysing data in the scripts.
@@ -22,6 +22,8 @@ Unity/MoonSharp:
 MoonSharp (http://www.moonsharp.org/) Unity package
 https://www.assetstore.unity3d.com/en/#!/content/33776
 
+GzsTool.Core - for Fox.StrCode32 support
+
 Files in this project:
 /MockFoxLua/
 The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
@@ -39,6 +41,8 @@ Run loadLDT
 
 Unity:
 Add MoonSharp unity package to project
+
+Add GzsTool.Core assembly to project.
 
 Copy the files in MockFox zip Unity\Assets to your projects Assets folder.
 Add MockFoxManager.cs as a script component to a Unity entity.

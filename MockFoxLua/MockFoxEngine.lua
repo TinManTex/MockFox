@@ -30,16 +30,24 @@ setmetatable(
   }
 )
 
+--tex returned by File.GetFileListTable, no references in lua
+--only hit in exe strings. 'scriptFile' string hit in exe and Fox2Scrape
+ScriptFile={}
+--has __tostring - 'ScriptFile <address>' - default userdata return i guess
+--has __index
+--has __newindex
+
 --tex mock module definitions to fill out stuff missed by Dump
 --or to add actual functionality instead of empty functions
 
-local mainApplication={}
-mainApplication.AddGame=function(self,game)end
-mainApplication.SetMainGame=function(self,game)end
-
-Application=function(initTable)
-  return mainApplication
-end
+--DEBUGNOW
+--local mainApplication={}
+--mainApplication.AddGame=function(self,game)end
+--mainApplication.SetMainGame=function(self,game)end
+--
+--Application=function(initTable)
+--  return mainApplication
+--end
 
 AssetConfiguration={}
 AssetConfiguration.GetDefaultCategory=function()
@@ -86,13 +94,60 @@ mainGame.SetMainBucket=function(self,bucket)end
 EditorBase=Editor
 Game=Editor
 
+local IHGenEntityClassDictionary=require"IHGenEntityClassDictionary"--tex dumped by IHTearDown.DumpEntityClassDictionary
+EntityClassDictionary={}
+EntityClassDictionary.GetCategoryList=function()
+  local categoryList={}
+  for category,classes in pairs(IHGenEntityClassDictionary)do
+    categoryList[#categoryList+1]=category
+  end
+  return categoryList
+end
+EntityClassDictionary.GetClassNameList=function(category)
+  return IHGenEntityClassDictionary[category]
+end
+
 Fox={}
-Fox.StrCode32=function(encodeString)--DEBUGNOW TODO IMPLEMENT
-  return encodeString
+Fox.actMode="GAME"--NOTREAL
+local actModes={
+  "GAME",
+  "EDIT",
+}
+Fox.GetActMode=function()
+  return Fox.actMode
 end
-Fox.PathFileNameCode32=function(encodeString)--DEBUGNOW TODO IMPLEMENT
-  return encodeString
+Fox.SetActMode=function(actMode)
+  Fox.actMode=actMode
 end
+Fox.debugLevel=0--NOTREAL
+Fox.GetDebugLevel=function()
+  return Fox.debugLevel
+end
+
+Fox.StrCode32=function(encodeString)
+  if HashingGzsTool then--tex MoonSharp userdata that redirects to GzsTool.Core Hashing
+    return HashingGzsTool.StrCode32(encodeString)
+  else
+    return encodeString
+  end
+end
+Fox.PathFileNameCode32=function(encodeString)
+  if HashingGzsTool then--tex MoonSharp userdata that redirects to GzsTool.Core Hashing
+    return HashingGzsTool.PathFileNameCode32(encodeString)
+  else
+    return encodeString
+  end
+end
+
+local platforms={
+  "Windows",
+  "Xbox360",
+  "XboxOne",
+  "PS3",
+  "PS4",
+  "Android",
+  "iOS",
+}
 Fox.GetPlatformName=function()
   return "Windows"
 end
@@ -126,6 +181,20 @@ foxmath.Sin=math.sin
 foxmath.Sqrt=math.sqrt
 foxmath.Tan=math.tan
 
+File={}
+--tex NOTES from Inspect
+--GetFileListTable()={
+-- ["/Assets/tpp/level_asset/chara/enemy/Soldier2FaceAndBodyData.lua"] = ScriptFile (userdata),
+--...
+--tex seems to be for every file loaded via Script.LoadLibrary ?
+--GetReferenceCount()={ [<lua path>]=<reference count (number)>,
+File.GetFileListTable=function()
+  return Script.fileListTable 
+end
+File.GetReferenceCount=function()
+  return Script.referenceCounts 
+end
+
 GkEventTimerManager={}
 GkEventTimerManager.Start=function()end
 GkEventTimerManager.Stop=function()end
@@ -137,13 +206,16 @@ PhDaemon.GetInstance=function()--DEBUGNOW KLUDGE
 end
 
 Script={}
+--NOTREAL mgstpp must something like these somewhere, whether its in script,file or wherever, it's not exposed directly to lua
+--tex from File.GetFileListTable, GetReferenceCount
+Script.fileListTable={}
+Script.referenceCounts={}
 --DEBUGNOW
 Script.LoadLibrary=function(scriptPath)
   local split=MockUtil.Split(scriptPath,"/")
   local moduleName=split[#split]
   moduleName=string.sub(moduleName,1,-string.len(".lua")-1)
   print("ScriptLoad:"..scriptPath)
-
 
   local function FileExists(filePath)
     local file,openError=io.open(filePath,"r")
@@ -165,15 +237,25 @@ Script.LoadLibrary=function(scriptPath)
   if not module then
     print("module "..moduleName.."==nil")
   else
+
+    Script.fileListTable[scriptPath]=Script.fileListTable[scriptPath] or {mockUserDataType="ScriptFile"}--TODO: ScriptFile userdata
+    Script.referenceCounts[scriptPath]=Script.referenceCounts[scriptPath] or 0
+    Script.referenceCounts[scriptPath]=Script.referenceCounts[scriptPath]+1
+    
+    module._scriptInstanceId={mockUserDataType="unnamed/scriptInstanceId"}--tex has no metatable
+    module._scriptPath=moduleName
+  
     if _G[moduleName] then
       _G[moduleName]=MockUtil.MergeTable(_G[moduleName],module)--tex merge with mock stubs/overrides --DEBUGNOW
     else
       _G[moduleName]=module
     end
-    --DEBUGNOW TODO: guard against module recursion
+
     if module.requires then
       for i,modulePath in ipairs(module.requires)do
-        Script.LoadLibrary(modulePath)
+        if not Script.fileListTable[modulePath] then--tex guard against module recursion
+          Script.LoadLibrary(modulePath)
+        end
       end
     end
   end
