@@ -10,23 +10,26 @@ namespace MoonSharpTpp {
     //this is quick hacked together version of only the stuff mgstpp/ih uses.
     [MoonSharpUserData]
     class MSIO {
-        public MSFile open(string fileName, string mode) {
+        public MSFile open(string fileName, string mode, out string error) {
             FileStream file = null;
+            error = null;
 
             //tex only handling the IH/Tpp use cases
             if (mode == "r") {
                 try {
                     file = File.OpenRead(fileName);
                 }
-                catch {
-                    //DEBUGNOW convert errors to lua error
+                catch(Exception ex) {
+                    //tex convert errors to lua error
+                    error = ex.ToString();
                 }
             } else {
                 if (mode == "w") {
                     try {
                         file = File.OpenWrite(fileName);
-                    } catch {
-                        //DEBUGNOW convert errors to lua error
+                    } catch(Exception ex) {
+                        //tex convert errors to lua error
+                        error = ex.ToString();
                     }
                 }
             }

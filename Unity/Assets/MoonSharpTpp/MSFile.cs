@@ -27,6 +27,21 @@ namespace MoonSharpTpp {
             }
         }
 
+        //tex doesn't seem moonsharp has a nice args support for c# modules
+        //SETUP table["myFunction"] = DynValue.NewCallback(MyFunction);
+        //but callbacks are static :/ 
+        static void writeWitArgs(ScriptExecutionContext ctx, CallbackArguments args) {
+            var arguments = args.GetArray();
+
+            /*
+            if (fileName != null) {
+                //TODO: for args +=text
+                File.WriteAllText(fileName, text);
+            }
+            */
+
+        }
+
         //tex only handling the IH/Tpp use cases
         public string read(string format) {
             if (fileName != null) {

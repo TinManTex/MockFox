@@ -8,6 +8,7 @@ using MoonSharp.Interpreter.Loaders;
 using MoonSharpTpp;
 using MoonSharp.Interpreter.Interop;
 using System;
+using System.IO;
 
 public class MockFoxManager : MonoBehaviour {
     public string mockFoxPath = null;//tex path of MockFox lua scripts
@@ -22,6 +23,27 @@ public class MockFoxManager : MonoBehaviour {
         if (script != null) {
             ((ScriptLoaderBase)script.Options.ScriptLoader).ModulePaths = modulePaths.ToArray();
         }
+        return true;
+    }
+
+    private static string FixupPath(string path) {
+        path = path.Replace('\\', '/');
+        while (path.EndsWith(Path.AltDirectorySeparatorChar.ToString())) {
+            path = path.Substring(0, path.Length - 1);
+        }
+
+        path = path + "/";
+        return path;
+    }
+
+    private static bool IsRelative(string path) {
+        if (Path.IsPathRooted(path)) {
+            string c = path.Substring(0, 1);
+            if (c != "\\" && c != "/") {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -41,7 +63,33 @@ public class MockFoxManager : MonoBehaviour {
             return;
         }
 
-        //tex TODO: append trailing slash to paths if need be
+        //tex path butchering
+        mockFoxPath = FixupPath(mockFoxPath);
+        foxLuaPath = FixupPath(foxLuaPath);
+        gamePath = FixupPath(gamePath);
+        //tex gamePath is used to construct a packages.path line similar to mgstpp, so build full path if it was relative
+        if (IsRelative(gamePath)) {
+            var unityPath = Application.dataPath;
+            //TODO: datapath is aparently different for different platforms and also editor vs player
+            //https://docs.unity3d.com/ScriptReference/Application-dataPath.html
+            unityPath += "/";//tex for some reason GetParent kills two folders if path isn't capped, guess it assumes no cap = filename
+            DirectoryInfo parentDir = Directory.GetParent(unityPath);
+            unityPath = parentDir.Parent.FullName;
+            Debug.Log("unityPath=" + unityPath);
+            var sep = "/";
+            if (Path.IsPathRooted(gamePath)) {
+                sep = "";
+            }
+            gamePath = unityPath + sep + gamePath;
+        }
+
+        Debug.Log("mockFoxPath=" + mockFoxPath);
+        Debug.Log("foxLuaPath=" + foxLuaPath);
+        Debug.Log("gamePath=" + gamePath);
+
+        //tex there's not going to be any real consistancy here, but making some token attempt.
+        gamePath = gamePath.Replace("/", "\\");
+
 
         script = new Script();
         script.Options.ScriptLoader = new ReplInterpreterScriptLoader();
@@ -82,7 +130,7 @@ public class MockFoxManager : MonoBehaviour {
         Debug.Log("MockFoxManager: run MockFox scripts");
         //tex run MockFox setup scripts
         try {
-            DynValue chunk = script.LoadFile(mockFoxPath + "\\loadMockFox.lua");
+            DynValue chunk = script.LoadFile(mockFoxPath + "/loadMockFox.lua");
             script.Call(chunk);
         }
         catch (ScriptRuntimeException ex) {
@@ -91,7 +139,7 @@ public class MockFoxManager : MonoBehaviour {
 
         Debug.Log("MockFoxManager: run tpp init.lua");
         try {
-            DynValue chunk = script.LoadFile(foxLuaPath + "\\init.lua");//tex not quite able to load it straight yet
+            DynValue chunk = script.LoadFile(foxLuaPath + "/init.lua");//tex not quite able to load it straight yet
             script.Call(chunk);
         } catch (ScriptRuntimeException ex) {
             Debug.Log(string.Format("ScriptRuntimeException :{0}", ex.DecoratedMessage));
@@ -99,7 +147,7 @@ public class MockFoxManager : MonoBehaviour {
         Debug.Log("MockFoxManager: run tpp start.lua");
         DynValue startChunk=null;
         try {
-            startChunk = script.LoadFile(foxLuaPath + "\\Tpp\\start.lua");//tex not quite able to load it straight yet
+            startChunk = script.LoadFile(foxLuaPath + "/Tpp/start.lua");//tex not quite able to load it straight yet
         } catch (ScriptRuntimeException ex) {
             Debug.Log(string.Format("ScriptRuntimeException :{0}", ex.DecoratedMessage));
         }
@@ -142,6 +190,13 @@ public class MockFoxManager : MonoBehaviour {
         InfCore.PrintInspect(Fox.PathFileNameCode32('/Tpp/start.lua'), 'path32 /Tpp/start.lua')
         InfCore.PrintInspect(Fox.PathFileNameCode32('/Tpp/start'), 'path32 /Tpp/start')
         ");
+
+        //tex TEST error
+        script.DoString(@"
+        local file,error=io.open('c:/doesnotexist.txt','r')
+        print(error)
+        ");
+        
 
         Debug.Log("done");
     }
