@@ -4,6 +4,7 @@
 luaHostType="LDT"
 
 foxGamePath="C:/GamesSD/MGS_TPP/"--tex used to reconstruct package.path to what it looks like in mgstpp, IH uses this to get the game path so it can load files in game folder\mod
+--foxGamePath=[[D:\Projects\MGS\MockFox\MockFox\Assets\MGS_TPP\]]
 
 foxLuaPath="D:/Projects/MGS/!InfiniteHeaven/!modlua/Data1Lua/"--tex path of tpps scripts (qar luas) -- IH
 --foxLuaPath=[[J:\GameData\MGS\filetype\lua\data1_dat\]]--tex path of tpps scripts (qar luas) -- unmodified
@@ -18,12 +19,14 @@ dofile(mockFoxPath.."/loadMockFox.lua")
 
 
 DoFile(foxLuaPath.."/init.lua")
+print("loadLDT: init.lua done")
 
 --tex IH from trying to continue if it has this showstopper
 if InfCore and InfCore.modDirFail then
   return
 end
 
+local returnCount=0
 do
   local chunk,err=LoadFile(foxLuaPath.."/Tpp/start.lua")
   if err then
@@ -35,13 +38,24 @@ do
       if not ok then
         error(ret)
       end
+      returnCount=returnCount+1
+      print("loadLDT: start.lua coroutine return #"..returnCount)
     until coroutine.status(co)=="dead"
   end
 end
 
+local MockFoxTests=require"MockFoxTests"
+MockFoxTests.DoTests()
+
 --tex InfCore.allLoaded is set true at end of start.lua, so in theory it should be an indicator that mockfox is fine and you can use it
 --however due to IH having to use PCalls to get any kind of error feedback from runtime there may be some soft errors, so just keep an eye out for ERROR in the log.
-if not InfCore or not InfCore.allLoaded then
+--tex bit of a kludge, InfInspect is first IH module loaded, and will remain pretty much untouched, so using it as an indicator that mockfox is trying to load IH
+if InfInspect and not InfCore then
+  print"ERROR: MockFox did not complete loading"
+  return
+end
+
+if InfCore and not InfCore.allLoaded then
   print"ERROR: MockFox did not complete loading"
   return
 end

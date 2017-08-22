@@ -18,11 +18,11 @@ namespace MoonSharpTpp {
         //path32 bleh is same in engine, /Tpp/start.lua isnt
         public static uint PathFileNameCode32(string filePath) {
             //DEBUGNOW
-            int index = filePath.IndexOf('.');
+            //int index = filePath.IndexOf('.');
             // filePath = index == -1 ? filePath : filePath.Substring(0, index);
 
-            //return (uint)Hashing.HashFileNameWithExtension(filePath);
-            return (uint)Hashing.HashFileName(filePath,false);
+            return (uint)Hashing.HashFileNameWithExtension(filePath);
+            //return (uint)Hashing.HashFileName(filePath,false);
         }
     }
 }

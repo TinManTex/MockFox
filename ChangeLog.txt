@@ -1,5 +1,18 @@
 MockFox changelog
 
+r45
+MockFoxManager:
+Execute in editor.
+Loading broken into stages/functions switched through Update.
+MockFoxLua,Tpp lua:
+More yeilding to host.
+Overall this smooths out loading in Unity rather than have it completely unresponsive for the 8+ seconds.
+
+r44
+A few inconsequenctial post-load errors stopped when loading unmodified tpp script set.
+
+IHTearDown: DumpSaveVars for gvars,svars
+
 r43 - 2017-08-09
 Support for relative paths for foxGamePath,foxLuaPath,mockFoxPath on Unity/MockFoxManager
 error output for io.open,write.

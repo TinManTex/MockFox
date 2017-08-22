@@ -98,19 +98,22 @@ namespace MoonSharpTpp {
         [MoonSharpVisible(false)]
         public List<string> GetMissionPackPaths(Script script, int missionCode) {
             if (missionPackagePathFunc == null) {
+                UnityEngine.Debug.Log("missionPackagePathFunc == null");//DEBUGNOW
                 return null;
             }
 
             DynValue res = script.Call(missionPackagePathFunc, missionCode);
             if (res == null) {
+                UnityEngine.Debug.Log("res == null");//DEBUGNOW
                 return null;
             }
 
-            if (res.Table != null) {
-                return res.ToObject<List<string>>();
+            if (res.Table == null) {
+                UnityEngine.Debug.Log("res.Table == null");//DEBUGNOW
+                return null;
             }
 
-            return null;
+            return res.ToObject<List<string>>();
         }
     }
 }

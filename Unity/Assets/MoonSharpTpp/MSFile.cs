@@ -31,7 +31,7 @@ namespace MoonSharpTpp {
         //SETUP table["myFunction"] = DynValue.NewCallback(MyFunction);
         //but callbacks are static :/ 
         static void writeWitArgs(ScriptExecutionContext ctx, CallbackArguments args) {
-            var arguments = args.GetArray();
+            //var arguments = args.GetArray();
 
             /*
             if (fileName != null) {
