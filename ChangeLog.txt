@@ -1,5 +1,10 @@
 MockFox changelog
 
+r46
+gameId global / load different mock modules for different games
+MockModules renamed MockModulesGenerated
+<gameid>\MockModulesGame.lua
+
 r45
 MockFoxManager:
 Execute in editor.
