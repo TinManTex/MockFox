@@ -432,6 +432,8 @@ function this.GetModuleReferences(modules)
   return refs
 end
 
+--modules: globalsByType.table (_G entries of type table)
+--OUT: mockModules
 function this.BuildMockModules(modules)
   local mockModules={}
 
@@ -471,8 +473,7 @@ function this.BuildMockModules(modules)
     end
   end
   return mockModules
-end
-
+end--BuildMockModules
 
 function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   InfCore.Log("BuildMockModulesFromReferences")
