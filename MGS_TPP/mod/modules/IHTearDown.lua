@@ -103,7 +103,7 @@ function this.DumpModules(options)
 
   --DEBUGNOW compare svars and gvars vs what entries are defined lua side to see if we're missing something/or anything is added exe side
   --GOTCHA: these will include IH s/gvars?
-  --DEBUGNOW this stuff really needs to be run in-mission, via a reloadscripts
+  --DEBUGNOW this stuff really needs to be run in-mission, via a reloadscripts or on command
   local gvarsDeclaredTable=nil
   if TppMain.allSvars==nil then
     InfCore.Log("WARNING: DumpModules TppMain.allSvars==nil")
