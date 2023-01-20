@@ -269,13 +269,13 @@ function this.GetGlobalsByType()
     end
 
     if addEntry then
-      local types=globalsByType[type(v)]
-      types=types or globalsByType.other
-      types[k]=v
+      local globalsOfType=globalsByType[type(v)]
+      globalsOfType=globalsOfType or globalsByType.other
+      globalsOfType[k]=v
     end
   end
   return globalsByType
-end
+end--GetGlobalsByType
 
 --tex breaks down modules keys by type
 function this.GetModuleKeysByType(modules)
