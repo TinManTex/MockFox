@@ -35,15 +35,51 @@ function this.DumpModules(options)
   --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
   --a few are normal, plain text keys as you'd expect.
   --most are doing something with indexing metatables via some custom class binding i guess
-  --the most common is fox table (don't know actual name)
-  --these will either act as arrays with [-285212672] acting as item count
-  --or [key name] being index into [some number]
-  --or [key name] being index into [-285212671][some number]
-  --some number doesnt seem to be strcode32
-  --some times its [-285212671][some string] which is a normal name
+  --the most common is fox table (for want of an actual term)
+  --module having [some-number] entries
+  --module having entry which has [some-number] entries
+  --some-number doesnt seem to be strcode32 --TODO: figure it out
+  --TODO: figure out any difference between entries in root vs in [-285212671]
+  
+  --some times its [-285212671][key name] which is a normal name (most often for enum [name]=value, where value is actually a function to return the enum? weird)
+  --TODO: are there any enum entries in module root same as above?
+  
+  --many have a _classname string, these have plain text keys/dont have the some-number indirection
 
-  --many have a _classname string, these have plain text keys/dont have the somenumber indirection
-
+  --theres also a [-285212672]=some-number, but dont know what it represents
+  
+  --REF
+  --WeatherManager = <345>{
+  --  [-285212672] = 4,--tex unknown
+  --  [-285212671] = {--tex identifies a table of some-number entries
+  --    [7955555] = <function 5831>,
+  --    [16841280] = <function 5832>,
+  --    [27347291] = <function 5833>,
+  --    [32365128] = <function 5834>,
+  --    [44558204] = <function 5835>,
+  --    [77837453] = <function 5836>,
+  --    [96882270] = <function 5837>,
+  --    [179540398] = <function 5838>,
+  --    [184160756] = <function 5839>,
+  --    [226237853] = <function 5840>
+  --  },
+  --  --tex some-number entries directly in module root
+  --  [11568137] = <function 5841>,
+  --  [26595625] = <function 5842>,
+  --  [26595645] = <function 5843>,
+  --  [49591366] = <function 5844>,
+  --  [62144975] = <function 5845>,
+  --  ...
+  
+  --for (script)var entries 
+  --[-285212666] is array size/count
+  --[-285212665] is (indexed from 0) array
+  
+  --REF
+  --customizedWeaponSlotIndex = <396>{
+  --  [-285212666] = 3,
+  --  [-285212665] = <userdata 43>,
+  
   local mockModules=this.BuildMockModules(globalsByType.table)
   --InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
 
@@ -577,11 +613,11 @@ end
 
 function this.DumpVars()
   local vars=vars
+  --tex see note in DumpModules
+  local rootArrayIdent=-285212671--tex of vars
 
-  local rootArrayIdent=-285212671--tex table itself is array
-
-  local arrayIdent=-285212665--tex a table key is an array
-  local arrayCountIdent=-285212666 --tex name of foxtable key for size of array,number of array names
+  local arrayIdent=-285212665--tex table key is an array
+  local arrayCountIdent=-285212666--tex array size/count
 
   local varsTable={}
 
