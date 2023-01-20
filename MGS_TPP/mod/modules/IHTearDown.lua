@@ -15,7 +15,7 @@ this.buildFromScratch=false
 this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder
-this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump].txt]]
+this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
 
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
