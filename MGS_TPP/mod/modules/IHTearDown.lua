@@ -835,20 +835,23 @@ function this.DumpVars()
   return varsTable
 end--DumpVars
 
+--tex check sais classes name list against _G globals
+--IN: classesPath
+--_G
+--OUT: nonLiveClasses
 function this.FindNonLiveClasses(classesPath)
   local nonLiveClasses={}
   local classes=InfCore.GetLines(classesPath)
   for i,className in ipairs(classes)do
-    if className~="" then
-      if not _G[className] then
-        table.insert(nonLiveClasses,className)
-            end
-          end
-        end
+  if className~="" then
+    if not _G[className] then
+      table.insert(nonLiveClasses,className)
+      end
+    end
+  end
   table.sort(nonLiveClasses)
   return nonLiveClasses
-
-end
+end--FindNonLiveClasses
 
 --tex svars,gvars use same layout
 function this.DumpSaveVars(inputVars)
