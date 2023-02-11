@@ -120,6 +120,9 @@ function this.DumpModules(options)
   end
 
   local mockModulesFromRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,moduleReferences)
+  if this.debugModule then
+    InfCore.PrintInspect(mockModulesFromRefs,"mockModulesFromRefs")
+  end
   InfCore.PrintInspect(noLiveFound,"noLiveFound")
   InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
 
