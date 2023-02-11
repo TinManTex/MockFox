@@ -97,6 +97,16 @@ function this.DumpModules(options)
   end
 
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
+  --GOTCHA: TODO: there's a couple of edge cases with the exe dump, as seen in IHGenUnfoundReferencesExe.lua
+--    TppCommand = {
+--    RegisterClockMessage = true,
+--    SetClockTimeScale = true,
+--    UnregisterAllClockMessages = true,
+--    UnregisterClockMessage = true
+--  },
+  --these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
+  --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
+  --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
   local exeModules=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
   --if this.debugModule then
   InfCore.PrintInspect(exeModules,"exeModules")
