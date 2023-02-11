@@ -634,31 +634,27 @@ end--BuildMockModules
 --OUT: modules={
 --  ...
 --  ScriptBlock = {
---    enums = {
---      SCRIPT_BLOCK_STATE_ACTIVE = "3",
---      SCRIPT_BLOCK_STATE_EMPTY = "0",
---      SCRIPT_BLOCK_STATE_INACTIVE = "2",
---      SCRIPT_BLOCK_STATE_PROCESSING = "1",
---      TRANSITION_ACTIVATED = "1",
---      TRANSITION_DEACTIVATED = "2",
---      TRANSITION_EMPTIED = "3",
---      TRANSITION_LOADED = "0"
---    },
---    funcs = {
---      Activate = true,
---      Deactivate = true,
---      ExecuteInScriptBlocks = true,
---      GetCurrentScriptBlockId = true,
---      GetScriptBlockId = true,
---      GetScriptBlockState = true,
---      IsProcessing = true,
---      Load = true,
---      Reload = true,
---      UpdateScriptsInScriptBlocks = true
---    }
+--    Activate = "function",
+--    Deactivate = "function",
+--    ExecuteInScriptBlocks = "function",
+--    GetCurrentScriptBlockId = "function",
+--    GetScriptBlockId = "function",
+--    GetScriptBlockState = "function",
+--    IsProcessing = "function",
+--    Load = "function",
+--    Reload = "function",
+--    SCRIPT_BLOCK_STATE_ACTIVE = 3,
+--    SCRIPT_BLOCK_STATE_EMPTY = 0,
+--    SCRIPT_BLOCK_STATE_INACTIVE = 2,
+--    SCRIPT_BLOCK_STATE_PROCESSING = 1,
+--    TRANSITION_ACTIVATED = 1,
+--    TRANSITION_DEACTIVATED = 2,
+--    TRANSITION_EMPTIED = 3,
+--    TRANSITION_LOADED = 0,
+--    UpdateScriptsInScriptBlocks = "function"
 --  },
 --  ... other modules
---
+--assume value string "function" = function, number = number, and other string to be enum that couldnt convert to num (havent seen any)
 function this.BuildModulesFromExeLog(exeLogPath)
   InfCore.Log("BuildModulesFromExeLog")
   local modules={}
@@ -677,22 +673,28 @@ function this.BuildModulesFromExeLog(exeLogPath)
         if modules[currentModuleName] then
           InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.." module already defined")
         end
-        currentModule=modules[currentModuleName] or {enums={},funcs={}}
+        currentModule=modules[currentModuleName] or {}
         modules[currentModuleName]=currentModule
       elseif lineType=="enum"then
         local findIndex,findEndIndex=string.find(lineInfo,"=")
         local enumName=string.sub(lineInfo,1,findEndIndex-1)
         local enumValue=string.sub(lineInfo,findEndIndex+1,-1)
         --InfCore.Log(i.." enumName:'"..tostring(enumName).."' enumValue:'"..enumValue.."'")
-        if currentModule.enums[enumName] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: module "..currentModuleName.." enum "..enumName.." already defined")
+        if currentModule[enumName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..enumName.." for enum already defined")
         end
-        currentModule.enums[enumName]=enumValue--tex TODO to num?
+        local value=tonumber(enumValue)
+        if enumValue==nil then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: could not convert enum "..currentModuleName.."."..enumName.."="..enumValue.." to a number")
+          currentModule[enumName]="NON_NUMBER-"..enumValue
+        else
+          currentModule[enumName]=value
+        end
       elseif lineType=="func"then
-        if currentModule.funcs[lineInfo] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: module "..currentModuleName.." func "..lineInfo.." already defined")
+        if currentModule[lineInfo] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for func already defined")
         end
-        currentModule.funcs[lineInfo]=true      
+        currentModule[lineInfo]="function"      
       end
       
       lastLineType=lineType
