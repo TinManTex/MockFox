@@ -33,6 +33,8 @@ end
 --So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
   --tex get _G/globals organised by type, filtering out IH or lua api stuff (listed in IHGenKnownModuleNames)
+  --NOTE: since this grab the actual tables from _G so in theory you can check it later down the line with foxtable shiz, 
+  --unless the k/t has some weird meta setup i haven't considered
   local globalsByType=this.GetGlobalsByType(IHGenKnownModuleNames)
   if this.debugModule then
     InfCore.PrintInspect(globalsByType,"globalsByType")
@@ -703,7 +705,28 @@ function this.BuildModulesFromExeLog(exeLogPath)
   return modules
 end--BuildModulesFromExeLog
 --IN: liveModules: globalsByType.table / actual _G/globals from running game
---moduleReferences: module/function/enum references scraped from the games lua files
+--moduleReferences: IHGenModuleReferences - module/function/enum references scraped from the games lua files
+--REF moduleReferences={
+--  ...
+--  ScriptBlock = {
+--    Activate = true,
+--    Deactivate = true,
+--    GetCurrentScriptBlockId = true,
+--    GetScriptBlockId = true,
+--    GetScriptBlockState = true,
+--    Load = true,
+--    SCRIPT_BLOCK_ID_INVALID = true,
+--    SCRIPT_BLOCK_STATE_ACTIVE = true,
+--    SCRIPT_BLOCK_STATE_EMPTY = true,
+--    SCRIPT_BLOCK_STATE_INACTIVE = true,
+--    SCRIPT_BLOCK_STATE_PROCESSING = true,
+--    TRANSITION_ACTIVATED = true,
+--    TRANSITION_DEACTIVATED = true,
+--    UpdateScriptsInScriptBlocks = true
+--  },
+--  ...--other module
+--}
+--or see OUT of BuildModulesFromExeLog which gives values as "function" or enum 
 --OUT: mockModules
 --noLiveFound: moduleReferences not found in liveModules
 --noReferenceFound: liveModules not found in moduleReferences
