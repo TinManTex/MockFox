@@ -27,19 +27,22 @@ end
 
 --NOTE: this should be run at least in ACC
 --Some of the modules and some of the keys aren't up and running during start/start2nd.lua but are by ACC.
+--So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
   local globalsByType=this.GetGlobalsByType()
   --InfCore.PrintInspect(globalsByType)
   InfCore.PrintInspect(globalsByType.other,"globalsByType.other")
 
   --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
+  --(see ghidra, calls to AddCFuncToModule, AddEnumToModule)
   --a few are normal, plain text keys as you'd expect.
   --most are doing something with indexing metatables via some custom class binding i guess
   --the most common is fox table (for want of an actual term)
   --module having [some-number] entries
   --module having entry which has [some-number] entries
-  --some-number doesnt seem to be strcode32 --TODO: figure it out
+  --some-number doesnt seem to be strcode32, might possibly be luastring hash itself --TODO: figure it out
   --TODO: figure out any difference between entries in root vs in [-285212671]
+  --possibly enums vs c funcs
   
   --some times its [-285212671][key name] which is a normal name (most often for enum [name]=value, where value is actually a function to return the enum? weird)
   --TODO: are there any enum entries in module root same as above?
@@ -472,6 +475,11 @@ end
 --OUT: mockModules
 function this.BuildMockModules(modules)
   local mockModules={}
+  
+  local foxTableIdent=-285212671
+  local ignoreNumKeys={
+    [-285212672]=true,
+  }
 
   local ignoreModules={
     vars=true,
@@ -504,10 +512,14 @@ function this.BuildMockModules(modules)
               mockModules[moduleName][k]=v
             end
           end
-        end
-      end
-    end
-  end
+        elseif type(k)=="number"then
+          if not ignoreNumKeys[k]then
+          
+          end
+        end--if type(k)
+      end--for module
+    end--ignoremodules
+  end--for modules
   return mockModules
 end--BuildMockModules
 
