@@ -101,6 +101,14 @@ function this.DumpModules(options)
   --if this.debugModule then
   InfCore.PrintInspect(exeModules,"exeModules")
   --end
+  
+  local mockModulesFromExe,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModules)
+  if this.debugModule then
+    InfCore.PrintInspect(mockModulesFromExe,"mockModulesFromExe")
+  end
+  --tex 
+  InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")
+  InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")
 
   --tex building/using module references built by scraping actual lua files, so they can be tested against the unknown foxtabled keys,
   --as well as just seeing if there's any discrepancies with live globals
