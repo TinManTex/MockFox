@@ -138,10 +138,6 @@ function this.DumpModules(options)
   InfCore.PrintInspect(noLiveFound,"noLiveFound")
   InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
 
-  local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
-  --tex it written out later in this function
-  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
-
   InfCore.Log("combine mockModulesFromRefs to mockModules")
   for moduleName,module in pairs(mockModulesFromRefs) do
     for k,v in pairs(module)do
@@ -167,6 +163,10 @@ function this.DumpModules(options)
     --tex is written out later in this function
     InfCore.PrintInspect(missedModules,"missedModules")
   end
+  
+  local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
+  --tex it written out later in this function
+  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
 
   if vars.missionCode<=5 then
     InfCore.Log("vars.missionCode<=5, will not output dump files")
