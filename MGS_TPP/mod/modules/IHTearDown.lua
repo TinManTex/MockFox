@@ -16,6 +16,8 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder
 this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
+this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_exemodules.txt]]
+--this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\loadfile_log.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
 
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
@@ -85,6 +87,10 @@ function this.DumpModules(options)
   
   local mockModules=this.BuildMockModules(globalsByType.table)
   --InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
+  
+  --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
+  local exeModules=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
+  InfCore.PrintInspect(exeModules,"exeModules")
 
   --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and lauding it) --DEBUGNOW
   --open ih_log.txt in an editor that live refreshes to see progress
@@ -522,6 +528,72 @@ function this.BuildMockModules(modules)
   end--for modules
   return mockModules
 end--BuildMockModules
+
+--exeLogPath: ihhook log_exemodules.txt
+--which hooks UnkNameModule, AddCFuncToModule2, AddEnumToModule2 which are called by RegisterLuaModule<module name> functions
+--REF log_modulecreation.txt
+--...
+--module: ScriptBlock
+--enum: SCRIPT_BLOCK_STATE_EMPTY=0
+--enum: SCRIPT_BLOCK_STATE_PROCESSING=1
+--enum: SCRIPT_BLOCK_STATE_INACTIVE=2
+--enum: SCRIPT_BLOCK_STATE_ACTIVE=3
+--enum: TRANSITION_LOADED=0
+--enum: TRANSITION_ACTIVATED=1
+--enum: TRANSITION_DEACTIVATED=2
+--enum: TRANSITION_EMPTIED=3
+--func: GetScriptBlockId
+--func: GetCurrentScriptBlockId
+--func: Load
+--func: Reload
+--func: Activate
+--func: Deactivate
+--func: IsProcessing
+--func: GetScriptBlockState
+--func: UpdateScriptsInScriptBlocks
+--func: ExecuteInScriptBlocks
+--...
+function this.BuildModulesFromExeLog(exeLogPath)
+  InfCore.Log("BuildModulesFromExeLog")
+  local modules={}
+  local lines=InfCore.GetLines(exeLogPath)
+  local lastLineType=""
+  local currentModuleName=""
+  local currentModule=nil
+  for i,line in ipairs(lines)do
+    local findIndex,findEndIndex=string.find(line,":")
+    if findIndex~=nil then
+      local lineType=string.sub(line,1,findEndIndex-1)
+      local lineInfo=string.sub(line,findEndIndex+1,-1)
+      --InfCore.Log(i.." lineType:'"..tostring(lineType).."' lineInfo:'"..lineInfo.."'")
+      if lineType=="module"then
+        currentModuleName=lineInfo
+        if modules[currentModuleName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.." module already defined")
+        end
+        currentModule=modules[currentModuleName] or {enums={},funcs={}}
+        modules[currentModuleName]=currentModule
+      elseif lineType=="enum"then
+        local findIndex,findEndIndex=string.find(lineInfo,"=")
+        local enumName=string.sub(lineInfo,1,findEndIndex-1)
+        local enumValue=string.sub(lineInfo,findEndIndex+1,-1)
+        --InfCore.Log(i.." enumName:'"..tostring(enumName).."' enumValue:'"..enumValue.."'")
+        if currentModule.enums[enumName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: module "..currentModuleName.." enum "..enumName.." already defined")
+        end
+        currentModule.enums[enumName]=enumValue--tex TODO to num?
+      elseif lineType=="func"then
+        if currentModule.funcs[lineInfo] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: module "..currentModuleName.." func "..lineInfo.." already defined")
+        end
+        currentModule.funcs[lineInfo]=true      
+      end
+      
+      lastLineType=lineType
+    end 
+  end
+  return modules
+end--BuildModulesFromExeLog
 
 function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   InfCore.Log("BuildMockModulesFromReferences")
