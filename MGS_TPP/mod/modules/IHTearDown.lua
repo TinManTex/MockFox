@@ -32,6 +32,7 @@ end
 --Some of the modules and some of the keys aren't up and running during start/start2nd.lua but are by ACC.
 --So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
+  --tex get _G/globals organised by type, filtering out IH or lua api stuff (listed in IHGenKnownModuleNames)
   local globalsByType=this.GetGlobalsByType(IHGenKnownModuleNames)
   if this.debugModule then
     InfCore.PrintInspect(globalsByType,"globalsByType")
@@ -517,10 +518,27 @@ function this.GetModuleReferences(modules)
   InfCore.Log(string.format("GetModuleReferences completed in: %.2f", os.clock() - startTime))
 
   return refs
-end
+end--GetModuleReferences
 
---modules: globalsByType.table (_G entries of type table)
---OUT: mockModules
+--tex Outputs the modules with plain text keys, not the foxtabled keys (see NOTE in DumpModules)
+--IN: modules: globalsByType.table (_G entries of type table)
+--OUT: mockModules={
+--  Application = {
+--    AddGame = "<function>",
+--    GetGame = "<function>",
+--    GetGames = "<function>",
+--    GetInstance = "<function>",
+--    GetMainGame = "<function>",
+--    GetScene = "<function>",
+--    RemoveGame = "<function>",
+--    SetMainGame = "<function>",
+--    __call = "<function>",
+--    __index = "<function>",
+--    __newindex = "<function>",
+--    _className = "Application"
+--  },
+--  ...--other modules
+--}
 function this.BuildMockModules(modules)
   local mockModules={}
   
@@ -560,6 +578,7 @@ function this.BuildMockModules(modules)
               mockModules[moduleName][k]=v
             end
           end
+        --tex not really doing anything about foxtabled keys at this point
         elseif type(k)=="number"then
           if not ignoreNumKeys[k]then
           
@@ -571,8 +590,8 @@ function this.BuildMockModules(modules)
   return mockModules
 end--BuildMockModules
 
---exeLogPath: ihhook log_exemodules.txt
---which hooks UnkNameModule, AddCFuncToModule2, AddEnumToModule2 which are called by RegisterLuaModule<module name> functions
+--IN: exeLogPath: ihhook log_exemodules.txt
+--which is logged from hooks UnkNameModule, AddCFuncToModule2, AddEnumToModule2 which are called by RegisterLuaModule<module name> functions
 --REF log_modulecreation.txt
 --...
 --module: ScriptBlock
@@ -595,6 +614,34 @@ end--BuildMockModules
 --func: UpdateScriptsInScriptBlocks
 --func: ExecuteInScriptBlocks
 --...
+--OUT: modules={
+--  ...
+--  ScriptBlock = {
+--    enums = {
+--      SCRIPT_BLOCK_STATE_ACTIVE = "3",
+--      SCRIPT_BLOCK_STATE_EMPTY = "0",
+--      SCRIPT_BLOCK_STATE_INACTIVE = "2",
+--      SCRIPT_BLOCK_STATE_PROCESSING = "1",
+--      TRANSITION_ACTIVATED = "1",
+--      TRANSITION_DEACTIVATED = "2",
+--      TRANSITION_EMPTIED = "3",
+--      TRANSITION_LOADED = "0"
+--    },
+--    funcs = {
+--      Activate = true,
+--      Deactivate = true,
+--      ExecuteInScriptBlocks = true,
+--      GetCurrentScriptBlockId = true,
+--      GetScriptBlockId = true,
+--      GetScriptBlockState = true,
+--      IsProcessing = true,
+--      Load = true,
+--      Reload = true,
+--      UpdateScriptsInScriptBlocks = true
+--    }
+--  },
+--  ... other modules
+--
 function this.BuildModulesFromExeLog(exeLogPath)
   InfCore.Log("BuildModulesFromExeLog")
   local modules={}
