@@ -137,6 +137,23 @@ function this.DumpModules(options)
   --tex is written out later in this function
   InfCore.PrintInspect(noLiveFound,"noLiveFound")
   InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
+  
+  
+  --  --DEBUGNOW
+  InfCore.Log("combine mockModulesFromExe to mockModules")
+  for moduleName,module in pairs(mockModulesFromExe) do
+    for k,v in pairs(module)do
+      if not mockModules[moduleName] then
+        InfCore.Log(moduleName.." could not find module in mockmodules")
+      elseif not mockModules[moduleName][k] then
+        mockModules[moduleName][k]=v
+      end
+    end
+  end
+  if this.debugModule then
+    --tex is written out later in this function
+    InfCore.PrintInspect(mockModules,"exe combined mockModules")
+  end
 
   InfCore.Log("combine mockModulesFromRefs to mockModules")
   for moduleName,module in pairs(mockModulesFromRefs) do
@@ -152,6 +169,9 @@ function this.DumpModules(options)
     --tex is written out later in this function
     InfCore.PrintInspect(mockModules,"combined mockModules")
   end
+  
+
+  
 
   local missedModules={}
   for name,module in pairs(globalsByType.table)do
