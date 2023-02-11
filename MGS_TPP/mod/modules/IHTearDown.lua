@@ -22,7 +22,7 @@ this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_exemodules.txt]]
 
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
-  
+
   if this.doDumpModules then
     this.DumpModules({buildFromScratch=this.buildFromScratch})
   end
@@ -49,14 +49,14 @@ function this.DumpModules(options)
   --some-number doesnt seem to be strcode32, might possibly be luastring hash itself --TODO: figure it out
   --TODO: figure out any difference between entries in root vs in [-285212671]
   --possibly enums vs c funcs
-  
+
   --some times its [-285212671][key name] which is a normal name (most often for enum [name]=value, where value is actually a function to return the enum? weird)
   --TODO: are there any enum entries in module root same as above?
-  
+
   --many have a _classname string, these have plain text keys/dont have the some-number indirection
 
   --theres also a [-285212672]=some-number, but dont know what it represents
-  
+
   --REF
   --WeatherManager = <345>{
   --  [-285212672] = 4,--tex unknown
@@ -79,29 +79,29 @@ function this.DumpModules(options)
   --  [49591366] = <function 5844>,
   --  [62144975] = <function 5845>,
   --  ...
-  
-  --for (script)var entries 
+
+  --for (script)var entries
   --[-285212666] is array size/count
   --[-285212665] is (indexed from 0) array
-  
+
   --REF
   --customizedWeaponSlotIndex = <396>{
   --  [-285212666] = 3,
   --  [-285212665] = <userdata 43>,
-  
+
   local mockModules=this.BuildMockModules(globalsByType.table)
   if this.debugModule then
     InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
   end
-  
+
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
   local exeModules=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
   --if this.debugModule then
   InfCore.PrintInspect(exeModules,"exeModules")
   --end
 
-  --tex building/using module references built by scraping actual lua files, so they can be tested against the unknown foxtabled keys, 
-  --as well as just seeing if there's any discrepancies with live globals 
+  --tex building/using module references built by scraping actual lua files, so they can be tested against the unknown foxtabled keys,
+  --as well as just seeing if there's any discrepancies with live globals
   --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and loading it) --DEBUGNOW
   --open ih_log.txt in an editor that live refreshes to see progress
   local moduleReferences
@@ -294,7 +294,7 @@ function this.DumpModules(options)
 end--DumpModules
 
 --tex breaks down global variables by type
---IN/SIDE: 
+--IN/SIDE:
 --IHGenKnownModuleNames - IHGenKnownModuleNames.lua --tex lists of known module names (mostly just from filenames)
 --_G
 --OUT: globalsByType={
@@ -558,7 +558,7 @@ end--GetModuleReferences
 --}
 function this.BuildMockModules(modules)
   local mockModules={}
-  
+
   local foxTableIdent=-285212671
   local ignoreNumKeys={
     [-285212672]=true,
@@ -595,10 +595,10 @@ function this.BuildMockModules(modules)
               mockModules[moduleName][k]=v
             end
           end
-        --tex not really doing anything about foxtabled keys at this point
+          --tex not really doing anything about foxtabled keys at this point
         elseif type(k)=="number"then
           if not ignoreNumKeys[k]then
-          
+
           end
         end--if type(k)
       end--for module
@@ -694,11 +694,11 @@ function this.BuildModulesFromExeLog(exeLogPath)
         if currentModule[lineInfo] then
           InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for func already defined")
         end
-        currentModule[lineInfo]="function"      
+        currentModule[lineInfo]="function"
       end
-      
+
       lastLineType=lineType
-    end 
+    end
   end
   return modules
 end--BuildModulesFromExeLog
@@ -726,7 +726,7 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
     _className=true,
     [-285212671]=true,
     [-285212672]=true,
-    }
+  }
 
   local noLiveFound={}
   local noReferenceFound={}
@@ -755,7 +755,7 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
                 mockModules[referenceModuleName][k]="<userdata: "..tostring(liveValue)..">"
               else
                 mockModules[referenceModuleName][k]=liveValue
-            end
+              end
             end--if not ignorekey
           end--if livevalue
         end--for referencemodule k,v
@@ -859,9 +859,9 @@ function this.FindNonLiveClasses(classesPath)
   local nonLiveClasses={}
   local classes=InfCore.GetLines(classesPath)
   for i,className in ipairs(classes)do
-  if className~="" then
-    if not _G[className] then
-      table.insert(nonLiveClasses,className)
+    if className~="" then
+      if not _G[className] then
+        table.insert(nonLiveClasses,className)
       end
     end
   end
