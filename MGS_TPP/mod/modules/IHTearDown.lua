@@ -799,11 +799,11 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
 
   for referenceModuleName,referenceModule in pairs(moduleReferences)do
     if not ignoreModules[referenceModuleName] then
-      mockModules[referenceModuleName]={}
       if not liveModules[referenceModuleName] then
         InfCore.Log("Could not find module '"..referenceModuleName.."' from moduleReferences in livemodules")
         noLiveFound[referenceModuleName]=true
       else
+        mockModules[referenceModuleName]={}
         local liveModule=liveModules[referenceModuleName]
         for k,v in pairs(referenceModule)do
           local liveValue=liveModule[k]
