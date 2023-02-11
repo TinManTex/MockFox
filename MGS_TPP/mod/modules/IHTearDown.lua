@@ -107,6 +107,7 @@ function this.DumpModules(options)
   local moduleReferences
   if options.buildFromScratch==true then
     --tex scrapes module references from lua files
+    --is written to file later in this function
     moduleReferences=this.GetModuleReferences(globalsByType.table)
     if this.debugModule then
       InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
@@ -123,10 +124,12 @@ function this.DumpModules(options)
   if this.debugModule then
     InfCore.PrintInspect(mockModulesFromRefs,"mockModulesFromRefs")
   end
+  --tex is written out later in this function
   InfCore.PrintInspect(noLiveFound,"noLiveFound")
   InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
 
   local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
+  --tex it written out later in this function
   InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
 
   InfCore.Log("combine mockModulesFromRefs to mockModules")
@@ -139,6 +142,10 @@ function this.DumpModules(options)
       end
     end
   end
+  if this.debugModule then
+    --tex is written out later in this function
+    InfCore.PrintInspect(mockModules,"combined mockModules")
+  end
 
   local missedModules={}
   for name,module in pairs(globalsByType.table)do
@@ -147,6 +154,7 @@ function this.DumpModules(options)
     end
   end
   if this.debugModule then
+    --tex is written out later in this function
     InfCore.PrintInspect(missedModules,"missedModules")
   end
 
