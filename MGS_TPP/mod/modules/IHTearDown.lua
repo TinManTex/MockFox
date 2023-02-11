@@ -700,6 +700,9 @@ end--BuildMockModules
 --  },
 --  ... other modules
 --assume value string "function" = function, number = number, and other string to be enum that couldnt convert to num (havent seen any)
+--TODO: may want to gather order of enums added, and seperate different enums in same module
+--ie if lastLineType == enum
+--See whats up with Vehicle
 function this.BuildModulesFromExeLog(exeLogPath)
   InfCore.Log("BuildModulesFromExeLog")
   local modules={}
