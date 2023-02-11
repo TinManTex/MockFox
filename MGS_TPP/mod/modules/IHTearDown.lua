@@ -283,7 +283,7 @@ function this.DumpModules(options)
     [[--dump of EntityClassDictionary.GetCategoryList, GetClassNameList]],
   }
   this.WriteTable(this.dumpDir.."IHGenEntityClassDictionary.lua",table.concat(header,"\r\n"),entityClassDictionary)
-end
+end--DumpModules
 
 --tex breaks down global variables by type
 --IN/SIDE: 
