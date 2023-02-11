@@ -7,6 +7,7 @@
 --IHGenModuleReferences
 local this={}
 
+this.debugModule=true
 
 --TODO: knownmodulenames,infteardown,autodoc are kinda seperate from standard modules?
 
@@ -31,11 +32,11 @@ end
 --Some of the modules and some of the keys aren't up and running during start/start2nd.lua but are by ACC.
 --So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
-  local globalsByType=this.GetGlobalsByType()
+  local globalsByType=this.GetGlobalsByType(IHGenKnownModuleNames)
   if this.debugModule then
     InfCore.PrintInspect(globalsByType,"globalsByType")
   end
-  InfCore.PrintInspect(globalsByType.other,"globalsByType.other")
+  InfCore.PrintInspect(globalsByType.other,"globalsByType.other")--tex TODO: check this out
 
   --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
   --(see ghidra, calls to AddCFuncToModule, AddEnumToModule)
@@ -276,11 +277,41 @@ function this.DumpModules(options)
 end
 
 --tex breaks down global variables by type
---IN/SIDE: IHGenKnownModuleNames, _G
---OUT: globalsByType
-function this.GetGlobalsByType()
-  local ModuleNames=IHGenKnownModuleNames--tex lists of known module names (mostly just from filenames)
-
+--IN/SIDE: 
+--IHGenKnownModuleNames - IHGenKnownModuleNames.lua --tex lists of known module names (mostly just from filenames)
+--_G
+--OUT: globalsByType={
+--  function={--mostly lua api functions to ignore},
+--  other = {
+--    NULL = <userdata 1>,
+--    _U = true
+--  },
+--  string = {
+--    _VERSION = "Lua 5.1"
+--  },
+--  table = {
+--    ActionIcon = <1>{
+--      [-285212672] = 4,
+--      [-285212671] = {
+--        [5310743] = <function 30>,
+--        [14142738] = <function 31>,
+--        [38688152] = <function 32>,
+--        [51915283] = <function 33>,
+--        [92404869] = <function 34>,
+--        [190450020] = <function 35>,
+--        [209618403] = <function 36>,
+--        [218629119] = <function 37>,
+--        [238989459] = <function 38>,
+--        [245193663] = <function 39>,
+--        [248254538] = <function 40>
+--      },
+--      __index = <function 41>,
+--      __newindex = <function 42>,
+--      <metatable> = <table 1>
+--    },
+--    ... other modules, what we're actually insterested in
+--}
+function this.GetGlobalsByType(ModuleNames)
   --tex names of tables in KnownModuleNames to skip
   local skipModuleTableNames={
     "ihInternal",
