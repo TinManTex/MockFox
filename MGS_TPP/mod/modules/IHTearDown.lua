@@ -100,6 +100,8 @@ function this.DumpModules(options)
   InfCore.PrintInspect(exeModules,"exeModules")
   --end
 
+  --tex building/using module references built by scraping actual lua files, so they can be tested against the unknown foxtabled keys, 
+  --as well as just seeing if there's any discrepancies with live globals 
   --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and loading it) --DEBUGNOW
   --open ih_log.txt in an editor that live refreshes to see progress
   local moduleReferences
@@ -417,7 +419,8 @@ end
 --memberEndPos =find/break on alphanumeric or end of line
 --" ",???
 --what if 'blah.Functionname (' or 'blah.Functionname<tab>(' ??
-
+--In/SIDE: modules: globablsByType.table - filtered _G globals of table/modules
+--lua files in this.luaPath
 function this.GetModuleReferences(modules)
   InfCore.Log("GetModuleReferences")
 
@@ -683,7 +686,11 @@ function this.BuildModulesFromExeLog(exeLogPath)
   end
   return modules
 end--BuildModulesFromExeLog
-
+--IN: liveModules: globalsByType.table / actual _G/globals from running game
+--moduleReferences: module/function/enum references scraped from the games lua files
+--OUT: mockModules
+--noLiveFound: moduleReferences not found in liveModules
+--noReferenceFound: liveModules not found in moduleReferences
 function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   InfCore.Log("BuildMockModulesFromReferences")
   local mockModules={}
