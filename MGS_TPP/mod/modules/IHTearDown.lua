@@ -127,7 +127,7 @@ function this.DumpModules(options)
   InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
 
   local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
-  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")
+  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
 
   InfCore.Log("combine mockModulesFromRefs to mockModules")
   for moduleName,module in pairs(mockModulesFromRefs) do
@@ -145,6 +145,9 @@ function this.DumpModules(options)
     if not mockModules[name] then
       missedModules[name]=true
     end
+  end
+  if this.debugModule then
+    InfCore.PrintInspect(missedModules,"missedModules")
   end
 
   if vars.missionCode<=5 then
