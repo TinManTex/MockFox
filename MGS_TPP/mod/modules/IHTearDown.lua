@@ -32,7 +32,9 @@ end
 --So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
   local globalsByType=this.GetGlobalsByType()
-  --InfCore.PrintInspect(globalsByType)
+  if this.debugModule then
+    InfCore.PrintInspect(globalsByType,"globalsByType")
+  end
   InfCore.PrintInspect(globalsByType.other,"globalsByType.other")
 
   --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
@@ -86,22 +88,31 @@ function this.DumpModules(options)
   --  [-285212665] = <userdata 43>,
   
   local mockModules=this.BuildMockModules(globalsByType.table)
-  --InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
+  if this.debugModule then
+    InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
+  end
   
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
   local exeModules=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
+  --if this.debugModule then
   InfCore.PrintInspect(exeModules,"exeModules")
+  --end
 
-  --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and lauding it) --DEBUGNOW
+  --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and loading it) --DEBUGNOW
   --open ih_log.txt in an editor that live refreshes to see progress
   local moduleReferences
   if options.buildFromScratch==true then
     --tex scrapes module references from lua files
     moduleReferences=this.GetModuleReferences(globalsByType.table)
-  --InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
+    if this.debugModule then
+      InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
+    end
   else
     --tex use module previously built/saved from above process
     moduleReferences=IHGenModuleReferences--ASSUMPTION output of above has been loaded as a module
+    if this.debugModule then
+      InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
+    end
   end
 
   local mockModulesFromRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,moduleReferences)
