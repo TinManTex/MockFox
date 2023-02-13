@@ -194,6 +194,11 @@ function this.DumpModules(options)
     InfCore.PrintInspect(missedModules,"missedModules")
   end
   
+  local liveModuleKeysMissingInMock=this.CheckFoxTableKeysAccountedFor(globalsByType.table,mockModules)
+  if this.debugModule then
+    InfCore.PrintInspect(liveModuleKeysMissingInMock,"liveModuleKeysMissingInMock")
+  end
+  
   local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
   --tex it written out later in this function
   InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
@@ -858,6 +863,71 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
 
   return mockModules,noLiveFound,noReferenceFound
 end
+
+function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
+  InfCore.Log"CheckFoxTableKeysAccountedFor"
+  local liveModuleMissingInMock={}
+
+  local foxTableIdent=-285212671
+
+  local ignoreModules={
+--    vars=true,
+--    cvars=true,
+--    gvars=true,
+--    svars=true,
+--    mvars=true,
+  }
+
+  local ignoreKeys={
+    [-285212672]=true,--unknown
+    [foxTableIdent]=true,
+  }
+  
+  local knownKeys={
+    __call=true,
+    __index=true,
+    __newindex=true,
+    _className=true,  
+  }
+
+  for liveModuleName,liveModule in pairs(liveModules)do
+    if not ignoreModules[liveModuleName] then
+      liveModuleMissingInMock[liveModuleName]={}
+      local mockModule=mockModules[liveModuleName]
+      if not mockModule then
+        InfCore.Log("Could not find module "..liveModuleName.." in mockModules") 
+      else
+        for k,v in pairs(liveModule)do
+          if type(k)=="number" then
+            if not ignoreKeys[k] then
+              local foundMatch=false
+              for kk,kv in pairs(knownKeys)do
+                if v==mockModule[kk]then
+                    foundMatch=true
+                    break
+                end
+              end--for knownKeys
+              
+              if not foundMatch then
+                for mk,mv in pairs(mockModule)do
+                  if v==mk then
+                    foundMatch=true
+                    break
+                  end
+                end--for mockModule
+              end--if not foundMatch
+              if not foundMatch then
+                InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
+                liveModuleMissingInMock[liveModuleName][k]=true
+              end
+            end--if not ignoreKeys
+          end--if type(k)
+        end--for module
+      end
+    end--ignoremodules
+  end--for modules
+  return liveModuleMissingInMock
+end--CheckFoxTableKeysAccountedFor
 
 function this.GetPlainTextModules(modules)
   local plainTextModules={}
