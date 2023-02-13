@@ -753,6 +753,11 @@ function this.BuildModulesFromExeLog(exeLogPath)
           InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for func already defined")
         end
         currentModule[lineInfo]="function"
+      elseif lineType=="var"then
+        if currentModule[lineInfo] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for var already defined")
+        end
+        currentModule[lineInfo]="var"        
       end
 
       lastLineType=lineType
