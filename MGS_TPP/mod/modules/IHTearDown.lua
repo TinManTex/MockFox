@@ -652,7 +652,7 @@ function this.BuildMockModules(modules)
             elseif type(v)=="table" then
               mockModules[moduleName][k]="<table>"
             elseif type(v)=="userdata" then
-              mockModules[moduleName][k]="<userdata: "..tostring(v)..">"
+              mockModules[moduleName][k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
             else
               mockModules[moduleName][k]=v
             end
