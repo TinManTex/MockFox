@@ -17,8 +17,8 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder
 this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
-this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_exemodules.txt]]
---this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\loadfile_log.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
+this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_createmodule.txt]]
+--this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\log_createmodule.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
 
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
