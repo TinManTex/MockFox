@@ -614,11 +614,6 @@ end--GetModuleReferences
 function this.BuildMockModules(modules)
   local mockModules={}
 
-  local foxTableIdent=-285212671
-  local ignoreNumKeys={
-    [-285212672]=true,
-  }
-
   local ignoreModules={
     vars=true,
     cvars=true,
@@ -631,13 +626,13 @@ function this.BuildMockModules(modules)
     --    __call=true,
     --    __newindex=true,
     --    __index=true,
-    }
+  }
 
   for moduleName,module in pairs(modules)do
     if not ignoreModules[moduleName] then
       mockModules[moduleName]={}
       for k,v in pairs(module)do
-        --NOTE only string keys to skip userdata/indexified modules keys, see NOTE in DumpModules
+        --NOTE only string keys to skip userdata/indexified modules (type(k)== number) keys, see NOTE in DumpModules
         if type(k)=="string" then
           if not ignoreKeys[k] then
             if type(v)=="function" then
@@ -649,11 +644,6 @@ function this.BuildMockModules(modules)
             else
               mockModules[moduleName][k]=v
             end
-          end
-          --tex not really doing anything about foxtabled keys at this point
-        elseif type(k)=="number"then
-          if not ignoreNumKeys[k]then
-
           end
         end--if type(k)
       end--for module
