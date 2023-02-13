@@ -840,7 +840,12 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
               elseif type(liveValue)=="userdata" then
                 mockModules[referenceModuleName][k]="<userdata: "..tostring(liveValue)..">"
               else
-                mockModules[referenceModuleName][k]=liveValue
+                --tex DEBUGNOW decide whether we want to capture live var values (which will only really be a snapshot of when you run DumpModules)
+--                if v=="var" then
+--                   mockModules[referenceModuleName][k]="<var>"
+--                else
+                  mockModules[referenceModuleName][k]=liveValue--tex should catch enum values
+--                end
               end
             end--if not ignorekey
           end--if livevalue
