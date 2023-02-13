@@ -70,6 +70,13 @@ this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted
 this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_createmodule.txt]]
 --this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\log_createmodule.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
 
+--tex fox table shiz, see NOTE above
+local unknownId=-285212672
+local foxTableId=-285212671--tex key contains an array of id entries
+
+local varArrayCountId=-285212666
+local varTableId=-285212665
+
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
 
@@ -803,8 +810,8 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
     __index=true,
     __newindex=true,
     _className=true,
-    [-285212671]=true,
-    [-285212672]=true,
+    [foxTableId]=true,
+    [unknownId]=true,
   }
 
   local noLiveFound={}
@@ -868,8 +875,6 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   InfCore.Log"CheckFoxTableKeysAccountedFor"
   local liveModuleMissingInMock={}
 
-  local foxTableIdent=-285212671
-
   local ignoreModules={
 --    vars=true,
 --    cvars=true,
@@ -879,8 +884,8 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   }
 
   local ignoreKeys={
-    [-285212672]=true,--unknown
-    [foxTableIdent]=true,
+    [unknownId]=true,
+    [foxTableId]=true,
   }
   
   local knownKeys={
@@ -953,15 +958,10 @@ end
 
 function this.DumpVars()
   local vars=vars
-  --tex see note in DumpModules
-  local rootArrayIdent=-285212671--tex of vars
-
-  local arrayIdent=-285212665--tex table key is an array
-  local arrayCountIdent=-285212666--tex array size/count
 
   local varsTable={}
 
-  for k,v in pairs(vars[rootArrayIdent])do
+  for k,v in pairs(vars[foxTableId])do
     varsTable[k]=vars[k]
   end
 
@@ -973,14 +973,14 @@ function this.DumpVars()
   for k,foxTable in pairs(vars)do
     --tex is actually a foxTable
     if type(foxTable)=="table" then
-      if foxTable[arrayCountIdent] then
+      if foxTable[varArrayCountId] then
         --InfCore.Log("found foxTable "..k)--DEBUGNOW
         if type(k)=="string" then
           if not skipKeys[k] then
-            local foxTableArray=foxTable[arrayIdent]
+            local foxTableArray=foxTable[varTableId]
             if foxTableArray then
               varsTable[k]={}
-              local arrayCount=foxTable[arrayCountIdent]
+              local arrayCount=foxTable[varArrayCountId]
               --InfCore.Log("arrayCount="..arrayCount)--DEBUGNOW
               for i=0,arrayCount-1 do
                 varsTable[k][i]=vars[k][i]
