@@ -1129,4 +1129,22 @@ function this.DumpToFiles(outDir,moduleTable)
   end
 end
 
+--menu stuff
+function this.DoTearDown()
+  this.DumpModules{buildFromScratch=this.buildFromScratch}
+end
+
+this.registerMenus={
+  "foxTearDownMenu",
+}
+
+this.foxTearDownMenu={
+  noDoc=true,
+  nonConfig=true,
+  parentRefs={"InfMenuDefs.safeSpaceMenu","InfMenuDefs.inMissionMenu"},
+  options={
+    "IHTearDown.DoTearDown",
+  }
+}--foxTearDownMenu
+
 return this
