@@ -89,6 +89,7 @@ end
 --Some of the modules and some of the keys aren't up and running during start/start2nd.lua but are by ACC.
 --So just relying on the initial PostAllModulesLoad wont cut it
 function this.DumpModules(options)
+  InfCore.Log"DumpModules"
   --tex get _G/globals organised by type, filtering out IH or lua api stuff (listed in IHGenKnownModuleNames)
   --NOTE: since this grab the actual tables from _G so in theory you can check it later down the line with foxtable shiz, 
   --unless the k/t has some weird meta setup i haven't considered
@@ -639,7 +640,7 @@ function this.BuildMockModules(modules)
     --    __newindex=true,
     --    __index=true,
   }
-
+  
   for moduleName,module in pairs(modules)do
     if not ignoreModules[moduleName] then
       mockModules[moduleName]={}
@@ -813,7 +814,11 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
     [foxTableId]=true,
     [unknownId]=true,
   }
-
+  
+  --KLUDGE a bunch of the functions are stubbed out/replaced with the same empty function (currently called l_StubbedOut at 0x14024a8e0 in ghidra), using a known one 
+  --OFF however it doesnt seem to work, the foxtable setup seems to create a new lua function even if the underlying cfunc is the same
+  --local stubbedOutFunc=Fox.Quit
+  
   local noLiveFound={}
   local noReferenceFound={}
 
@@ -834,7 +839,11 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
           elseif type(k)=="string" then
             if not ignoreKeys[k] then
               if type(liveValue)=="function" then
-                mockModules[referenceModuleName][k]="<function>"
+--                if liveValue==stubbedOutFunc then
+--                  mockModules[referenceModuleName][k]="<function> (stubbed out)"
+--                else
+                  mockModules[referenceModuleName][k]="<function>"
+--                end
               elseif type(liveValue)=="table" then
                 mockModules[referenceModuleName][k]="<table>"
               elseif type(liveValue)=="userdata" then
