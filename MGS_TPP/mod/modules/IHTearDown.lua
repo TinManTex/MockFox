@@ -828,36 +828,37 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
         InfCore.Log("Could not find module '"..referenceModuleName.."' from moduleReferences in livemodules")
         noLiveFound[referenceModuleName]=true
       else
-        mockModules[referenceModuleName]={}
         local liveModule=liveModules[referenceModuleName]
+        local mockModule=mockModules[referenceModuleName] or {}
+        mockModules[referenceModuleName]=mockModule
         for k,v in pairs(referenceModule)do
-          local liveValue=liveModule[k]
-          if liveValue==nil then
-            InfCore.Log(referenceModuleName.." could not find live key "..tostring(k))
-            noLiveFound[referenceModuleName]=noLiveFound[referenceModuleName] or {}
-            noLiveFound[referenceModuleName][k]=true
-          elseif type(k)=="string" then
-            if not ignoreKeys[k] then
+          if not ignoreKeys[k] then
+            local liveValue=liveModule[k]
+            if liveValue==nil then
+              InfCore.Log(referenceModuleName.." could not find live key "..referenceModuleName.."."..tostring(k))
+              noLiveFound[referenceModuleName]=noLiveFound[referenceModuleName] or {}
+              noLiveFound[referenceModuleName][k]=true
+            elseif type(k)=="string" then          
               if type(liveValue)=="function" then
---                if liveValue==stubbedOutFunc then
---                  mockModules[referenceModuleName][k]="<function> (stubbed out)"
---                else
-                  mockModules[referenceModuleName][k]="<function>"
---                end
+  --                if liveValue==stubbedOutFunc then
+  --                  mockModule[k]="<function> (stubbed out)"
+  --                else
+                  mockModule[k]="<function>"
+  --                end
               elseif type(liveValue)=="table" then
-                mockModules[referenceModuleName][k]="<table>"
+                mockModule[k]="<table>"
               elseif type(liveValue)=="userdata" then
-                mockModules[referenceModuleName][k]="<userdata: "..tostring(liveValue)..">"
+                mockModule[k]="<userdata: "..tostring(liveValue)..">"
               else
                 --tex DEBUGNOW decide whether we want to capture live var values (which will only really be a snapshot of when you run DumpModules)
---                if v=="var" then
---                   mockModules[referenceModuleName][k]="<var>"
---                else
-                  mockModules[referenceModuleName][k]=liveValue--tex should catch enum values
---                end
-              end
-            end--if not ignorekey
-          end--if livevalue
+  --                if v=="var" then
+  --                   mockModule[k]="<var>"
+  --                else
+                  mockModule[k]=liveValue--tex should catch enum values
+  --                end
+              end-- if type(liveValue)
+            end--if livevalue
+          end--if not ignorekey
         end--for referencemodule k,v
       end--if module
     end--if not ignoremodule
