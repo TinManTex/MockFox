@@ -7,6 +7,8 @@
 --IHGenModuleReferences
 
 --TODO: verify that module logging / BuildModulesFromExeLog covers everything then depreciate IHGenModuleReferences
+--TODO: sort out Vehicle sub modules, ditto TppCommand (.Weather?)
+--would basically need to see if live key is type(table) then throw that though the a BuildMockModulesFromReferences (would need to break out core from operating on table of modules to single)
 
 --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
 --(see ghidra, calls to AddCFuncToModule, AddEnumToModule)
@@ -79,8 +81,6 @@ local this={}
 
 this.debugModule=true
 
---TODO: knownmodulenames,infteardown,autodoc are kinda seperate from standard modules?
-
 this.doDumpModules=true
 this.buildFromScratch=false
 this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
@@ -124,7 +124,7 @@ function this.DumpModules(options)
   --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
   local mockModules=this.BuildMockModules(globalsByType.table)
   if this.debugModule then
-    InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
+    InfCore.PrintInspect(mockModules,"plainText mockModules")--DEBUG
   end
 
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
