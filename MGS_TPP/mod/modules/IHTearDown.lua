@@ -425,6 +425,7 @@ function this.RuntimeDumps()
 end--RuntimeDumps
 
 --tex breaks down global variables by type
+--mostly to seperate out fox modules
 --IN/SIDE:
 --IHGenKnownModuleNames - IHGenKnownModuleNames.lua --tex lists of known module names (mostly just from filenames)
 --_G
@@ -443,15 +444,7 @@ end--RuntimeDumps
 --      [-285212671] = {
 --        [5310743] = <function 30>,
 --        [14142738] = <function 31>,
---        [38688152] = <function 32>,
---        [51915283] = <function 33>,
---        [92404869] = <function 34>,
---        [190450020] = <function 35>,
---        [209618403] = <function 36>,
---        [218629119] = <function 37>,
---        [238989459] = <function 38>,
---        [245193663] = <function 39>,
---        [248254538] = <function 40>
+--      ...
 --      },
 --      __index = <function 41>,
 --      __newindex = <function 42>,
