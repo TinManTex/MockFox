@@ -644,22 +644,24 @@ function this.BuildMockModules(modules)
   for moduleName,module in pairs(modules)do
     if not ignoreModules[moduleName] then
       mockModules[moduleName]={}
-      for k,v in pairs(module)do
-        --NOTE only string keys to skip userdata/indexified modules (type(k)== number) keys, see NOTE in DumpModules
-        if type(k)=="string" then
-          if not ignoreKeys[k] then
-            if type(v)=="function" then
-              mockModules[moduleName][k]="<function>"
-            elseif type(v)=="table" then
-              mockModules[moduleName][k]="<table>"
-            elseif type(v)=="userdata" then
-              mockModules[moduleName][k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
-            else
-              mockModules[moduleName][k]=v
+      if type(module)=="table"then
+        for k,v in pairs(module)do
+          --NOTE only string keys to skip userdata/indexified modules (type(k)== number) keys, see NOTE in DumpModules
+          if type(k)=="string" then
+            if not ignoreKeys[k] then
+              if type(v)=="function" then
+                mockModules[moduleName][k]="<function>"
+              elseif type(v)=="table" then
+                mockModules[moduleName][k]="<table>"
+              elseif type(v)=="userdata" then
+                mockModules[moduleName][k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
+              else
+                mockModules[moduleName][k]=v
+              end
             end
-          end
-        end--if type(k)
-      end--for module
+          end--if type(k)
+        end--for module
+      end--if module is a table
     end--ignoremodules
   end--for modules
   return mockModules
@@ -911,40 +913,42 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   }
 
   for liveModuleName,liveModule in pairs(liveModules)do
-    if not ignoreModules[liveModuleName] then
-      liveModuleMissingInMock[liveModuleName]={}
-      local mockModule=mockModules[liveModuleName]
-      if not mockModule then
-        InfCore.Log("Could not find module "..liveModuleName.." in mockModules") 
-      else
-        for k,v in pairs(liveModule)do
-          if type(k)=="number" then
-            if not ignoreKeys[k] then
-              local foundMatch=false
-              for kk,kv in pairs(knownKeys)do
-                if v==mockModule[kk]then
-                    foundMatch=true
-                    break
-                end
-              end--for knownKeys
-              
-              if not foundMatch then
-                for mk,mv in pairs(mockModule)do
-                  if v==mk then
-                    foundMatch=true
-                    break
+    if type(liveModule)=="table"then
+      if not ignoreModules[liveModuleName] then
+        liveModuleMissingInMock[liveModuleName]={}
+        local mockModule=mockModules[liveModuleName]
+        if not mockModule then
+          InfCore.Log("Could not find module "..liveModuleName.." in mockModules") 
+        else
+          for k,v in pairs(liveModule)do
+            if type(k)=="number" then
+              if not ignoreKeys[k] then
+                local foundMatch=false
+                for kk,kv in pairs(knownKeys)do
+                  if v==mockModule[kk]then
+                      foundMatch=true
+                      break
                   end
-                end--for mockModule
-              end--if not foundMatch
-              if not foundMatch then
-                InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
-                liveModuleMissingInMock[liveModuleName][k]=true
-              end
-            end--if not ignoreKeys
-          end--if type(k)
-        end--for module
-      end
-    end--ignoremodules
+                end--for knownKeys
+                
+                if not foundMatch then
+                  for mk,mv in pairs(mockModule)do
+                    if v==mk then
+                      foundMatch=true
+                      break
+                    end
+                  end--for mockModule
+                end--if not foundMatch
+                if not foundMatch then
+                  InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
+                  liveModuleMissingInMock[liveModuleName][k]=true
+                end
+              end--if not ignoreKeys
+            end--if type(k)
+          end--for module
+        end
+      end--ignoremodules
+    end--if liveModule is a table
   end--for modules
   return liveModuleMissingInMock
 end--CheckFoxTableKeysAccountedFor
