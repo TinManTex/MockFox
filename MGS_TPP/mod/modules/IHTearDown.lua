@@ -102,6 +102,7 @@ function this.PostAllModulesLoad()
 
   if this.doDumpModules then
     this.DumpModules({buildFromScratch=this.buildFromScratch})
+    this.RuntimeDumps()
   end
 end
 
@@ -236,44 +237,7 @@ function this.DumpModules(options)
   --tex it written out later in this function
   InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
 
-  --tex runtime dumps>
-  if vars.missionCode<=5 then
-    InfCore.Log("vars.missionCode<=5, will not output dump files")
-    return
-  end
-  if isMockFox then
-    InfCore.Log("isMockFox, will not output dump files")
-    return
-  end
 
-  local varsTable=this.DumpVars()
-
-  local svarsTable=this.DumpSaveVars(svars)
-
-  local gvarsTable=this.DumpSaveVars(gvars)
-
-  local mvarsTable=mvars
-
-  --DEBUGNOW compare svars and gvars vs what entries are defined lua side to see if we're missing something/or anything is added exe side
-  --GOTCHA: these will include IH s/gvars?
-  --DEBUGNOW this stuff really needs to be run in-mission, via a reloadscripts or on command
-  local gvarsDeclaredTable=nil
-  if TppMain.allSvars==nil then
-    InfCore.Log("WARNING: DumpModules TppMain.allSvars==nil")
-  else
-    this.DumpVarsDeclareTable(TppMain.allSvars)
-  end
-  local gvarsDeclaredTable=nil
-  if TppGVars==nil then--tex modules are up and running / postallmodules is before tppgvars is loaded
-    InfCore.Log("WARNING: DumpModules TppGVars==nil")
-  else
-    if TppGVars.DeclareGVarsTable==nil then
-      InfCore.Log("WARNING: DumpModules TppGVars.DeclareGVarsTable==nil")
-    else
-      this.DumpVarsDeclareTable(TppGVars.DeclareGVarsTable)
-    end
-  end
-  --runtime dumps<
 
   --tex write dumps
   local header={
@@ -383,7 +347,49 @@ function this.DumpModules(options)
   }
   this.WriteTable(this.dumpDir.."IHGenEntityClassDictionary.lua",table.concat(header,"\r\n"),entityClassDictionary)
   --write other data stuff
-  
+end--DumpModules
+
+--TODO: dump raw _G
+function this.RuntimeDumps()
+  --tex runtime dumps>
+  if vars.missionCode<=5 then
+    InfCore.Log("vars.missionCode<=5, will not output dump files")
+    return
+  end
+  if isMockFox then
+    InfCore.Log("isMockFox, will not output dump files")
+    return
+  end
+
+  local varsTable=this.DumpVars()
+
+  local svarsTable=this.DumpSaveVars(svars)
+
+  local gvarsTable=this.DumpSaveVars(gvars)
+
+  local mvarsTable=mvars
+
+  --DEBUGNOW compare svars and gvars vs what entries are defined lua side to see if we're missing something/or anything is added exe side
+  --GOTCHA: these will include IH s/gvars?
+  --DEBUGNOW this stuff really needs to be run in-mission, via a reloadscripts or on command
+  local gvarsDeclaredTable=nil
+  if TppMain.allSvars==nil then
+    InfCore.Log("WARNING: DumpModules TppMain.allSvars==nil")
+  else
+    this.DumpVarsDeclareTable(TppMain.allSvars)
+  end
+  local gvarsDeclaredTable=nil
+  if TppGVars==nil then--tex modules are up and running / postallmodules is before tppgvars is loaded
+    InfCore.Log("WARNING: DumpModules TppGVars==nil")
+  else
+    if TppGVars.DeclareGVarsTable==nil then
+      InfCore.Log("WARNING: DumpModules TppGVars.DeclareGVarsTable==nil")
+    else
+      this.DumpVarsDeclareTable(TppGVars.DeclareGVarsTable)
+    end
+  end
+  --runtime dumps<
+
   --tex write runtime dumps>
   local header={
     [[--vars.lua]],
@@ -416,7 +422,7 @@ function this.DumpModules(options)
   }
   this.WriteTable(this.dumpDir.."\\varsDump\\".."mvars.lua",table.concat(header,"\r\n"),mvarsTable)
   --< runtime dumps
-end--DumpModules
+end--RuntimeDumps
 
 --tex breaks down global variables by type
 --IN/SIDE:
@@ -1251,6 +1257,7 @@ end
 --menu stuff
 function this.DoTearDown()
   this.DumpModules{buildFromScratch=this.buildFromScratch}
+  this.RuntimeDumps()
 end
 
 this.registerMenus={
