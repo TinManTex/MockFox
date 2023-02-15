@@ -16,18 +16,17 @@
 --some-number doesnt seem to be strcode32, might possibly be luastring hash itself --TODO: figure it out
 --TODO: figure out any difference between entries in root vs in [-285212671]
 --possibly enums vs c funcs
-
---some times its [-285212671][key name] which is a normal name (most often for enum [name]=value, where value is actually a function to return the enum? weird)
---TODO: are there any enum entries in module root same as above?
+--going by Results from CheckFoxTableKeysAccountedFor, which seems to account for all AddCFuncToModule2 functions in root of a module, 
+--with enums unnacounted for, but matching the number of entries in [-285212671] of a module
 
 --many have a _classname string, these have plain text keys/dont have the some-number indirection
 
---theres also a [-285212672]=some-number, but dont know what it represents
+--theres also a [-285212672]=some-number (usually =4, VERIFY always 4?), but dont know what it represents
 
 --REF
 --WeatherManager = <345>{
 --  [-285212672] = 4,--tex unknown
---  [-285212671] = {--tex identifies a table of some-number entries
+--  [-285212671] = {--tex identifies a table of some-number entries. --Results from CheckFoxTableKeysAccountedFor suggests this is the enum table
 --    [7955555] = <function 5831>,
 --    [16841280] = <function 5832>,
 --    [27347291] = <function 5833>,
@@ -39,13 +38,31 @@
 --    [184160756] = <function 5839>,
 --    [226237853] = <function 5840>
 --  },
---  --tex some-number entries directly in module root
+--  --tex some-number entries directly in module root --Results from CheckFoxTableKeysAccountedFor suggests these are functions
 --  [11568137] = <function 5841>,
 --  [26595625] = <function 5842>,
 --  [26595645] = <function 5843>,
 --  [49591366] = <function 5844>,
 --  [62144975] = <function 5845>,
 --  ...
+--these modules usually (always?) still have a [-285212671] / enum table but it will be empty {}
+
+--some enum tables have plain text key instead of number/hash
+-- BuddyType = <13>{
+--    [-285212672] = 0,
+--    [-285212671] = {
+--      BATTLE_GEAR = <function 128>,
+--      DISABLE = <function 129>,
+--      DOG = <function 130>,
+--      HORSE = <function 131>,
+--      NONE = <function 132>,
+--      QUIET = <function 133>,
+--      WALKER_GEAR = <function 134>
+--    },
+--    __index = <function 135>,
+--    __newindex = <function 136>,
+--    <metatable> = <table 13>
+--  },
 
 --for (script)var entries
 --[-285212666] is array size/count
@@ -72,7 +89,7 @@ this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_createmodule.txt]]
 
 --tex fox table shiz, see NOTE above
 local unknownId=-285212672
-local foxTableId=-285212671--tex key contains an array of id entries
+local foxTableId=-285212671--tex key contains an array of id entries--Results from CheckFoxTableKeysAccountedFor suggests this is the enum table TODO: then renames it foxEnumId?
 
 local varArrayCountId=-285212666
 local varTableId=-285212665
@@ -942,7 +959,7 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
           if isFoxTable then
             comparedModules[moduleName]={}
  
-            --DEBUGNOW this.CheckFoxTableKeys(moduleName,liveModule,liveModule,mockModule,ignoreModules,ignoreKeys,knownKeys,comparedModules[moduleName])--tex check root as foxTable
+            this.CheckFoxTableKeys(moduleName,liveModule,liveModule,mockModule,ignoreModules,ignoreKeys,knownKeys,comparedModules[moduleName])--tex check root as foxTable
             if liveFoxTable then
               local foxTableVsMock={}
               comparedModules[moduleName][foxTableId]=foxTableVsMock
