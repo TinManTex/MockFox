@@ -9,6 +9,7 @@
 --TODO: verify that module logging / BuildModulesFromExeLog covers everything then depreciate IHGenModuleReferences
 --TODO: sort out Vehicle sub modules, ditto TppCommand (.Weather?)
 --would basically need to see if live key is type(table) then throw that though the a BuildMockModulesFromReferences (would need to break out core from operating on table of modules to single)
+--TODO: have you actually captured log_createmodule up to acc? likely submodules like TppCommand.Weather will have been capped by then
 
 --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
 --(see ghidra, calls to AddCFuncToModule, AddEnumToModule)
@@ -710,7 +711,7 @@ function this.BuildMockModules(modules)
               if type(v)=="function" then
                 mockModule[k]="<function>"
               elseif type(v)=="table" then
-                mockModule[k]="<table>"
+                mockModule[k]="<table> TODO: BuildMockModules this is probably a nested foxtable"--tex actually not likely in plaintext, more likely on foxtables itself (see comments on TppCommand.Weather)
               elseif type(v)=="userdata" then
                 mockModule[k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
               else
@@ -920,7 +921,7 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
                   mockModule[k]="<function>"
   --                end
               elseif type(liveValue)=="table" then
-                mockModule[k]="<table>"
+                mockModule[k]="<table> TODO: BuildMockModulesFromReferences this is probably a nested foxtable"--tex  (see comments on TppCommand.Weather)
               elseif type(liveValue)=="userdata" then
                 mockModule[k]="<userdata: "..tostring(liveValue)..">"
               else
@@ -958,7 +959,7 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   end--for livemodules
 
   return mockModules,noLiveFound,noReferenceFound
-end
+end--BuildMockModulesFromReferences
 
 function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   InfCore.Log"CheckFoxTableKeysAccountedFor"
