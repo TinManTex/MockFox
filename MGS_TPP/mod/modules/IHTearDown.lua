@@ -119,6 +119,8 @@ function this.DumpModules(options)
   end
   InfCore.PrintInspect(globalsByType.other,"globalsByType.other")--tex TODO: check this out
 
+  --tex Build initial mock modules from looking at the plain text keys in the live/runtime global modules
+  --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
   local mockModules=this.BuildMockModules(globalsByType.table)
   if this.debugModule then
     InfCore.PrintInspect(mockModules,"mockModules")--DEBUG
@@ -136,19 +138,20 @@ function this.DumpModules(options)
   --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
   --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
   local exeModules,exeModulesEntryOrder=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
-  --if this.debugModule then
-  InfCore.PrintInspect(exeModules,"exeModules")
-  InfCore.PrintInspect(exeModulesEntryOrder,"exeModulesEntryOrder")
-  --end
+  if this.debugModule then
+    InfCore.PrintInspect(exeModules,"exeModules")
+    InfCore.PrintInspect(exeModulesEntryOrder,"exeModulesEntryOrder")
+  end
   
   local mockModulesFromExe,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModules)
   if this.debugModule then
     InfCore.PrintInspect(mockModulesFromExe,"mockModulesFromExe")
+    --tex is written out later
+    InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")
+    InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")    
   end
-  --tex 
-  InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")
-  InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")
 
+  --tex GOTCHA: this may be depreciated if the above BuildModulesFromExeLog covers everything
   --tex building/using module references built by scraping actual lua files, so they can be tested against the unknown foxtabled keys,
   --as well as just seeing if there's any discrepancies with live globals
   --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and loading it) --DEBUGNOW
@@ -172,13 +175,14 @@ function this.DumpModules(options)
   local mockModulesFromRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,moduleReferences)
   if this.debugModule then
     InfCore.PrintInspect(mockModulesFromRefs,"mockModulesFromRefs")
+     --tex is written out later in this function
+    InfCore.PrintInspect(noLiveFound,"noLiveFound")
+    InfCore.PrintInspect(noReferenceFound,"noReferenceFound")   
   end
-  --tex is written out later in this function
-  InfCore.PrintInspect(noLiveFound,"noLiveFound")
-  InfCore.PrintInspect(noReferenceFound,"noReferenceFound")
-  
-  
-  --  --DEBUGNOW
+  --<
+
+  --tex at this point, for debugging purposes, there's 3 different mockModules tables built, 
+  --so merge them to get the (hopefully) complete mockModules
   InfCore.Log("combine mockModulesFromExe to mockModules")
   for moduleName,module in pairs(mockModulesFromExe) do
     for k,v in pairs(module)do
@@ -190,7 +194,6 @@ function this.DumpModules(options)
     end
   end
   if this.debugModule then
-    --tex is written out later in this function
     InfCore.PrintInspect(mockModules,"exe combined mockModules")
   end
 
@@ -208,10 +211,9 @@ function this.DumpModules(options)
     --tex is written out later in this function
     InfCore.PrintInspect(mockModules,"combined mockModules")
   end
+  -- mock modules build (but not yet written to files)<
   
-
-  
-
+  --tex stuff for debugging the process/seeing if the process is missing out things<
   local missedModules={}
   for name,module in pairs(globalsByType.table)do
     if not mockModules[name] then
@@ -227,11 +229,14 @@ function this.DumpModules(options)
   if this.debugModule then
     InfCore.PrintInspect(liveModuleKeysVsMock,"liveModuleKeysVsMock")
   end
+  --stuff for debugging the process/seeing if the process is missing out things<
   
+  --tex other peoples mgsv data to my analysis
   local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
   --tex it written out later in this function
   InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
 
+  --tex runtime dumps>
   if vars.missionCode<=5 then
     InfCore.Log("vars.missionCode<=5, will not output dump files")
     return
@@ -268,6 +273,7 @@ function this.DumpModules(options)
       this.DumpVarsDeclareTable(TppGVars.DeclareGVarsTable)
     end
   end
+  --runtime dumps<
 
   --tex write dumps
   local header={
