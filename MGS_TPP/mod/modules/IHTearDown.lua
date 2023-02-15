@@ -897,7 +897,7 @@ end
 
 function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   InfCore.Log"CheckFoxTableKeysAccountedFor"
-  local liveModuleVsMock={}
+  local comparedModules={}
 
   local ignoreModules={
 --    vars=true,
@@ -919,56 +919,83 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
     _className=true,  
   }
 
-  for liveModuleName,liveModule in pairs(liveModules)do
+  for moduleName,liveModule in pairs(liveModules)do
     if type(liveModule)=="table"then
-      if not ignoreModules[liveModuleName] then
-        if not mockModules[liveModuleName] then
-          InfCore.Log("Could not find module "..liveModuleName.." in mockModules")
-          liveModuleVsMock[liveModuleName]="NOT_FOUND"
+      if not ignoreModules[moduleName] then
+        local mockModule=mockModules[moduleName]  
+        if not mockModule then
+          InfCore.Log("Could not find module "..moduleName.." in mockModules")
+          comparedModules[moduleName]="NOT_FOUND"
         else
-          this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveModule,ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)--tex check root as foxTable
-          this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveModule[foxTableId],ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)--tex check foxTable key
+          local liveFoxTable=liveModule[foxTableId]
+          local isFoxTable=liveFoxTable or false
+          --tex KLUDGE check to see if root is foxTable, though as far as I can tell every module that has foxtable entries in root have a foxTableId key, even if the foxTableId array is empty some times
+          if not isFoxTable then
+            for k,v in pairs(liveModule)do
+              if type(k)=="number"then
+                isFoxTable=true
+                break
+              end
+            end
+          end
+          
+          if isFoxTable then
+            comparedModules[moduleName]={}
+ 
+            --DEBUGNOW this.CheckFoxTableKeys(moduleName,liveModule,liveModule,mockModule,ignoreModules,ignoreKeys,knownKeys,comparedModules[moduleName])--tex check root as foxTable
+            if liveFoxTable then
+              local foxTableVsMock={}
+              comparedModules[moduleName][foxTableId]=foxTableVsMock
+              this.CheckFoxTableKeys(moduleName,liveModule,liveFoxTable,mockModule,ignoreModules,ignoreKeys,knownKeys,foxTableVsMock)--tex check foxTable key
+            end
+          end
         end--if mockModule
       end--ignoremodules
     end--if liveModule is a table
   end--for modules
-  return liveModuleVsMock
+  return comparedModules
 end--CheckFoxTableKeysAccountedFor
 
---OUT/SIDE: liveModuleVsMock
-function this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveTable,ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)
+--OUT/SIDE: liveModuleVsMockModule
+function this.CheckFoxTableKeys(moduleName,liveModule,liveTable,mockModule,ignoreModules,ignoreKeys,knownKeys,liveModuleVsMockModule)
   for k,v in pairs(liveTable)do
     if type(k)=="number" then
       if not ignoreKeys[k] then
         local foundMatch=false
-        for kk,kv in pairs(knownKeys)do
-          local knownLiveValue=liveModules[liveModuleName][kk]
-          if v==knownLiveValue then
-            foundMatch=true
-            liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-            liveModuleVsMock[liveModuleName][k]=kk
-            break
-          end
-        end--for knownKeys
+        --DEBUGNOW see if this logic still makes sense with all the changes
+--        for kk,kv in pairs(knownKeys)do
+--          local knownLiveValue=liveTable[kk]
+--          if v==knownLiveValue then
+--            foundMatch=true
+--            liveModuleVsMockModule[k]=kk
+--            break
+--          end
+--        end--for knownKeys
         
         if not foundMatch then
-          local mockModule=mockModules[liveModuleName]
           for mk,mv in pairs(mockModule)do
             --DEBUGNOW this should work for functions and static enums (uhhh DEBUGNOW what about same number values of other keys??), but will fail with vars, solution might be to just set vars value to "var" (see DEBUGNOW in BuildMockModulesFromReferences)
-            local mockLiveVal=liveModules[liveModuleName][mk]
+            local mockLiveVal=liveModule[mk]--GOTCHA: have to index into liveModule to get value, foxTableId array (as liveTable) wont get you anything
+            --InfCore.Log("CheckFoxTableKeys "..moduleName.."."..mk.."="..tostring(mockLiveVal))
             --tex DEBUGNOW check if nil
-            if v==mockLiveVal then
+            if mockLiveVal==nil then
+              InfCore.Log("WARNING: CheckFoxTableKeys "..moduleName.."."..mk.."="..tostring(mockLiveVal))
+            elseif type(mockLiveVal=="function")then
+              if v==mockLiveVal then
+                foundMatch=true
+                liveModuleVsMockModule[k]=mk
+                break
+              end
+            elseif mockLiveVal=="var "then--DEBUGNOW TODO
               foundMatch=true
-              liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-              liveModuleVsMock[liveModuleName][k]=mk
-              break
+              liveModuleVsMockModule[k]=mk
+              break              
             end
           end--for mockModule
         end--if not foundMatch
         if not foundMatch then
-          InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
-          liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-          liveModuleVsMock[liveModuleName][k]="NOT_FOUND"
+          InfCore.Log("Could not find match for "..moduleName.."["..k.."] in mockModules")
+          liveModuleVsMockModule[k]="NOT_FOUND "
         end
       end--if not ignoreKeys
     end--if type(k)
