@@ -18,6 +18,7 @@
 --possibly enums vs c funcs
 --going by Results from CheckFoxTableKeysAccountedFor, which seems to account for all AddCFuncToModule2 functions in root of a module, 
 --with enums unnacounted for, but matching the number of entries in [-285212671] of a module
+--but then PlayerVars which has var type entries has them in [-285212671]
 
 --many have a _classname string, these have plain text keys/dont have the some-number indirection
 
