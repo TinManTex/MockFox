@@ -700,20 +700,21 @@ function this.BuildMockModules(modules)
   
   for moduleName,module in pairs(modules)do
     if not ignoreModules[moduleName] then
-      mockModules[moduleName]={}
+      local mockModule={}
+      mockModules[moduleName]=mockModule
       if type(module)=="table"then
         for k,v in pairs(module)do
           --NOTE only string keys to skip userdata/indexified modules (type(k)== number) keys, see NOTE in DumpModules
           if type(k)=="string" then
             if not ignoreKeys[k] then
               if type(v)=="function" then
-                mockModules[moduleName][k]="<function>"
+                mockModule[k]="<function>"
               elseif type(v)=="table" then
-                mockModules[moduleName][k]="<table>"
+                mockModule[k]="<table>"
               elseif type(v)=="userdata" then
-                mockModules[moduleName][k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
+                mockModule[k]="<userdata>"--ALT "<"..tostring(v)..">"--tex gives "<userdata: ADDRESS>" where address is different each session, so not the best since it will create a diff every capture
               else
-                mockModules[moduleName][k]=v
+                mockModule[k]=v
               end
             end
           end--if type(k)
