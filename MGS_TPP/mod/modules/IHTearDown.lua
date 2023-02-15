@@ -132,9 +132,10 @@ function this.DumpModules(options)
   --these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
   --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
   --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
-  local exeModules=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
+  local exeModules,exeModulesEntryOrder=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
   --if this.debugModule then
   InfCore.PrintInspect(exeModules,"exeModules")
+  InfCore.PrintInspect(exeModulesEntryOrder,"exeModulesEntryOrder")
   --end
   
   local mockModulesFromExe,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModules)
@@ -745,10 +746,12 @@ end--BuildMockModules
 function this.BuildModulesFromExeLog(exeLogPath)
   InfCore.Log("BuildModulesFromExeLog")
   local modules={}
+  local modulesEntryOrder={}
   local lines=InfCore.GetLines(exeLogPath)
   local lastLineType=""
   local currentModuleName=""
   local currentModule=nil
+  local currentModuleOrder=nil
   for i,line in ipairs(lines)do
     local findIndex,findEndIndex=string.find(line,":")
     if findIndex~=nil then
@@ -762,6 +765,9 @@ function this.BuildModulesFromExeLog(exeLogPath)
         end
         currentModule=modules[currentModuleName] or {}
         modules[currentModuleName]=currentModule
+        
+        currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
+        modulesEntryOrder[currentModuleName]=currentModuleOrder
       elseif lineType=="enum"then
         local findIndex,findEndIndex=string.find(lineInfo,"=")
         local enumName=string.sub(lineInfo,1,findEndIndex-1)
@@ -777,22 +783,31 @@ function this.BuildModulesFromExeLog(exeLogPath)
         else
           currentModule[enumName]=value
         end
+        
+        currentModuleOrder.enums=currentModuleOrder.enums or {}
+        table.insert(currentModuleOrder.enums,enumName)
       elseif lineType=="func"then
         if currentModule[lineInfo] then
           InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for func already defined")
         end
         currentModule[lineInfo]="function"
+        
+        currentModuleOrder.funcs=currentModuleOrder.funcs or {}
+        table.insert(currentModuleOrder.funcs,lineInfo)
       elseif lineType=="var"then
         if currentModule[lineInfo] then
           InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for var already defined")
         end
-        currentModule[lineInfo]="var"        
+        currentModule[lineInfo]="var"    
+        
+        currentModuleOrder.vars=currentModuleOrder.vars or {}
+        table.insert(currentModuleOrder.vars,lineInfo) 
       end
 
       lastLineType=lineType
     end
   end
-  return modules
+  return modules,modulesEntryOrder
 end--BuildModulesFromExeLog
 --IN: liveModules: globalsByType.table / actual _G/globals from running game
 --moduleReferences: IHGenModuleReferences - module/function/enum references scraped from the games lua files
