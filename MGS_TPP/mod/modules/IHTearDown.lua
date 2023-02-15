@@ -21,7 +21,7 @@
 
 --many have a _classname string, these have plain text keys/dont have the some-number indirection
 
---theres also a [-285212672]=some-number (usually =4, VERIFY always 4?), but dont know what it represents
+--theres also a [-285212672]=some-number (usually =4,  sometimes 0, any other values?), but dont know what it represents
 
 --REF
 --WeatherManager = <345>{
