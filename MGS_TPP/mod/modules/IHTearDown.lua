@@ -367,7 +367,7 @@ function this.RuntimeDumps()
 
   local gvarsTable=this.DumpSaveVars(gvars)
 
-  local mvarsTable=mvars
+  local mvarsTable=mvars--tex these are plain tables as they arent saved or anything, mgsv just clears it on mission change (TODO: when exactly?)
 
   --DEBUGNOW compare svars and gvars vs what entries are defined lua side to see if we're missing something/or anything is added exe side
   --GOTCHA: these will include IH s/gvars?
