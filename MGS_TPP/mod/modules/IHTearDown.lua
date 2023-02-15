@@ -922,52 +922,58 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   for liveModuleName,liveModule in pairs(liveModules)do
     if type(liveModule)=="table"then
       if not ignoreModules[liveModuleName] then
-        local mockModule=mockModules[liveModuleName]
-        if not mockModule then
+        if not mockModules[liveModuleName] then
           InfCore.Log("Could not find module "..liveModuleName.." in mockModules")
           liveModuleVsMock[liveModuleName]="NOT_FOUND"
         else
-          for k,v in pairs(liveModule)do
-            if type(k)=="number" then
-              if not ignoreKeys[k] then
-                local foundMatch=false
-                for kk,kv in pairs(knownKeys)do
-                  local knownLiveValue=liveModules[liveModuleName][kk]
-                  if v==knownLiveValue then
-                    foundMatch=true
-                    liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-                    liveModuleVsMock[liveModuleName][k]=kk
-                    break
-                  end
-                end--for knownKeys
-                
-                if not foundMatch then
-                  for mk,mv in pairs(mockModule)do
-                    --DEBUGNOW this should work for functions and static enums (uhhh DEBUGNOW what about same number values of other keys??), but will fail with vars, solution might be to just set vars value to "var" (see DEBUGNOW in BuildMockModulesFromReferences)
-                    local mockLiveVal=liveModules[liveModuleName][mk]
-                    --tex DEBUGNOW check if nil
-                    if v==mockLiveVal then
-                      foundMatch=true
-                      liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-                      liveModuleVsMock[liveModuleName][k]=mk
-                      break
-                    end
-                  end--for mockModule
-                end--if not foundMatch
-                if not foundMatch then
-                  InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
-                  liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
-                  liveModuleVsMock[liveModuleName][k]="NOT_FOUND"
-                end
-              end--if not ignoreKeys
-            end--if type(k)
-          end--for module
+          this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveModule,ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)--tex check root as foxTable
+          this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveModule[foxTableId],ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)--tex check foxTable key
         end--if mockModule
       end--ignoremodules
     end--if liveModule is a table
   end--for modules
   return liveModuleVsMock
 end--CheckFoxTableKeysAccountedFor
+
+--OUT/SIDE: liveModuleVsMock
+function this.CheckFoxTableKeys(liveModules,mockModules,liveModuleName,liveTable,ignoreModules,ignoreKeys,knownKeys,liveModuleVsMock)
+  for k,v in pairs(liveTable)do
+    if type(k)=="number" then
+      if not ignoreKeys[k] then
+        local foundMatch=false
+        for kk,kv in pairs(knownKeys)do
+          local knownLiveValue=liveModules[liveModuleName][kk]
+          if v==knownLiveValue then
+            foundMatch=true
+            liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
+            liveModuleVsMock[liveModuleName][k]=kk
+            break
+          end
+        end--for knownKeys
+        
+        if not foundMatch then
+          local mockModule=mockModules[liveModuleName]
+          for mk,mv in pairs(mockModule)do
+            --DEBUGNOW this should work for functions and static enums (uhhh DEBUGNOW what about same number values of other keys??), but will fail with vars, solution might be to just set vars value to "var" (see DEBUGNOW in BuildMockModulesFromReferences)
+            local mockLiveVal=liveModules[liveModuleName][mk]
+            --tex DEBUGNOW check if nil
+            if v==mockLiveVal then
+              foundMatch=true
+              liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
+              liveModuleVsMock[liveModuleName][k]=mk
+              break
+            end
+          end--for mockModule
+        end--if not foundMatch
+        if not foundMatch then
+          InfCore.Log("Could not find match for "..liveModuleName.."["..k.."] in mockModules")
+          liveModuleVsMock[liveModuleName]=liveModuleVsMock[liveModuleName] or {}
+          liveModuleVsMock[liveModuleName][k]="NOT_FOUND"
+        end
+      end--if not ignoreKeys
+    end--if type(k)
+  end--for module
+end--CheckFoxTableKeys
 
 function this.GetPlainTextModules(modules)
   local plainTextModules={}
