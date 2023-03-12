@@ -5,6 +5,8 @@
 --Requires:
 --IHGenKnownModuleNames
 --IHGenModuleReferences
+--all in mod\modules
+--run foxTearDownMenu > DoTearDown , when at least in ACC
 
 --TODO: verify that module logging / BuildModulesFromExeLog covers everything then depreciate IHGenModuleReferences
 --TODO: sort out Vehicle sub modules, ditto TppCommand (.Weather?)
@@ -82,9 +84,10 @@ local this={}
 
 this.debugModule=true
 
-this.doDumpModules=true
+this.doDumpModules=false--tex run in PostAllModulesLoad, NOTE this wont catch everything, so run manually in ACC via foxTearDownMenu > DoTearDown when at least in ACC 
 this.buildFromScratch=false
 this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
+--also outputs to <dumpDir>/modulesDump and <dumpDir>/mockModules (you need to create the sub folders)
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder
 this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
