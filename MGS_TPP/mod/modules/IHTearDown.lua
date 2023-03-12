@@ -86,8 +86,8 @@ this.debugModule=true
 
 this.doDumpModules=false--tex run in PostAllModulesLoad, NOTE this wont catch everything, so run manually in ACC via foxTearDownMenu > DoTearDown when at least in ACC 
 
-this.writeDebugOutput=true--tex write stuff for debugging the process/seeing if the process is missing out things
-this.buildFromScratch=false
+this.writeDebugOutput=true--tex write stuff for debugging the process/seeing if the process is missing out things (written to <dumpDir>/debugDump)
+this.buildFromScratch=false--tex whether to build IHGenModuleReferences from scratch by scraping lua files in luaPath
 this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --also outputs to:
 --<dumpDir>/varsDump
@@ -96,7 +96,7 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --<dumpDir>/debugDump
 --(you need to create the sub folders)
 --input
-this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder
+this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder, for IHGenModuleReferences buildFromScratch
 this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
 this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_createmodule.txt]]
 --this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\log_createmodule.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
