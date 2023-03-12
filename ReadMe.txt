@@ -2,7 +2,9 @@ MockFox
 
 MockFox is a framework to load/compile MGSV TPP lua scripts including Infinite Heaven outside of the games exe itself by providing mock versions of the mgstpp internal modules.
 May be useful for analysing data in the scripts.
-Infinite Heaven uses it for it's AutoDoc which creates the Features and Options txt and html files.
+Infinite Heaven used it for it's AutoDoc which creates the Features and Options txt and html files.
+
+If you just want to look at the generated fox modules for reference see /MockFoxLua/<game id>/
 
 Terms:
 Host - the lua vm/interpreter that will be loading/running the fox engine scripts. Ex LDT - Lua Development Tools, MoonSharp C# lua implementation, or MGSTPP.exe I guess.
@@ -26,7 +28,16 @@ GzsTool.Core - for Fox.StrCode32 support
 
 Files in this project:
 /MockFoxLua/
-The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
+	The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
+/MockFoxLua/<game id>/
+	Output of IHTeardown
+	Only tpp has actually been tested running mockfox
+/MockFoxLua/loadLDT.lua - for loading mockfox through Lua Development Tools, loads loadMockFox
+/MockFoxLua/loadMockFox.lua - loaded by other hosts to actualy load MockFox - /MockFoxLua/<game id>/
+
+/MGS_TPP/
+	IHTearDown and supporting file for generating the mock modules, and some other analysis dumps.
+	See header of IHTearDown.lua for more notes.
 
 /Unity/
 MockFoxManager.cs - unity script component that uses MoonSharp to load MockFoxLua and the mgstpp lua scripts.
