@@ -1,10 +1,16 @@
-MockFox
+MockFox is a collection of related projects based around Mock versions of the exe-side modules of MGSV.
 
-MockFox is a framework to load/compile MGSV TPP lua scripts including Infinite Heaven outside of the games exe itself by providing mock versions of the mgstpp internal modules.
-May be useful for analysing data in the scripts.
-Infinite Heaven used it for it's AutoDoc which creates the Features and Options txt and html files.
+Mock modules - the output of IHTearDown, used by LoadMockFox, or just useful as a reference to the tpp exe lua api.
+See /MockFoxLua/<game id>/
 
-If you just want to look at the generated fox modules for reference see /MockFoxLua/<game id>/
+If that's all your interested in you can ignore the other projects/the rest of this document.
+
+IHTearDown - An IH module for generating the Mock modules from the running game and some other analysis stuff.
+
+LoadMockFox - a loader/glue that's complete enough to load the games lua scripts using the Mock modules via a lua interpreter external from the game.
+
+It's robust enough to load the game scripts and Infinite Heavens scripts and was used for its AutoDoc function which generated the Features And Options documentation by reading the menu structure and help strings.
+
 
 Terms:
 Host - the lua vm/interpreter that will be loading/running the fox engine scripts. Ex LDT - Lua Development Tools, MoonSharp C# lua implementation, or MGSTPP.exe I guess.
@@ -14,10 +20,9 @@ Dependencies:
 Complete set of lua files from data1.dat
 
 If you want to run Infinite Heaven (not actually nessesary) you can get the full set by:
-Grab from https://github.com/TinManTex/mgsv-deminified-lua
-Unzip somewhere
-Infinite Heaven
-Unzip .mgsv, copy Assets,Tpp,init.lua into data1 luas folder, replacing any files.
+Grab from https://github.com/TinManTex/InfiniteHeaven/tree/master/tpp
+Combine data1_dat-lua and data1_dat-lua-ih
+
 
 Unity/MoonSharp:
 
@@ -29,11 +34,13 @@ GzsTool.Core - for Fox.StrCode32 support
 Files in this project:
 /MockFoxLua/
 	The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
-/MockFoxLua/<game id>/
+	/<game id>/
 	Output of IHTeardown
 	Only tpp has actually been tested running mockfox
-/MockFoxLua/loadLDT.lua - for loading mockfox through Lua Development Tools, loads loadMockFox
-/MockFoxLua/loadMockFox.lua - loaded by other hosts to actualy load MockFox - /MockFoxLua/<game id>/
+
+	/loadLDT.lua - for loading mockfox through Lua Development Tools, loads loadMockFox
+	/loadMockFox.lua - loaded by other hosts to actualy load MockFox - /MockFoxLua/<game id>/
+
 
 /MGS_TPP/
 	IHTearDown and supporting file for generating the mock modules, and some other analysis dumps.
