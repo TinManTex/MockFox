@@ -1,5 +1,8 @@
 MockFox changelog
 
+Depreciated, see github commits instead:
+https://github.com/TinManTex/MockFox
+
 r46
 gameId global / load different mock modules for different games
 MockModules renamed MockModulesGenerated
