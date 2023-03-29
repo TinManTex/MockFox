@@ -132,13 +132,7 @@ function this.DumpModules(options)
   end
   InfCore.PrintInspect(globalsByType.other,"globalsByType.other")--tex TODO: check this out
 
-  --tex Build initial mock modules from looking at the plain text keys in the live/runtime global modules
-  --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
-  local mockModules=this.BuildMockModulesFromLive(globalsByType.table)
-  if this.debugModule then
-    InfCore.PrintInspect(mockModules,"mockModules step1 live plaintext")--tex is written during write dumps (after multiple merges)
-  end
-
+  --tex build up references to potential modules from various sources>
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
   --GOTCHA: TODO: there's a couple of edge cases with the exe dump, as seen in IHGenUnfoundReferencesExe.lua
 --    TppCommand = {
@@ -154,14 +148,6 @@ function this.DumpModules(options)
   if this.debugModule then
     InfCore.PrintInspect(exeModuleRefs,"exeModules")
     InfCore.PrintInspect(exeModuleRefsEntryOrder,"exeModulesEntryOrder")--tex is written during write dumps
-  end
-  
-  local mockModulesFromExeRefs,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModuleRefs)
-  if this.debugModule then
-    InfCore.PrintInspect(mockModulesFromExeRefs,"mockModulesFromExe")
-    --tex is written out later
-    InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")--tex is written during write dumps
-    InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")--tex is written during write dumps
   end
 
   --tex GOTCHA: this may be depreciated if the above BuildModuleRefsFromExeLog covers everything
@@ -184,6 +170,24 @@ function this.DumpModules(options)
       InfCore.PrintInspect(luaSourceRefs,"moduleReferences")--tex not written at end (because it is already itself)
     end
   end
+  --tex build up references to potential modules from various sources<
+
+  --tex build individual mock modules for each of the above reference modules, just so we can compare how complete the references are>
+  
+  --tex Build initial mock modules from looking at the plain text keys in the live/runtime global modules
+  --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
+  local mockModules=this.BuildMockModulesFromLive(globalsByType.table)
+  if this.debugModule then
+    InfCore.PrintInspect(mockModules,"mockModules step1 live plaintext")--tex is written during write dumps (after multiple merges)
+  end
+  
+  local mockModulesFromExeRefs,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModuleRefs)
+  if this.debugModule then
+    InfCore.PrintInspect(mockModulesFromExeRefs,"mockModulesFromExe")
+    --tex is written out later
+    InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")--tex is written during write dumps
+    InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")--tex is written during write dumps
+  end
 
   local mockModulesFromLuaRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,luaSourceRefs)
   if this.debugModule then
@@ -192,9 +196,10 @@ function this.DumpModules(options)
     InfCore.PrintInspect(noLiveFound,"noLiveFound")--tex is written during write dumps
     InfCore.PrintInspect(noReferenceFound,"noReferenceFound")--tex is written during write dumps
   end
-  --<
+  --tex build individual mock modules<
 
-  --tex at this point, for debugging purposes, there's 3 different mockModules tables built, 
+  --tex merge different mock modules>
+  --at this point, for debugging purposes, there's 3 different mockModules tables built, 
   --so merge them to get the (hopefully) complete mockModules
   InfCore.Log("combine mockModulesFromExe to mockModules")
   for moduleName,module in pairs(mockModulesFromExeRefs) do
@@ -224,7 +229,8 @@ function this.DumpModules(options)
     --tex is written out later in this function
     InfCore.PrintInspect(mockModules,"mockModules step3 merge with mockModulesFromLuaRefs - final all combined")
   end
-  -- mock modules build (but not yet written to files)<
+  --tex merge different mock modules<
+  --tex mock modules built at this point (but not yet written to files)
   
   --tex stuff for debugging the process/seeing if the process is missing out things>
   local missedModules={}
