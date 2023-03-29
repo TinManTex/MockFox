@@ -1021,23 +1021,24 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
     end--if not ignoremodule
   end--for modulereferences
 
+  --tex check noReferenceFound
   for liveModuleName,liveModule in pairs(liveModules)do
     if not moduleReferences[liveModuleName] then
       InfCore.Log("Could not find module '"..liveModuleName.."' from moduleReferences in livemodules")
       noReferenceFound[liveModuleName]=true
     else
       local referenceModule=moduleReferences[liveModuleName]
-      for k,v in pairs(liveModule)do
-        local referenceValue=referenceModule[k]
-        if not ignoreKeys[k] then
+      for liveKeyName,liveValue in pairs(liveModule)do
+        local referenceValue=referenceModule[liveKeyName]
+        if not ignoreKeys[liveKeyName] then
           if referenceValue==nil then
-            InfCore.Log(liveModuleName.." could not find reference key "..tostring(k))
+            InfCore.Log(liveModuleName.." could not find reference key "..tostring(liveKeyName))
             noReferenceFound[liveModuleName]=noReferenceFound[liveModuleName] or {}
-            noReferenceFound[liveModuleName][k]=true
+            noReferenceFound[liveModuleName][liveKeyName]=true
           end
-        end
-      end
-    end
+        end--if not ignoreKey
+      end--for liveModule
+    end--if moduleReference
   end--for livemodules
 
   return mockModules,noLiveFound,noReferenceFound
