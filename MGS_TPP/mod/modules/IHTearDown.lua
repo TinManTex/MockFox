@@ -134,7 +134,7 @@ function this.DumpModules(options)
 
   --tex Build initial mock modules from looking at the plain text keys in the live/runtime global modules
   --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
-  local mockModules=this.BuildMockModules(globalsByType.table)
+  local mockModules=this.BuildMockModulesFromLive(globalsByType.table)
   if this.debugModule then
     InfCore.PrintInspect(mockModules,"mockModules step1 live plaintext")--tex is written during write dumps (after multiple merges)
   end
@@ -697,7 +697,7 @@ end--GetModuleReferences
 --  },
 --  ...--other modules
 --}
-function this.BuildMockModules(modules)
+function this.BuildMockModulesFromLive(liveModules)
   local mockModules={}
 
   local ignoreModules={
@@ -714,7 +714,7 @@ function this.BuildMockModules(modules)
     --    __index=true,
   }
   
-  for moduleName,module in pairs(modules)do
+  for moduleName,module in pairs(liveModules)do
     if not ignoreModules[moduleName] then
       local mockModule={}
       mockModules[moduleName]=mockModule
