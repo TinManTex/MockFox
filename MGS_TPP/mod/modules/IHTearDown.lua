@@ -983,32 +983,37 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
         local liveModule=liveModules[referenceModuleName]
         local mockModule=mockModules[referenceModuleName] or {}
         mockModules[referenceModuleName]=mockModule
-        for k,v in pairs(referenceModule)do
-          if not ignoreKeys[k] then
-            local liveValue=liveModule[k]
+        for referenceKey,referenceValue in pairs(referenceModule)do
+          if not ignoreKeys[referenceKey] then
+            local liveValue=liveModule[referenceKey]
             if liveValue==nil then
-              InfCore.Log(referenceModuleName.." could not find live key "..referenceModuleName.."."..tostring(k))
+              InfCore.Log(referenceModuleName.." could not find live key "..referenceModuleName.."."..tostring(referenceKey))
               noLiveFound[referenceModuleName]=noLiveFound[referenceModuleName] or {}
-              noLiveFound[referenceModuleName][k]=true
-            elseif type(k)=="string" then          
+              noLiveFound[referenceModuleName][referenceKey]=true
+            elseif type(referenceKey)=="string" then          
               if type(liveValue)=="function" then
   --                if liveValue==stubbedOutFunc then
   --                  mockModule[k]="<function> (stubbed out)"
   --                else
-                  mockModule[k]="<function>"
+                  mockModule[referenceKey]="<function>"
   --                end
               elseif type(liveValue)=="table" then
-                mockModule[k]="<table> TODO: BuildMockModulesFromReferences this is probably a nested foxtable"--tex  (see comments on TppCommand.Weather)
+                mockModule[referenceKey]="<table> TODO: BuildMockModulesFromReferences this is probably a nested foxtable"--tex  (see comments on TppCommand.Weather)
               elseif type(liveValue)=="userdata" then
-                mockModule[k]="<userdata: "..tostring(liveValue)..">"
+                mockModule[referenceKey]="<userdata: "..tostring(liveValue)..">"
               else
+                if type(referenceValue)~="boolean" and referenceValue~=liveValue then
+                  InfCore.Log("WARNING: BuildMockModulesFromReferences "..referenceModuleName.."."..referenceKey.." mismatch referenceValue:"..tostring(referenceValue).." liveValue:"..tostring(liveValue))
+                end
                 --tex DEBUGNOW decide whether we want to capture live var values (which will only really be a snapshot of when you run DumpModules)
   --                if v=="var" then
   --                   mockModule[k]="<var>"
   --                else
-                  mockModule[k]=liveValue--tex should catch enum values
+                  mockModule[referenceKey]=liveValue--tex should catch enum values
   --                end
               end-- if type(liveValue)
+            else
+              InfCore.Log("WARNING: BuildMockModulesFromReferences "..referenceModuleName.."["..tostring(referenceKey).."] unknown key type "..type(k))
             end--if livevalue
           end--if not ignorekey
         end--for referencemodule k,v
