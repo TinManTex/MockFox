@@ -136,7 +136,7 @@ function this.DumpModules(options)
   --as mentioned in the notes in this files header above, this misses a lot of stuff obscured by whatever the foxtable process is 
   local mockModules=this.BuildMockModules(globalsByType.table)
   if this.debugModule then
-    InfCore.PrintInspect(mockModules,"plainText mockModules")--DEBUG
+    InfCore.PrintInspect(mockModules,"mockModules step1 live plaintext")--tex is written during write dumps (after multiple merges)
   end
 
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
@@ -150,18 +150,18 @@ function this.DumpModules(options)
   --these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
   --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
   --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
-  local exeModules,exeModulesEntryOrder=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
+  local exeModuleRefs,exeModuleRefsEntryOrder=this.BuildModulesFromExeLog(this.exeModulesPath)--tex TODO dump this
   if this.debugModule then
-    InfCore.PrintInspect(exeModules,"exeModules")
-    InfCore.PrintInspect(exeModulesEntryOrder,"exeModulesEntryOrder")
+    InfCore.PrintInspect(exeModuleRefs,"exeModules")
+    InfCore.PrintInspect(exeModuleRefsEntryOrder,"exeModulesEntryOrder")--tex is written during write dumps
   end
   
-  local mockModulesFromExe,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModules)
+  local mockModulesFromExeRefs,noLiveFoundExe,noReferenceFoundExe=this.BuildMockModulesFromReferences(globalsByType.table,exeModuleRefs)
   if this.debugModule then
-    InfCore.PrintInspect(mockModulesFromExe,"mockModulesFromExe")
+    InfCore.PrintInspect(mockModulesFromExeRefs,"mockModulesFromExe")
     --tex is written out later
-    InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")
-    InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")    
+    InfCore.PrintInspect(noLiveFoundExe,"noLiveFoundExe")--tex is written during write dumps
+    InfCore.PrintInspect(noReferenceFoundExe,"noReferenceFoundExe")--tex is written during write dumps
   end
 
   --tex GOTCHA: this may be depreciated if the above BuildModulesFromExeLog covers everything
@@ -169,35 +169,35 @@ function this.DumpModules(options)
   --as well as just seeing if there's any discrepancies with live globals
   --tex NOTE: takes a fair while to run. Run it once, then use the resulting combined table .lua (after copying it to MGS_TPP\mod\modules and loading it) --DEBUGNOW
   --open ih_log.txt in an editor that live refreshes to see progress
-  local moduleReferences
+  local luaSourceRefs
   if options.buildFromScratch==true then
     --tex scrapes module references from lua files
     --is written to file later in this function
-    moduleReferences=this.GetModuleReferences(globalsByType.table)
+    luaSourceRefs=this.GetModuleReferences(globalsByType.table)
     if this.debugModule then
-      InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
+      InfCore.PrintInspect(luaSourceRefs,"moduleReferences")--tex is written during write dumps
     end
   else
     --tex use module previously built/saved from above process
-    moduleReferences=IHGenModuleReferences--ASSUMPTION output of above has been loaded as a module
+    luaSourceRefs=IHGenModuleReferences--ASSUMPTION output of above has been loaded as a module
     if this.debugModule then
-      InfCore.PrintInspect(moduleReferences,"moduleReferences")--DEBUG
+      InfCore.PrintInspect(luaSourceRefs,"moduleReferences")--tex not written at end (because it is already itself)
     end
   end
 
-  local mockModulesFromRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,moduleReferences)
+  local mockModulesFromLuaRefs,noLiveFound,noReferenceFound=this.BuildMockModulesFromReferences(globalsByType.table,luaSourceRefs)
   if this.debugModule then
-    InfCore.PrintInspect(mockModulesFromRefs,"mockModulesFromRefs")
+    InfCore.PrintInspect(mockModulesFromLuaRefs,"mockModulesFromRefs")
      --tex is written out later in this function
-    InfCore.PrintInspect(noLiveFound,"noLiveFound")
-    InfCore.PrintInspect(noReferenceFound,"noReferenceFound")   
+    InfCore.PrintInspect(noLiveFound,"noLiveFound")--tex is written during write dumps
+    InfCore.PrintInspect(noReferenceFound,"noReferenceFound")--tex is written during write dumps
   end
   --<
 
   --tex at this point, for debugging purposes, there's 3 different mockModules tables built, 
   --so merge them to get the (hopefully) complete mockModules
   InfCore.Log("combine mockModulesFromExe to mockModules")
-  for moduleName,module in pairs(mockModulesFromExe) do
+  for moduleName,module in pairs(mockModulesFromExeRefs) do
     for k,v in pairs(module)do
       if not mockModules[moduleName] then
         InfCore.Log(moduleName.." could not find module in mockmodules")
@@ -207,11 +207,11 @@ function this.DumpModules(options)
     end
   end
   if this.debugModule then
-    InfCore.PrintInspect(mockModules,"exe combined mockModules")
+    InfCore.PrintInspect(mockModules,"mockModules step2 merge with mockModulesFromExeRefs")
   end
 
   InfCore.Log("combine mockModulesFromRefs to mockModules")
-  for moduleName,module in pairs(mockModulesFromRefs) do
+  for moduleName,module in pairs(mockModulesFromLuaRefs) do
     for k,v in pairs(module)do
       if not mockModules[moduleName] then
         InfCore.Log(moduleName.." could not find module in mockmodules")
@@ -222,7 +222,7 @@ function this.DumpModules(options)
   end
   if this.debugModule then
     --tex is written out later in this function
-    InfCore.PrintInspect(mockModules,"combined mockModules")
+    InfCore.PrintInspect(mockModules,"mockModules step3 merge with mockModulesFromLuaRefs - final all combined")
   end
   -- mock modules build (but not yet written to files)<
   
@@ -236,8 +236,7 @@ function this.DumpModules(options)
       end
     end
     if this.debugModule then
-      --tex is written out later in this function
-      InfCore.PrintInspect(missedModules,"missedModules")
+      InfCore.PrintInspect(missedModules,"missedModules")--tex is written during write dumps
     end
     
     liveModuleKeysVsMock=this.CheckFoxTableKeysAccountedFor(globalsByType.table,mockModules)
@@ -249,8 +248,7 @@ function this.DumpModules(options)
   
   --tex other peoples mgsv data to my analysis
   local nonLiveClasses=this.FindNonLiveClasses(this.classesPath)
-  --tex it written out later in this function
-  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined
+  InfCore.PrintInspect(nonLiveClasses,"nonLiveClasses")--tex TODO force newlined --tex is written during write dumps
 
 
 
@@ -264,7 +262,7 @@ function this.DumpModules(options)
   this.DumpToFiles(outDir,globalsByType.table)
   this.WriteTable(this.dumpDir.."ModulesDump.lua",table.concat(header,"\r\n"),globalsByType.table)
 
-  if moduleReferences~=IHGenModuleReferences then--tex no point dumping a dump
+  if luaSourceRefs~=IHGenModuleReferences then--tex no point dumping a dump
     local header={
       [[--IHGenModuleReferences.lua]],
       [[--GENERATED by IHTearDown.DumpModules > GetModuleReferences]],
@@ -274,7 +272,7 @@ function this.DumpModules(options)
   --tex now that were using module creation logging, IHGenModuleReferences is less important
   --local outDir=this.dumpDir..[[moduleReference\]]
   --this.DumpToFiles(outDir,moduleReferences)
-  this.WriteTable(this.dumpDir.."IHGenModuleReferences.lua",table.concat(header,"\r\n"),moduleReferences)
+  this.WriteTable(this.dumpDir.."IHGenModuleReferences.lua",table.concat(header,"\r\n"),luaSourceRefs)
   end
 
   local header={
@@ -294,7 +292,7 @@ function this.DumpModules(options)
     [[--order of modules according to hooking/logging the exe module creation functions]],
     [[--just for debugging DumpModules process]]
   }
-  this.WriteTable(this.dumpDir.."IHExeModulesEntryOrder.lua",table.concat(header,"\r\n"),exeModulesEntryOrder)
+  this.WriteTable(this.dumpDir.."IHExeModulesEntryOrder.lua",table.concat(header,"\r\n"),exeModuleRefsEntryOrder)
   
   if this.writeDebugOutput then
     local outDir=this.dumpDir..[[debugDump\]]
@@ -743,9 +741,9 @@ function this.BuildMockModules(modules)
   return mockModules
 end--BuildMockModules
 
---IN: exeLogPath: ihhook log_exemodules.txt
+--IN: exeLogPath: ihhook log_createmodule.txt
 --which is logged from hooks UnkNameModule, AddCFuncToModule2, AddEnumToModule2 which are called by RegisterLuaModule<module name> functions
---REF log_modulecreation.txt
+--REF log_createmodule.txt
 --...
 --module: ScriptBlock
 --enum: SCRIPT_BLOCK_STATE_EMPTY=0
@@ -835,8 +833,7 @@ function this.BuildModulesFromExeLog(exeLogPath)
         InfCore.Log("WARNING: BuildModulesFromExeLog: entry already defined: "..lineType.." "..currentModuleName.."."..keyName)
       end
 
-      --tex submodules complicate things so much I'm probably better off doing them by hand, but whatever
-      --KLUDGE WORKAROUND no way of detecting when a submodule ends and entries to parent module continue
+      --tex KLUDGE WORKAROUND no way of detecting when a submodule ends and entries to parent module continue
       --but theres only one case of this so hardcode it
       --REF
       -- module:Vehicle
@@ -870,10 +867,9 @@ function this.BuildModulesFromExeLog(exeLogPath)
         
         currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
         modulesEntryOrder[currentModuleName]=currentModuleOrder
-      elseif lineType=="module3" then--TODO: rename to submodule
-      --   --tex sub module of previous "module"
-
-         local subModuleName=keyName
+      elseif lineType=="module3" then--TODO: rename to submodule in logger
+        --tex sub module of previous "module"
+        local subModuleName=keyName
         if currentModule[subModuleName] then
           InfCore.Log("WARNING: BuildModulesFromExeLog: subModule "..subModuleName.." module already defined on parent module "..currentModuleName)
         end
@@ -922,8 +918,10 @@ function this.BuildModulesFromExeLog(exeLogPath)
   end--for lines
   return modules,modulesEntryOrder
 end--BuildModulesFromExeLog
+--BuildMockModulesFromReferences: Creates validated mock modules by testing mock modules generated by different means (lua scrape, or logging exe calls to the module creation funcs) against live (running game) modules 
 --IN: liveModules: globalsByType.table / actual _G/globals from running game
---moduleReferences: IHGenModuleReferences - module/function/enum references scraped from the games lua files
+--moduleReferences: IHGenModuleReferences - module/function/enum references scraped from the games lua files, 
+--or exeCreateModulesLogModules: built from logging the module creation functions
 --REF moduleReferences={
 --  ...
 --  ScriptBlock = {
@@ -961,10 +959,10 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   }
 
   local ignoreKeys={
-    __call=true,
-    __index=true,
-    __newindex=true,
-    _className=true,
+    -- __call=true,
+    -- __index=true,
+    -- __newindex=true,
+    -- _className=true,
     [foxTableId]=true,
     [unknownId]=true,
   }
