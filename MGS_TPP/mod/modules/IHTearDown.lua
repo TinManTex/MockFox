@@ -97,8 +97,9 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --(you need to create the sub folders)
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder, for IHGenModuleReferences buildFromScratch
-this.classesPath=[[d:\github\MockFox\MockFoxLua\LuaClasses[sais ida dump]_sorted.txt]]
-this.exeModulesPath=[[d:\github\MockFox\MockFoxLua\log_createmodule.txt]]
+local mockFoxPath=[[d:\github\MockFox\MockFoxLua\]]
+this.classesPath=mockFoxPath..[[info\LuaClasses[sais ida dump]_sorted.txt]]
+this.exeCreateModulesLogPath=mockFoxPath..[[log_createmodule.txt]]
 --this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\log_createmodule.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
 
 --tex fox table shiz, see NOTE above
@@ -789,10 +790,22 @@ end--BuildMockModules
 --    UpdateScriptsInScriptBlocks = "function"
 --  },
 --  ... other modules
+
+--module  UnkNameModule     - 
+--module3 FUN_14c1f9b40 NameSubModule - sub module of previous module 
+--func -  AddCFuncToModule2 -
+--func2 - FUN_14c1f87c0 - AddCFuncToModule3
+--func3 - 143143000 - RegisterLib - standard lua function ?  - TODO: hook and log
+--enum - AddEnumToModule2   -
+--enum3: FUN_14c1f79b0 - AddEnumToModule2 - TODO: hook and log
+--var  - RegisterVar        -
+--??
+
+
 --assume value string "function" = function, number = number, and other string to be enum that couldnt convert to num (havent seen any)
 --TODO: may want to gather order of enums added, and seperate different enums in same module
 --ie if lastLineType == enum
---See whats up with Vehicle
+
 function this.BuildModulesFromExeLog(exeLogPath)
   InfCore.Log("BuildModulesFromExeLog")
   local modules={}
@@ -801,6 +814,9 @@ function this.BuildModulesFromExeLog(exeLogPath)
   local lastLineType=""
   local currentModuleName=""
   local currentModule=nil
+  local parentModuleName=""
+  local parentModule=nil
+
   local currentModuleOrder=nil
   for i,line in ipairs(lines)do
     local findIndex,findEndIndex=string.find(line,":")
@@ -808,55 +824,102 @@ function this.BuildModulesFromExeLog(exeLogPath)
       local lineType=string.sub(line,1,findEndIndex-1)
       local lineInfo=string.sub(line,findEndIndex+1,-1)
       --InfCore.Log(i.." lineType:'"..tostring(lineType).."' lineInfo:'"..lineInfo.."'")
-      if lineType=="module"then
-        currentModuleName=lineInfo
-        if modules[currentModuleName] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.." module already defined")
+      local keyName=lineInfo
+      local strValue=nil
+      local findIndex,findEndIndex=string.find(lineInfo,"=")
+      if findIndex~=nil then
+        keyName=string.sub(lineInfo,1,findEndIndex-1)
+        strValue=string.sub(lineInfo,findEndIndex+1,-1)
+      end
+      if currentModule and currentModule[keyName] then
+        InfCore.Log("WARNING: BuildModulesFromExeLog: entry already defined: "..lineType.." "..currentModuleName.."."..keyName)
+      end
+
+      --tex submodules complicate things so much I'm probably better off doing them by hand, but whatever
+      --KLUDGE WORKAROUND no way of detecting when a submodule ends and entries to parent module continue
+      --but theres only one case of this so hardcode it
+      --REF
+      -- module:Vehicle
+      -- ...
+      -- module3:observation
+      -- ...
+      -- enum:PLAYER_STOPS_VEHICLE_BY_BREAKING_WHEELS=8
+      -- enum:ALL=15
+      --tex this is actually end of submodule observation and continuation of parent module Vehicle
+      -- enum:instanceCountMax=60
+      -- func:svars
+      -- func:SaveCarry
+      if currentModuleName and currentModuleName=="observation"then
+        if keyName and keyName=="instanceCountMax" then
+          currentModuleName=parentModuleName
+          currentModule=parentModule
         end
+      end
+
+      if lineType=="module"then
+        currentModuleName=keyName
+        if modules[currentModuleName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: module already defined: "..currentModuleName)
+        end
+
         currentModule=modules[currentModuleName] or {}
         modules[currentModuleName]=currentModule
+        --tex for module3/submodule
+        parentModuleName=currentModuleName
+        parentModule=currentModule
         
         currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
         modulesEntryOrder[currentModuleName]=currentModuleOrder
-      elseif lineType=="enum"then
-        local findIndex,findEndIndex=string.find(lineInfo,"=")
-        local enumName=string.sub(lineInfo,1,findEndIndex-1)
-        local enumValue=string.sub(lineInfo,findEndIndex+1,-1)
-        --InfCore.Log(i.." enumName:'"..tostring(enumName).."' enumValue:'"..enumValue.."'")
-        if currentModule[enumName] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..enumName.." for enum already defined")
+      elseif lineType=="module3" then--TODO: rename to submodule
+      --   --tex sub module of previous "module"
+
+         local subModuleName=keyName
+        if currentModule[subModuleName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: subModule "..subModuleName.." module already defined on parent module "..currentModuleName)
         end
-        local value=tonumber(enumValue)
-        if enumValue==nil then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: could not convert enum "..currentModuleName.."."..enumName.."="..enumValue.." to a number")
-          currentModule[enumName]="NON_NUMBER-"..enumValue
+
+        --tex there arent nested submodules, only ever submenu(s) of a root paratent menu
+        local subModule = parentModule[subModuleName] or {}
+        parentModule[subModuleName]=subModule
+
+        currentModuleName=subModuleName
+        currentModule=subModule
+
+        --tex modulesEntryOrder is just flat rather than dealing with submodule DEBUGNOW wont cut it if I shift to multi enum per table order
+        if modulesEntryOrder[currentModuleName] then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: submodule modulesEntryOrder["..currentModuleName.."] module already defined" )
+        end
+        
+        currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
+        modulesEntryOrder[currentModuleName]=currentModuleOrder
+      elseif lineType=="enum" or lineType=="enum3" then
+        --InfCore.Log(i.." keyName:'"..tostring(enumName).."' enumValue:'"..enumValue.."'")
+
+        local numValue=tonumber(strValue)
+        if numValue==nil then
+          InfCore.Log("WARNING: BuildModulesFromExeLog: could not convert "..lineType.." "..currentModuleName.."."..keyName.."="..strValue.." to a number")
+          currentModule[keyName]="NON_NUMBER-"..strValue
         else
-          currentModule[enumName]=value
+          currentModule[keyName]=numValue
         end
         
         currentModuleOrder.enums=currentModuleOrder.enums or {}
-        table.insert(currentModuleOrder.enums,enumName)
+        table.insert(currentModuleOrder.enums,keyName)
       elseif lineType=="func"then
-        if currentModule[lineInfo] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for func already defined")
-        end
         currentModule[lineInfo]="function"
         
         currentModuleOrder.funcs=currentModuleOrder.funcs or {}
         table.insert(currentModuleOrder.funcs,lineInfo)
       elseif lineType=="var"then
-        if currentModule[lineInfo] then
-          InfCore.Log("WARNING: BuildModulesFromExeLog: "..currentModuleName.."."..lineInfo.." for var already defined")
-        end
         currentModule[lineInfo]="var"    
         
         currentModuleOrder.vars=currentModuleOrder.vars or {}
         table.insert(currentModuleOrder.vars,lineInfo) 
-      end
+      end--if lineType==
 
       lastLineType=lineType
-    end
-  end
+    end--if ':'
+  end--for lines
   return modules,modulesEntryOrder
 end--BuildModulesFromExeLog
 --IN: liveModules: globalsByType.table / actual _G/globals from running game
@@ -1271,7 +1334,7 @@ end
 function this.DoTearDown()
   this.DumpModules{buildFromScratch=this.buildFromScratch}
   this.RuntimeDumps()
-  InfCore.Log"DoTearDown done"
+  InfCore.Log("DoTearDown done",true)
 end
 
 this.registerMenus={
