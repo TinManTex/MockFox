@@ -150,7 +150,7 @@ function this.DumpModules(options)
   --these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
   --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
   --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
-  local exeModuleRefs,exeModuleRefsEntryOrder=this.BuildModuleRefsFromExeLog(this.exeModulesPath)--tex TODO dump this
+  local exeModuleRefs,exeModuleRefsEntryOrder=this.BuildModuleRefsFromExeLog(this.exeCreateModulesLogPath)--tex TODO dump this
   if this.debugModule then
     InfCore.PrintInspect(exeModuleRefs,"exeModules")
     InfCore.PrintInspect(exeModuleRefsEntryOrder,"exeModulesEntryOrder")--tex is written during write dumps
@@ -946,6 +946,7 @@ end--BuildModuleRefsFromExeLog
 --OUT: mockModules
 --noLiveFound: moduleReferences not found in liveModules
 --noReferenceFound: liveModules not found in moduleReferences
+--TODO: subtable handling for noLiveFound, noReferenceFound
 function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   InfCore.Log("BuildMockModulesFromReferences")
   local mockModules={}
@@ -975,6 +976,7 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
   local noReferenceFound={}
 
   for referenceModuleName,referenceModule in pairs(moduleReferences)do
+    --InfCore.PrintInspect(referenceModule,"referenceModuleName: "..referenceModuleName)
     if not ignoreModules[referenceModuleName] then
       if not liveModules[referenceModuleName] then
         InfCore.Log("Could not find module '"..referenceModuleName.."' from moduleReferences in livemodules")
@@ -998,7 +1000,23 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
                   mockModule[referenceKey]="<function>"
   --                end
               elseif type(liveValue)=="table" then
-                mockModule[referenceKey]="<table> TODO: BuildMockModulesFromReferences this is probably a nested foxtable"--tex  (see comments on TppCommand.Weather)
+                --tex subtable, only a couple modules have these TppCommand.Weather, Vehicle.a bunch of different subtables
+                InfCore.Log("Found subtable: reference: "..referenceModuleName.."."..referenceKey.."="..tostring(referenceValue))
+                --tex reference module didn't have enough info on table, just marked its existance with bool/true
+                if type(referenceValue)~="table"then
+                  mockModule[referenceKey]="<table> TODO: BuildMockModulesFromReferences this is probably a nested foxtable"--tex  (see comments on TppCommand.Weather)
+                else
+                  local liveModuleSub={[referenceKey]=liveModule[referenceKey]}--tex BuildMockModulesFromReferences expects {moduleName=module table} for both ref and live
+                  local referenceModuleSub={[referenceKey]=referenceModule[referenceKey]}
+                  if this.debugModule then
+                    InfCore.PrintInspect(referenceModule,"referenceModule")
+                    InfCore.PrintInspect(liveModule,"liveModule")
+                    InfCore.PrintInspect(referenceModuleSub,"referenceModuleSub")
+                    InfCore.PrintInspect(liveModuleSub,"liveModuleSub")
+                  end
+                  local subTable,noLiveFoundSub,noReferenceFoundSub=this.BuildMockModulesFromReferences(liveModuleSub,referenceModuleSub)
+                  mockModule[referenceKey]=subTable[referenceKey]
+                end-- type referenceValue
               elseif type(liveValue)=="userdata" then
                 mockModule[referenceKey]="<userdata: "..tostring(liveValue)..">"
               else
