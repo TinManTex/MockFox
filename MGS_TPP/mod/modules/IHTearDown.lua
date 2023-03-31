@@ -1430,6 +1430,39 @@ local function GetIndentLine(indent)
   return indentLine
 end--GetIndentLine
 
+--tex sort keys, more convoluted than it needs to be
+--TODO: use exeCreateModules log order
+--CALLER: WriteMockModules
+local function GetSortedTypes(module)
+  local typeNames={
+    ["<function>"]={},
+    ["<userdata>"]={},
+    ["table"]={},--tex actually the table names
+    ["tables"]={},--the tables recursed (only 1 level)
+    ["value"]={},
+  }
+
+  for keyName,value in pairs(module)do
+    local keyType="value"
+    if typeNames[value]then
+      keyType=value
+    elseif typeNames[type(value)] then
+      keyType=type(value)
+    end
+
+    table.insert(typeNames[keyType],keyName)
+
+    if keyType=="table" then
+      typeNames.tables[keyName]=GetSortedTypes(value)
+    end
+  end--for module
+
+  for typeName,keyNames in pairs(typeNames)do
+    table.sort(keyNames)
+  end
+  return typeNames
+end--GetSortedTypes
+
 --mockModules: table with all the mock modules
 --setThisAsGlobal: module will be written as <moduleName>={, therefore defining itself as global when its loaded, useful for using as vscode lua plugin library
 --otherwise will be more standart local this={ ... return this
@@ -1441,36 +1474,16 @@ function this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
 
   for moduleName,module in pairs(mockModules) do
     if this.debugModule then
-      InfCore.PrintInspect(module,moduleName)--DEBUGNOW
+      InfCore.PrintInspect(module,"WriteMockModules module "..moduleName)--DEBUGNOW
     end
 
     --tex just a dummy stub
     --DEBUGNOW TODO: possibly log params (if some debug global or module member set)
     local functionLine="function(...)end"
 
-    --tex sort keys, more convoluted than it needs to be
     --TODO: use exeCreateModules log order
-    local typeNames={
-      ["<function>"]={},
-      ["<userdata>"]={},
-      ["table"]={},
-      ["value"]={},
-    }
-
-    for keyName,value in pairs(module)do
-      local keyType="value"
-      if typeNames[value]then
-        keyType=value
-      elseif typeNames[type(keyType)] then
-        keyType=type(keyType)
-      end
-
-      table.insert(typeNames[keyType],keyName)
-    end--for module
-
-    for typeName,keyNames in pairs(typeNames)do
-      table.sort(keyNames)
-    end
+    local typeNames=GetSortedTypes(module)
+    InfCore.PrintInspect(typeNames,"WriteMockModules "..moduleName.." root typeNames")--DEBUGNOW
 
     local indentLine=""
     local lines={}
