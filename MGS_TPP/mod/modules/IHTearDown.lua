@@ -288,7 +288,7 @@ function this.GenerateMockModules(options)
   local outDir=this.dumpDir..[[generated\]]
   --this.DumpToFiles(outDir,mockModules)--DEBUGNOW OLD CULL
   local setThisAsGlobal=true--DEBUGNOW
-  this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
+  this.WriteMockModules(outDir,mockModules,exeModuleRefsEntryOrder,setThisAsGlobal)
   this.WriteTable(this.dumpDir.."IHGenMockModules.lua",table.concat(header,"\r\n"),mockModules)
   
   --tex write GenerateMockModules process debugging stuff>
@@ -1423,7 +1423,7 @@ end--WriteLines
 
 local function GetIndentLine(indent)
   local indentLine=""
-  local indentChar="\t"
+  local indentChar="  "
   for i=1,indent do
     indentLine=indentLine..indentChar
   end
@@ -1463,10 +1463,37 @@ local function GetSortedTypes(module)
   return typeNames
 end--GetSortedTypes
 
+--tex just a dummy stub
+--DEBUGNOW TODO: possibly log params (if some debug global or module member set)
+local functionLine="function(...)end"
+
+--IN/RETURN: lines
+function GetModueLinesForSortedTypeNames(module,typeNames,indentLine,lines)
+  for typeName,keyNames in pairs(typeNames)do
+    for i,keyName in ipairs(keyNames)do
+      local value=module[keyName]
+      if typeName=="<function>" then
+        local valueLine=functionLine--MODULE LOCAL (just above -^-)
+        table.insert(lines,indentLine..keyName.."="..valueLine..",")
+      elseif typeName=="<userdata>" then
+        local valueLine=[["<userdata>"]]
+        table.insert(lines,indentLine..keyName.."="..valueLine..",")
+      elseif typeName=="table" then
+        table.insert(lines,indentLine..keyName.."={")
+        lines=GetModueLinesForSortedTypeNames(module[keyName],typeNames.tables[keyName],indentLine.."  ",lines)
+        table.insert(lines,indentLine.."},")
+      elseif typeName=="value" then
+        local valueLine=tostring(value)
+        table.insert(lines,indentLine..keyName.."="..valueLine..",")
+      end
+    end--for keyNames
+  end--for typeNames
+  return lines
+end--GetModueLinesForSortedTypeNames
 --mockModules: table with all the mock modules
 --setThisAsGlobal: module will be written as <moduleName>={, therefore defining itself as global when its loaded, useful for using as vscode lua plugin library
 --otherwise will be more standart local this={ ... return this
-function this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
+function this.WriteMockModules(outDir,mockModules,exeModuleRefsEntryOrder,setThisAsGlobal)
   if mockModules==nil then
     return
   end
@@ -1476,10 +1503,6 @@ function this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
     if this.debugModule then
       InfCore.PrintInspect(module,"WriteMockModules module "..moduleName)--DEBUGNOW
     end
-
-    --tex just a dummy stub
-    --DEBUGNOW TODO: possibly log params (if some debug global or module member set)
-    local functionLine="function(...)end"
 
     --TODO: use exeCreateModules log order
     local typeNames=GetSortedTypes(module)
@@ -1496,25 +1519,9 @@ function this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
     end
 
     indentLine=GetIndentLine(1)
-    for typeName,keyNames in pairs(typeNames)do
-      for i,keyName in ipairs(keyNames)do
-        local value=module[keyName]
-        if typeName=="<function>" then
-          local valueLine=functionLine
-          table.insert(lines,indentLine..keyName.."="..valueLine..",")
-        elseif typeName=="<userdata>" then
-          local valueLine=[["<userdata>"]]
-          table.insert(lines,indentLine..keyName.."="..valueLine..",")
-        elseif typeName=="table" then
-          --DEBUGNOW
-          local valueLine=tostring(value)--DEBUGNOW
-          table.insert(lines,indentLine..keyName.."="..valueLine..",")
-        elseif typeName=="value" then
-          local valueLine=tostring(value)
-          table.insert(lines,indentLine..keyName.."="..valueLine..",")
-        end
-      end
-    end--for typeNames
+    lines=GetModueLinesForSortedTypeNames(module,typeNames,indentLine,lines)
+
+
     table.insert(lines,"}--this")
     if setThisAsGlobal then
       table.insert(lines,"return "..moduleName)
