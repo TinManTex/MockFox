@@ -92,7 +92,8 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --also outputs to:
 --<dumpDir>/varsDump
 --<dumpDir>/modulesDump
---<dumpDir>/mockModules 
+--<dumpDir>/generated
+--<dumpDir>/mockModules--TODO CULL 
 --<dumpDir>/debugDump
 --<dumpDit>/misc
 --(you need to create the sub folders)
@@ -284,8 +285,10 @@ function this.GenerateMockModules(options)
     [[--ultimate output of IHTearDown.GenerateMockModules]],
     [[--also see this.dumpDir\mockModules\ for the same output as a file per module]]
   }
-  local outDir=this.dumpDir..[[mockModules\]]
-  this.DumpToFiles(outDir,mockModules)
+  local outDir=this.dumpDir..[[generated\]]
+  --this.DumpToFiles(outDir,mockModules)--DEBUGNOW OLD CULL
+  local setThisAsGlobal=true--DEBUGNOW
+  this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
   this.WriteTable(this.dumpDir.."IHGenMockModules.lua",table.concat(header,"\r\n"),mockModules)
   
   --tex write GenerateMockModules process debugging stuff>
@@ -1031,7 +1034,8 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
                   mockModule[referenceKey]=subTable[referenceKey]
                 end-- type referenceValue
               elseif type(liveValue)=="userdata" then
-                mockModule[referenceKey]="<userdata: "..tostring(liveValue)..">"
+                mockModule[referenceKey]="<userdata>"
+                --mockModule[referenceKey]="<userdata: "..tostring(liveValue)..">"--tex alternative, not great because addr changes each session so bad for diffing 
               else
                 if type(referenceValue)~="boolean" and referenceValue~=liveValue then
                   InfCore.Log("WARNING: BuildMockModulesFromReferences "..referenceModuleName.."."..referenceKey.." mismatch referenceValue:"..tostring(referenceValue).." liveValue:"..tostring(liveValue))
@@ -1365,11 +1369,123 @@ function this.DumpToFiles(outDir,moduleTable)
   end
 end
 
+--DEBUGNOW
+this.WriteLines = function(fileName,lines)
+  local f,err = io.open(fileName,"w")
+  if f==nil then
+    InfCore.Log("WriteLines open ERROR: "..err)
+    return
+  else
+    for i,line in ipairs(lines)do
+      local t = f:write(line.."\n")
+    end
+    f:close()
+  end
+end--WriteLines
+
+local function GetIndentLine(indent)
+  local indentLine=""
+  local indentChar="\t"
+  for i=1,indent do
+    indentLine=indentLine..indentChar
+  end
+  return indentLine
+end--GetIndentLine
+
+--mockModules: table with all the mock modules
+--setThisAsGlobal: module will be written as <moduleName>={, therefore defining itself as global when its loaded, useful for using as vscode lua plugin library
+--otherwise will be more standart local this={ ... return this
+function this.WriteMockModules(outDir,mockModules,setThisAsGlobal)
+  if mockModules==nil then
+    return
+  end
+  InfCore.Log("WriteMockModules "..outDir)
+
+  for moduleName,module in pairs(mockModules) do
+    if this.debugModule then
+      InfCore.PrintInspect(module,moduleName)--DEBUGNOW
+    end
+
+    --tex just a dummy stub
+    --DEBUGNOW TODO: possibly log params (if some debug global or module member set)
+    local functionLine="function(...)end"
+
+    --tex sort keys, more convoluted than it needs to be
+    --TODO: use exeCreateModules log order
+    local typeNames={
+      ["<function>"]={},
+      ["<userdata>"]={},
+      ["table"]={},
+      ["value"]={},
+    }
+
+    for keyName,value in pairs(module)do
+      local keyType="value"
+      if typeNames[value]then
+        keyType=value
+      elseif typeNames[type(keyType)] then
+        keyType=type(keyType)
+      end
+
+      table.insert(typeNames[keyType],keyName)
+    end--for module
+
+    for typeName,keyNames in pairs(typeNames)do
+      table.sort(keyNames)
+    end
+
+    local indentLine=""
+    local lines={}
+    table.insert(lines,"--"..moduleName..".lua")
+    table.insert(lines,"--GENERATED: by IHTearDown.GenerateMockModules")
+    if setThisAsGlobal then
+      table.insert(lines,moduleName.."={")
+    else
+      table.insert(lines,"local this={")
+    end
+
+    indentLine=GetIndentLine(1)
+    for typeName,keyNames in pairs(typeNames)do
+      for i,keyName in ipairs(keyNames)do
+        local value=module[keyName]
+        if typeName=="<function>" then
+          local valueLine=functionLine
+          table.insert(lines,indentLine..keyName.."="..valueLine..",")
+        elseif typeName=="<userdata>" then
+          local valueLine=[["<userdata>"]]
+          table.insert(lines,indentLine..keyName.."="..valueLine..",")
+        elseif typeName=="table" then
+          --DEBUGNOW
+          local valueLine=tostring(value)--DEBUGNOW
+          table.insert(lines,indentLine..keyName.."="..valueLine..",")
+        elseif typeName=="value" then
+          local valueLine=tostring(value)
+          table.insert(lines,indentLine..keyName.."="..valueLine..",")
+        end
+      end
+    end--for typeNames
+    table.insert(lines,"}--this")
+    if setThisAsGlobal then
+      table.insert(lines,"return "..moduleName)
+    else
+      table.insert(lines,"return this")
+    end
+    
+
+    local filename=outDir..moduleName..'.lua'
+    InfCore.Log("Writing mock module "..filename)--DEBUGNOW
+    this.WriteLines(filename,lines)
+  end--for mockModules
+end--WriteMockModules
+
 --menu stuff
 function this.DoTearDown()
   this.GenerateMockModules{buildFromScratch=this.buildFromScratch}
   this.RuntimeDumps()
   this.OtherRunTimeAnalyze()
+  if IHTearDown2 then
+    IHTearDown2.TearDownGameObjectTypes()
+  end
   InfCore.Log("DoTearDown done",true)
 end
 
