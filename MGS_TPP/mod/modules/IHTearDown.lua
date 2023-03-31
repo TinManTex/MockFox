@@ -105,11 +105,11 @@ this.exeCreateModulesLogPath=mockFoxPath..[[log_createmodule.txt]]
 --this.exeModulesPath=[[C:\Games\Steam\steamapps\common\MGS_TPP\log_createmodule.txt]]--tex DEBUGNOW VERIFY: cant open/GetLines when running from mgsv because log file still open by ihhook?
 
 --tex fox table shiz, see NOTE above
-local unknownId=-285212672
-local foxTableId=-285212671--tex key contains an array of id entries--Results from CheckFoxTableKeysAccountedFor suggests this is the enum table TODO: then renames it foxEnumId?
+this.unknownId=-285212672
+this.foxTableId=-285212671--tex key contains an array of id entries--Results from CheckFoxTableKeysAccountedFor suggests this is the enum table TODO: then renames it foxEnumId?
 
-local varArrayCountId=-285212666
-local varTableId=-285212665
+this.varArrayCountId=-285212666
+this.varTableId=-285212665
 
 function this.PostAllModulesLoad()
   InfCore.Log("IHTearDown.PostAllModulesLoad")
@@ -980,8 +980,8 @@ function this.BuildMockModulesFromReferences(liveModules,moduleReferences)
     -- __index=true,
     -- __newindex=true,
     -- _className=true,
-    [foxTableId]=true,
-    [unknownId]=true,
+    [this.foxTableId]=true,
+    [this.unknownId]=true,
   }
   
   --KLUDGE a bunch of the functions are stubbed out/replaced with the same empty function (currently called l_StubbedOut at 0x14024a8e0 in ghidra), using a known one 
@@ -1092,8 +1092,8 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
   }
 
   local ignoreKeys={
-    [unknownId]=true,
-    [foxTableId]=true,
+    [this.unknownId]=true,
+    [this.foxTableId]=true,
   }
   
   local knownKeys={
@@ -1111,7 +1111,7 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
           InfCore.Log("Could not find module "..moduleName.." in mockModules")
           comparedModules[moduleName]="MOCK_MODULE_NOT_FOUND"
         else
-          local liveFoxTable=liveModule[foxTableId]--MODULE LOCAL
+          local liveFoxTable=liveModule[this.foxTableId]--MODULE LOCAL
           local isFoxTable=liveFoxTable or false
           --tex KLUDGE check to see if root is foxTable, though as far as I can tell every module that has foxtable entries in root have a foxTableId key, even if the foxTableId array is empty some times
           if not isFoxTable then
@@ -1129,7 +1129,7 @@ function this.CheckFoxTableKeysAccountedFor(liveModules,mockModules)
             this.CheckFoxTableKeys(moduleName,liveModule,liveModule,mockModule,ignoreModules,ignoreKeys,knownKeys,comparedModules[moduleName])--tex check root as foxTable
             if liveFoxTable then
               local foxTableVsMock={}
-              comparedModules[moduleName][foxTableId]=foxTableVsMock
+              comparedModules[moduleName][this.foxTableId]=foxTableVsMock
               this.CheckFoxTableKeys(moduleName,liveModule,liveFoxTable,mockModule,ignoreModules,ignoreKeys,knownKeys,foxTableVsMock)--tex check foxTable key
             end
           end
@@ -1213,7 +1213,7 @@ function this.DumpVars()
 
   local varsTable={}
 
-  for k,v in pairs(vars[foxTableId])do
+  for k,v in pairs(vars[this.foxTableId])do
     varsTable[k]=vars[k]
   end
 
@@ -1225,14 +1225,14 @@ function this.DumpVars()
   for k,foxTable in pairs(vars)do
     --tex is actually a foxTable
     if type(foxTable)=="table" then
-      if foxTable[varArrayCountId] then
+      if foxTable[this.varArrayCountId] then
         --InfCore.Log("found foxTable "..k)--DEBUGNOW
         if type(k)=="string" then
           if not skipKeys[k] then
-            local foxTableArray=foxTable[varTableId]
+            local foxTableArray=foxTable[this.varTableId]
             if foxTableArray then
               varsTable[k]={}
-              local arrayCount=foxTable[varArrayCountId]
+              local arrayCount=foxTable[this.varArrayCountId]
               --InfCore.Log("arrayCount="..arrayCount)--DEBUGNOW
               for i=1,arrayCount do
                 varsTable[k][i]=vars[k][i]
