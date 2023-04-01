@@ -9,9 +9,6 @@
 --run foxTearDownMenu > DoTearDown , when at least in ACC
 
 --TODO: verify that module logging / BuildModuleRefsFromExeLog covers everything then depreciate IHGenModuleReferences
---TODO: sort out Vehicle sub modules, ditto TppCommand (.Weather?)
---would basically need to see if live key is type(table) then throw that though the a BuildMockModulesFromReferences (would need to break out core from operating on table of modules to single)
---TODO: have you actually captured log_createmodule up to acc? likely submodules like TppCommand.Weather will have been capped by then
 
 --tex NOTE internal C tables/modules exposed from MGS_TPP.exe are kinda funky,
 --(see ghidra, calls to AddCFuncToModule, AddEnumToModule)
@@ -138,16 +135,6 @@ function this.GenerateMockModules(options)
 
   --tex build up references to potential modules from various sources>
   --tex process log file created by ihhook/exe hooking of module creation functions into a more useful table
-  --GOTCHA: TODO: there's a couple of edge cases with the exe dump, as seen in IHGenUnfoundReferencesExe.lua
---    TppCommand = {
---    RegisterClockMessage = true,
---    SetClockTimeScale = true,
---    UnregisterAllClockMessages = true,
---    UnregisterClockMessage = true
---  },
-  --these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
-  --you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
-  --ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
   local exeModuleRefs,exeModuleRefsEntryOrder=this.BuildModuleRefsFromExeLog(this.exeCreateModulesLogPath)--tex TODO dump this
   if this.debugModule then
     InfCore.PrintInspect(exeModuleRefs,"exeModules")
@@ -828,20 +815,39 @@ end--BuildMockModules
 --  },
 --  ... other modules
 
---module  UnkNameModule     - 
---module3 FUN_14c1f9b40 NameSubModule - sub module of previous module 
---func -  AddCFuncToModule2 -
---func2 - FUN_14c1f87c0 - AddCFuncToModule3
---func3 - 143143000 - RegisterLib - standard lua function ?  - TODO: hook and log
---enum - AddEnumToModule2   -
---enum3: FUN_14c1f79b0 - AddEnumToModule2 - TODO: hook and log
---var  - RegisterVar        -
---??
+--DEBUGNOW go through these and export and tag
+--go through all these and see if theres any lower functions that are being used instead of the higher
+--1.0.15.3 addrs
+--module    - 0x14c1f9150 - foxlua::NewModule         - from UnkNameModule 
+--submodule - 0x14c1f9b40 - foxlua::NewSubModule      - sub module of previous module 
+--function  - 0x14c1f7400 - foxlua::AddCFuncToModule  - main function used
+--function2 - 0x14c1f87c0 - foxlua::AddCFuncToModule2 - module "StringId" "IsEqual", "IsEqual32"
+--function3 - 0x14c1f4dc0 - foxlua::AddCFuncToModule3 - sub of 0x14c1f7400 AddCFuncToModule and some other calls to it?
+--function4 - 0x143143000 - RegisterLib               - calls lua api luaL_register, so these should be plainly inspectable from lua  - TODO: hook and log
+--enum      - 0x14c1f76c0 - foxlua::AddEnumToModule   - main function used
+--enum2     - 0x14c1f38e0 - foxlua::AddEnumToModule2  - sub call of 0x14c1f76c0 AddEnumToModule, but FUN_14bd1cf39 calls it? code is a mess all around there.
+--enum3     - 0x14c1f79b0 - foxlua::AddEnumToModule3  - module "StringId" "IsEqual", "IsEqual32"
+--enum4     - 0x14c1f3b70 - foxlua::AddEnumToModule4  - 
 
+--var       - 0x14c1f9e20 - RegisterVar        - TODO log - vars,cvar , and some other modules?
+--varArray  - 0x14c1f4ec0 - RegisterVarArray -- TODO LOG - vars and ?
+--?? any others?
+--DeclareEntityClass - 0x14317f430 - DeclareEntityClass -- not lua module creation, but interesting to log
 
 --assume value string "function" = function, number = number, and other string to be enum that couldnt convert to num (havent seen any)
 --TODO: may want to gather order of enums added, and seperate different enums in same module
 --ie if lastLineType == enum
+
+--GOTCHA: there's a couple of edge cases with the exe dump, as seen in IHGenUnfoundReferencesExe.lua
+--    TppCommand = {
+--    RegisterClockMessage = true,
+--    SetClockTimeScale = true,
+--    UnregisterAllClockMessages = true,
+--    UnregisterClockMessage = true
+--  },
+--these functions are actually in a sub table TppCommand.Weather, as seen in FUN_144c1d3b0
+--you can see a call to UnkNameModule which is what is actually hooked, dont know why exec flow doesnt pass into it/it doesnt log though
+--ditto Vehicle which has sub tables with enums - type, subType, paintType, class etc
 
 function this.BuildModuleRefsFromExeLog(exeLogPath)
   InfCore.Log("BuildModuleRefsFromExeLog")
@@ -906,7 +912,7 @@ function this.BuildModuleRefsFromExeLog(exeLogPath)
         
         currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
         modulesEntryOrder[currentModuleName]=currentModuleOrder
-      elseif lineType=="module3" then--TODO: rename to submodule in logger
+      elseif lineType=="module3" or lineType=="submodule" then--TODO: rename to submodule in logger
         --tex sub module of previous "module"
         local subModuleName=keyName
         if currentModule[subModuleName] then
@@ -927,7 +933,7 @@ function this.BuildModuleRefsFromExeLog(exeLogPath)
         
         currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
         modulesEntryOrder[currentModuleName]=currentModuleOrder
-      elseif lineType=="enum" or lineType=="enum3" then
+      elseif lineType=="enum" or lineType=="enum2" or lineType=="enum3"or lineType=="enum4" then
         --InfCore.Log(i.." keyName:'"..tostring(enumName).."' enumValue:'"..enumValue.."'")
 
         local numValue=tonumber(strValue)
@@ -940,12 +946,12 @@ function this.BuildModuleRefsFromExeLog(exeLogPath)
         
         currentModuleOrder.enums=currentModuleOrder.enums or {}
         table.insert(currentModuleOrder.enums,keyName)
-      elseif lineType=="func"then--tex TODO: change logging to "function"
+      elseif lineType=="func" or lineType=="function"or lineType=="function2" or lineType=="function3" then--tex TODO: change logging to "function"
         currentModule[lineInfo]="function"
         
         currentModuleOrder.funcs=currentModuleOrder.funcs or {}
         table.insert(currentModuleOrder.funcs,lineInfo)
-      elseif lineType=="var"then
+      elseif lineType=="var"or lineType=="var1" or lineType=="var2" or lineType=="var3" or lineType=="var4" then
         currentModule[lineInfo]="var"    
         
         currentModuleOrder.vars=currentModuleOrder.vars or {}
