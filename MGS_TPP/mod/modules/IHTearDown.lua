@@ -931,6 +931,7 @@ function this.BuildModuleRefsFromExeLog(exeLogPath)
           InfCore.Log("WARNING: BuildModuleRefsFromExeLog: submodule modulesEntryOrder["..currentModuleName.."] module already defined" )
         end
         
+        --tex DEBUGNOW actually just flat, do we need to match actual submodule heriachy above?
         currentModuleOrder=modulesEntryOrder[currentModuleName] or {}
         modulesEntryOrder[currentModuleName]=currentModuleOrder
       elseif lineType=="enum" or lineType=="enum2" or lineType=="enum3"or lineType=="enum4" then
@@ -941,21 +942,23 @@ function this.BuildModuleRefsFromExeLog(exeLogPath)
           InfCore.Log("WARNING: BuildModuleRefsFromExeLog: could not convert "..lineType.." "..currentModuleName.."."..keyName.."="..strValue.." to a number")
           currentModule[keyName]="NON_NUMBER-"..strValue
         else
-          currentModule[keyName]=numValue
+          currentModule[keyName]=lineType
         end
         
-        currentModuleOrder.enums=currentModuleOrder.enums or {}
-        table.insert(currentModuleOrder.enums,keyName)
+        table.insert(currentModuleOrder,keyName)
       elseif lineType=="func" or lineType=="function"or lineType=="function2" or lineType=="function3" then--tex TODO: change logging to "function"
         currentModule[lineInfo]="function"
         
-        currentModuleOrder.funcs=currentModuleOrder.funcs or {}
-        table.insert(currentModuleOrder.funcs,lineInfo)
+        table.insert(currentModuleOrder,keyName)
       elseif lineType=="var"or lineType=="var1" or lineType=="var2" or lineType=="var3" or lineType=="var4" then
-        currentModule[lineInfo]="var"    
+        currentModule[lineInfo]="var"
         
-        currentModuleOrder.vars=currentModuleOrder.vars or {}
-        table.insert(currentModuleOrder.vars,lineInfo) 
+        table.insert(currentModuleOrder,keyName)
+      elseif lineType=="varArray" then
+        --tex DEBUGNOW do i need to log size, or can I pull that? 
+        currentModule[lineInfo]="varArray"
+        
+        table.insert(currentModuleOrder,keyName)
       end--if lineType==
 
       lastLineType=lineType
