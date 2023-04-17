@@ -85,7 +85,7 @@ this.doTearDown=false--tex run in PostAllModulesLoad, NOTE this wont catch every
 
 this.writeDebugOutput=true--tex write stuff for debugging the process/seeing if the process is missing out things (written to <dumpDir>/debugDump)
 this.buildFromScratch=false--tex whether to build IHGenModuleReferences from scratch by scraping lua files in luaPath
-this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
+this.dumpDir=[[D:\GitHub\MockFox\Generated\tpp\]]--tex output folder
 --also outputs to:
 --<dumpDir>/varsDump--DumpRuntimeVars - intended as readable snapshot of vars (shifts arrays from 0 based to 1)
 --<dumpDir>/varsAsGlobal--DumpRuntimeVars - for use as vscode lua extension lib (keeps 0 based as original usage, declares itself as global module)
@@ -94,7 +94,7 @@ this.dumpDir=[[C:\Projects\MGS\MockFox-TearDownDump\tpp\]]--tex output folder
 --<dumpDir>/mockModulesAsGlobal
 --<dumpDir>/debugDump
 --<dumpDit>/misc
---(you need to create the sub folders)
+--(you need to create the sub folders) --TODO: have ihhook function to create directories
 --input
 this.luaPath=[[E:\GameData\mgs\filetype-crush\lua\]]--tex unmodded lua, all in same folder, for IHGenModuleReferences buildFromScratch
 local mockFoxPath=[[d:\github\MockFox\MockFoxLua\]]
