@@ -1591,6 +1591,14 @@ function this.WriteMockModules(outDir,mockModules,exeModuleRefs,exeModuleRefsEnt
     if setThisAsGlobal then
       table.insert(lines,"--as setThisAsGlobal style")
     end
+    if moduleName=="Fox" then
+      table.insert(lines,"--GOTCHA: 'fox' and 'Fox' modules collide in Windows due to case insensitivenes")
+      table.insert(lines,"--WORKAROUND has tagged on the postfix '_CapitalF', with setThisAsGlobal the module will still be 'Fox'")
+      table.insert(lines,"--however MockFox does not currently fix up when setThisAsGlobal false ")
+    elseif moduleName=="fox" then
+      table.insert(lines,"--GOTCHA: 'fox' and 'Fox' modules collide in Windows due to case insensitivenes")
+      table.insert(lines,"--see WORKAROUND on Fox_CapitalF.lua")   
+    end
     if IHGenKnownModuleNames.ihHook[moduleName]then
       table.insert(lines,"--NOTE: this is a (mock of) an IHHook module, see the IHHook github for actual info")
     end
@@ -1608,7 +1616,6 @@ function this.WriteMockModules(outDir,mockModules,exeModuleRefs,exeModuleRefsEnt
       lines=GetModuleLinesForSortedTypeNames(mockModule,typeNames,indentLine,lines)
     end
 
-
     table.insert(lines,"}--this")
     if setThisAsGlobal then
       table.insert(lines,"return "..moduleName)
@@ -1616,11 +1623,14 @@ function this.WriteMockModules(outDir,mockModules,exeModuleRefs,exeModuleRefsEnt
       table.insert(lines,"return this")
     end
     
-
     local filename=outDir..moduleName..'.lua'
     InfCore.Log("Writing mock module "..filename)--DEBUGNOW
-    if InfCore.FileExists(filename) then
-      InfCore.Log("WARNING: mock module file already exists: "..filename)
+    -- if InfCore.FileExists(filename) then
+    --   InfCore.Log("WARNING: mock module file already exists: "..filename)
+    -- end
+    --tex WORKAROUND KLUDGE fox and Fox modules collide with windows case insensitive filenames (this is the only case of this)
+    if moduleName=="Fox" then
+      filename=outDir..moduleName.."_CapitalF"..'.lua'
     end
 
     InfCore.WriteLines(filename,lines)
