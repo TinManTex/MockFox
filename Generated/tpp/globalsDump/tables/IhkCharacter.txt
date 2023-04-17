@@ -1,0 +1,19 @@
+IhkCharacter={
+  SetAvatarHornFpkPath = <function 1>,
+  SetAvatarHornFv2Path = <function 2>,
+  SetBionicHandFpkPath = <function 3>,
+  SetBionicHandFv2Path = <function 4>,
+  SetOverrideCharacterSystem = <function 5>,
+  SetPlayerCamoFpkPath = <function 6>,
+  SetPlayerCamoFv2Path = <function 7>,
+  SetPlayerPartsFpkPath = <function 8>,
+  SetPlayerPartsPartsPath = <function 9>,
+  SetPlayerPartsTypeForPartsType = <function 10>,
+  SetPlayerTypeForPartsType = <function 11>,
+  SetSkinToneFv2Path = <function 12>,
+  SetSnakeFaceFpkPath = <function 13>,
+  SetSnakeFaceFv2Path = <function 14>,
+  SetUseBionicHandForPlayerParts = <function 15>,
+  SetUseCamoForPlayerParts = <function 16>,
+  SetUseHeadForPlayerParts = <function 17>
+}

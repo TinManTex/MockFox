@@ -1,0 +1,7 @@
+--TppTrapCheckIsPlayerAndLocalCallbackDataElement.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+TppTrapCheckIsPlayerAndLocalCallbackDataElement={
+  _className=TppTrapCheckIsPlayerAndLocalCallbackDataElement,
+}--this
+return TppTrapCheckIsPlayerAndLocalCallbackDataElement

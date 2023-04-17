@@ -1,0 +1,34 @@
+--MbsDevelopedEquipType.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+MbsDevelopedEquipType={
+  SM_2010=1,
+  SM_2020=2,
+  SM_2040_NOKILL=3,
+  SG_4020=4,
+  SG_4040=5,
+  SG_4027_NOKILL=6,
+  AR_3036=7,
+  AR_3060_NOKILL=8,
+  SR_6010=9,
+  SR_6030=10,
+  SR_6015_NOKILL=11,
+  SR_6037_NOKILL=12,
+  MG_7000=13,
+  MS_8020=14,
+  MS_8013_NOKILL=15,
+  SD_9000=16,
+  FULTON_16001=17,
+  FULTON_16008=18,
+  SR_6005_NOKILL=19,
+  GRENADE=20,
+  STUN_GRENADE=21,
+  SNEAKING_SUIT=22,
+  BATTLE_DRESS=23,
+  SM_2014=24,
+  AR_3030=25,
+  SG_4035_NOKILL=26,
+  ANTI_SLEEP=27,
+  SWIMWEAR=28,
+}--this
+return MbsDevelopedEquipType

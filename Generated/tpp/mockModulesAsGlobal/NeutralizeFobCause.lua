@@ -1,0 +1,33 @@
+--NeutralizeFobCause.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+NeutralizeFobCause={
+  HANDGUN=0,
+  SUBMACHINE_GUN=1,
+  ASSAULT_RIFLE=2,
+  SHOTGUN=3,
+  GRENADER=4,
+  SNIPER_RIFLE=5,
+  MACHINE_GUN=6,
+  MISSILE=7,
+  ANTIMATERIAL_RIFLE=8,
+  THROWING=9,
+  PLACED=10,
+  CQC=11,
+  CQC_KNIFE=12,
+  ROCKET_ARM=13,
+  ASSIST=14,
+  QUIET=15,
+  D_DOG=16,
+  D_HORSE=17,
+  VEHICLE=18,
+  HELI=19,
+  D_WALKER_GEAR=20,
+  BOSS=21,
+  TURRET=22,
+  ANTI_AIR=23,
+  MORTAR=24,
+  HELI_MINI_GUN=25,
+  INVALID=26,
+}--this
+return NeutralizeFobCause

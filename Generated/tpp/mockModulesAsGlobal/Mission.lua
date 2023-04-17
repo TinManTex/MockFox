@@ -1,0 +1,37 @@
+--Mission.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+Mission={
+  MISSION_FLAGS_NONE=0,
+  MISSION_FLAGS_FOB=1,
+  ON_MESSAGE_RESULT_RESEND=1,
+  MISSION_FLAGS_MB=2,
+  SetMissionFlags=function(...)end,
+  Start=function(...)end,
+  RequestToReload=function(...)end,
+  CanStart=function(...)end,
+  SetLocationPackagePathFunc=function(...)end,
+  SetMissionPackagePathFunc=function(...)end,
+  SetMissionPrxNameFunc=function(...)end,
+  LoadLocation=function(...)end,
+  LoadMission=function(...)end,
+  SendMessage=function(...)end,
+  SendMessageToSubscribers=function(...)end,
+  GetCurrentMessageResendCount=function(...)end,
+  ClearAllMessages=function(...)end,
+  StartSystemMenuPause=function(...)end,
+  SwitchApplication=function(...)end,
+  IsBootedFromMgo=function(...)end,
+  SetStageLoadLateEnabled=function(...)end,
+  SetKeyPlace=function(...)end,
+  SetOverlayShow=function(...)end,
+  RegisterMissionCodeList=function(...)end,
+  GetTextureLoadedRate=function(...)end,
+  StartFobGameDaemon=function(...)end,
+  SetMiniText=function(...)end,
+  AddFinalizer=function(...)end,
+  AddResidentFinalizer=function(...)end,
+  AddLocationFinalizer=function(...)end,
+  AddLocationResidentFinalizer=function(...)end,
+}--this
+return Mission

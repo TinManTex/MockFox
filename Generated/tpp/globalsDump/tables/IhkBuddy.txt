@@ -1,0 +1,20 @@
+IhkBuddy={
+  SetBuddyDogCommonFpkPath = <function 1>,
+  SetBuddyDogPartsFpkPath = <function 2>,
+  SetBuddyHorseCommonFpkPath = <function 3>,
+  SetBuddyHorsePartsFpkPath = <function 4>,
+  SetBuddyQuietPartsFpkPath = <function 5>,
+  SetBuddyQuietWeaponFpkPath = <function 6>,
+  SetBuddyQuietWeaponType = <function 7>,
+  SetBuddyTypeForPartsType = <function 8>,
+  SetBuddyWalkerGearArmFpkPath = <function 9>,
+  SetBuddyWalkerGearArmType = <function 10>,
+  SetBuddyWalkerGearCommonFpkPath = <function 11>,
+  SetBuddyWalkerGearHeadFpkPath = <function 12>,
+  SetBuddyWalkerGearHeadType = <function 13>,
+  SetBuddyWalkerGearPartsFpkPath = <function 14>,
+  SetBuddyWalkerGearWeaponFpkPath = <function 15>,
+  SetBuddyWalkerGearWeaponType = <function 16>,
+  SetOverrideBuddyEquipmentSystem = <function 17>,
+  SetOverrideBuddySystem = <function 18>
+}

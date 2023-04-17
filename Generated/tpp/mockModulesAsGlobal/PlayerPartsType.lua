@@ -1,0 +1,34 @@
+--PlayerPartsType.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+PlayerPartsType={
+  NORMAL=0,
+  NORMAL_SCARF=1,
+  SNEAKING_SUIT=2,
+  HOSPITAL=3,
+  MGS1=4,
+  NINJA=5,
+  RAIDEN=6,
+  NAKED=7,
+  SNEAKING_SUIT_TPP=8,
+  BATTLEDRESS=9,
+  PARASITE=10,
+  LEATHER=11,
+  GOLD=12,
+  SILVER=13,
+  AVATAR_EDIT_MAN=14,
+  MGS3=15,
+  MGS3_NAKED=16,
+  MGS3_SNEAKING=17,
+  MGS3_TUXEDO=18,
+  EVA_CLOSE=19,
+  EVA_OPEN=20,
+  BOSS_CLOSE=21,
+  BOSS_OPEN=22,
+  SWIMWEAR=23,
+  SWIMWEAR_G=24,
+  SWIMWEAR_H=25,
+  OCELOT=26,
+  QUIET=27,
+}--this
+return PlayerPartsType

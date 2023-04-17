@@ -1,0 +1,13 @@
+IhkVehicle={
+  SetOverrideVehicleSystem = <function 1>,
+  SetVehicleEastLvFpkPath = <function 2>,
+  SetVehicleEastTnkFpkPath = <function 3>,
+  SetVehicleEastTrcFpkPath = <function 4>,
+  SetVehicleEastWavFpkPath = <function 5>,
+  SetVehicleEastWavRocketFpkPath = <function 6>,
+  SetVehicleWestLvFpkPath = <function 7>,
+  SetVehicleWestTnkFpkPath = <function 8>,
+  SetVehicleWestTrcFpkPath = <function 9>,
+  SetVehicleWestWavCannonFpkPath = <function 10>,
+  SetVehicleWestWavMachineGunFpkPath = <function 11>
+}

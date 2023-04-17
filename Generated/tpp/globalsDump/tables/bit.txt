@@ -1,0 +1,14 @@
+bit={
+  arshift = <function 1>,
+  band = <function 2>,
+  bnot = <function 3>,
+  bor = <function 4>,
+  bswap = <function 5>,
+  bxor = <function 6>,
+  lshift = <function 7>,
+  rol = <function 8>,
+  ror = <function 9>,
+  rshift = <function 10>,
+  tobit = <function 11>,
+  tohex = <function 12>
+}

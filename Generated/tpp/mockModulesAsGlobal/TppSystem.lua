@@ -1,0 +1,17 @@
+--TppSystem.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+TppSystem={
+  BGM_PHASE_NONE=0,
+  BGM_PHASE_SNEAK_1=1,
+  BGM_PHASE_SNEAK_2=2,
+  BGM_PHASE_SNEAK_3=3,
+  BGM_PHASE_CAUTION=4,
+  BGM_PHASE_EVASION=5,
+  BGM_PHASE_ALERT=6,
+  BGM_PHASE_ALERT_BATTLE=7,
+  BGM_PHASE_ALERT_CP=8,
+  BGM_PHASE_ALERT_REINFORCE=9,
+  BGM_PHASE_ALERT_LOST=10,
+}--this
+return TppSystem

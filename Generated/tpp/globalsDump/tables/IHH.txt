@@ -1,0 +1,21 @@
+IHH={
+  FileExists = <function 1>,
+  GetGamePath = <function 2>,
+  GetMenuMessages = <function 3>,
+  GetModFilesList = <function 4>,
+  GetPipeInMessages = <function 5>,
+  Init = <function 6>,
+  InitMain = <function 7>,
+  Log = <function 8>,
+  Log_Flush = <function 9>,
+  Log_SetFlushLevel = <function 10>,
+  MenuMessage = <function 11>,
+  OnUpdate = <function 12>,
+  QueuePipeOutMessage = <function 13>,
+  SetCamHook = <function 14>,
+  StartIHExt = <function 15>,
+  TestCallToIHHook = <function 16>,
+  UpdateCamHook = <function 17>,
+  UpdateChangeLocationMenu = <function 18>,
+  menuInitialized = true
+}

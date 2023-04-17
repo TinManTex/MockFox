@@ -1,0 +1,36 @@
+--TppMusicManager.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+TppMusicManager={
+  _className=TppMusicManager,
+  ChangeParameter=function(...)end,
+  ChangeParameterById=function(...)end,
+  ClearParameter=function(...)end,
+  DisableHeliNewPlay=function(...)end,
+  EnableHeliNewPlay=function(...)end,
+  EndSceneMode=function(...)end,
+  IsPlayingMusicPlayer=function(...)end,
+  IsPlayingPositionalMusic=function(...)end,
+  PauseMusicPlayer=function(...)end,
+  PlayHeliMusic=function(...)end,
+  PlayMusicPlayer=function(...)end,
+  PlayPositionalMusic=function(...)end,
+  PlaySceneMusic=function(...)end,
+  PostJingleEvent=function(...)end,
+  PostSceneSwitchEvent=function(...)end,
+  RegisterNeutralMusic=function(...)end,
+  ResetSwitch=function(...)end,
+  ResumeMusicPlayer=function(...)end,
+  SetForceSceneMode=function(...)end,
+  SetPhaseMusicEnable=function(...)end,
+  SetSwitch=function(...)end,
+  StartSceneMode=function(...)end,
+  StopHeliMusic=function(...)end,
+  StopJingleEvent=function(...)end,
+  StopMusic=function(...)end,
+  StopMusicPlayer=function(...)end,
+  StopPositionalMusic=function(...)end,
+  UnregisterNeutralMusic=function(...)end,
+  UpdateParameter=function(...)end,
+}--this
+return TppMusicManager

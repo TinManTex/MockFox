@@ -1,0 +1,36 @@
+--TppBuddy2BlockController.lua
+--GENERATED: by IHTearDown.GenerateMockModules
+--as setThisAsGlobal style
+TppBuddy2BlockController={
+  CallBuddy=function(...)end,
+  CallBuddyWithHalo=function(...)end,
+  CreateBlock=function(...)end,
+  DeleteBlock=function(...)end,
+  DeleteBuddy=function(...)end,
+  DidObtainBuddyType=function(...)end,
+  GetActiveBuddyType=function(...)end,
+  IsBlockActive=function(...)end,
+  IsLoading=function(...)end,
+  Load=function(...)end,
+  RegisterPackagePath=function(...)end,
+  Reload=function(...)end,
+  RequestChangeBuddyForEntryGate=function(...)end,
+  RequestChangeSubBlock=function(...)end,
+  RequestEspionageToPosition=function(...)end,
+  RequestMoveToPosition=function(...)end,
+  RequestMoveToSnipePoint=function(...)end,
+  RequestToLoadBlock=function(...)end,
+  RequestToUnloadBlock=function(...)end,
+  RequestWalkToPosition=function(...)end,
+  ReserveCallBuddy=function(...)end,
+  SetCallPosition=function(...)end,
+  SetObtainedBuddyType=function(...)end,
+  SetVarsBuddyType=function(...)end,
+  SetVarsInitialPosition=function(...)end,
+  SetVarsInitialRotationY=function(...)end,
+  SetVarsInitialStatus=function(...)end,
+  SetVarsPositionFromNearPlayer=function(...)end,
+  Unload=function(...)end,
+  UnsetObtainedBuddyType=function(...)end,
+}--this
+return TppBuddy2BlockController
