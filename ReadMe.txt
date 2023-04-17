@@ -1,11 +1,12 @@
 MockFox is a collection of related projects based around Mock versions of the exe-side modules of MGSV.
 
-Mock modules - the output of IHTearDown, used by LoadMockFox, or just useful as a reference to the tpp exe lua api.
-See /MockFoxLua/<game id>/
+Mock modules - the output of IHTearDown, a collated version of this is used by LoadMockFox, or just useful as a reference to the tpp exe lua api.
+See /Generated/<game id>/mockModules/
 
 If that's all your interested in you can ignore the other projects/the rest of this document.
 
 IHTearDown - An IH module for generating the Mock modules from the running game and some other analysis stuff.
+A run of its output is in /Generated/
 
 LoadMockFox - a loader/glue that's complete enough to load the games lua scripts using the Mock modules via a lua interpreter external from the game.
 
@@ -32,10 +33,19 @@ https://www.assetstore.unity3d.com/en/#!/content/33776
 GzsTool.Core - for Fox.StrCode32 support
 
 Files in this project:
+/Generated/{game id}/
+	Output of IHTearDown
+	/mockModulesAsGlobal/
+		Individual mock module lua files that self declare themselves as Global.
+		You can use the vscode lua language server extension and add the folder in Settings > Lua > Workspace: Library 
+		to quiet a bunch of warnings about Undefined globals when working with tpp lua files.
+	/varsAsGlobal/
+		vars,gvars,svars as global modules so they can be used in vscode in the same manner as mentioned above.
+
 /MockFoxLua/
 	The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
 	/<game id>/
-	Output of IHTeardown
+	Currently runs on a single file of collated mock modules output by IHTeardown.  
 	Only tpp has actually been tested running mockfox
 
 	/loadLDT.lua - for loading mockfox through Lua Development Tools, loads loadMockFox
