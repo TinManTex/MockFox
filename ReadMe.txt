@@ -5,6 +5,8 @@ See /Generated/<game id>/mockModules/
 
 If that's all your interested in you can ignore the other projects/the rest of this document.
 
+Info - various mgsv info gathered from other processes or other people, some of which is processed by IHTearDown
+
 IHTearDown - An IH module for generating the Mock modules from the running game and some other analysis stuff.
 A run of its output is in /Generated/
 
@@ -41,6 +43,10 @@ Files in this project:
 		to quiet a bunch of warnings about Undefined globals when working with tpp lua files.
 	/varsAsGlobal/
 		vars,gvars,svars as global modules so they can be used in vscode in the same manner as mentioned above.
+
+/Info/
+	various mgsv info gathered from other processes or other people, some of which is processed by IHTearDown
+	TODO: document the files
 
 /MockFoxLua/
 	The majority of the mgstpp.exe lua facing modules mocked out, mostly empty functions and enum values, but enough to stop lua from complaining when reading the files.
