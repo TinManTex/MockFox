@@ -1,4 +1,4 @@
-fox={
+local this={
   EX_CODE_KEY_LR = 105,
   EX_CODE_KEY_UD = 104,
   EX_CODE_MAX = 109,
@@ -140,3 +140,4 @@ fox={
   PAD_X = 0,
   PAD_Y = 3
 }
+return this

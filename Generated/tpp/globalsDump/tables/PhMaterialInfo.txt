@@ -1,4 +1,4 @@
-PhMaterialInfo=<1>{
+local this=<1>{
   SetDensity = <function 1>,
   SetFriction = <function 2>,
   SetName = <function 3>,
@@ -9,3 +9,4 @@ PhMaterialInfo=<1>{
   _className = "PhMaterialInfo",
   <metatable> = <table 1>
 }
+return this

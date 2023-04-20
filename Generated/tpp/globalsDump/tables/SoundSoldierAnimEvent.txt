@@ -1,6 +1,7 @@
-SoundSoldierAnimEvent={
+local this={
   SetupSoldierBodyCollision = <function 1>,
   SetupSoldierFootStep = <function 2>,
   SetupSoldierRattleSuit = <function 3>,
   SetupSoldierType = <function 4>
 }
+return this

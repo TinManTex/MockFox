@@ -1,4 +1,4 @@
-foxmath={
+local this={
   Absf = <function 1>,
   Acos = <function 2>,
   Asin = <function 3>,
@@ -26,3 +26,4 @@ foxmath={
   Sqrt = <function 24>,
   Tan = <function 25>
 }
+return this

@@ -1,4 +1,5 @@
-FxDaemon={
+local this={
   Initialize = <function 1>,
   InitializeReserveObject = <function 2>
 }
+return this

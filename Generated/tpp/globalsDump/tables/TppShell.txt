@@ -1,3 +1,4 @@
-TppShell={
+local this={
   FireMortar = <function 1>
 }
+return this

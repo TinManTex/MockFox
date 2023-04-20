@@ -1,4 +1,4 @@
-TppSupportRequest={
+local this={
   GetCallBuddyGmpCost = <function 1>,
   GetCallRescueHeliGmpCost = <function 2>,
   GetCrashRescueHeliGmpCost = <function 3>,
@@ -6,3 +6,4 @@ TppSupportRequest={
   RequestDropBullet = <function 5>,
   RequestSupportAttack = <function 6>
 }
+return this

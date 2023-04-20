@@ -1,3 +1,4 @@
-TppCassetteTapeInfo={
+local this={
   Setup = <function 1>
 }
+return this

@@ -1,4 +1,4 @@
-PlayerPartsType=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [5555853] = <function 1>,
@@ -34,3 +34,4 @@ PlayerPartsType=<1>{
   __newindex = <function 30>,
   <metatable> = <table 1>
 }
+return this

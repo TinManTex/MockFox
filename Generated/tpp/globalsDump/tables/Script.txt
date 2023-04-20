@@ -1,4 +1,4 @@
-Script=<1>{
+local this=<1>{
   DebugSetAlwaysLoadingFileEnabled = <function 1>,
   GetScript = <function 2>,
   IsLoadingLibrary = <function 3>,
@@ -10,3 +10,4 @@ Script=<1>{
   _className = "Script",
   <metatable> = <table 1>
 }
+return this

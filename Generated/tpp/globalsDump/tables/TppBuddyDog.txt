@@ -1,4 +1,4 @@
-TppBuddyDog={
+local this={
   EQUIP_ASSASSIN = 4,
   EQUIP_BATTLE_DRESS = 3,
   EQUIP_FULTON = 1,
@@ -7,3 +7,4 @@ TppBuddyDog={
   MODE_COMMAND = 1,
   MODE_NORMAL = 0
 }
+return this

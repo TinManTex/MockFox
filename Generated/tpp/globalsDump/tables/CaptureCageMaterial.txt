@@ -1,4 +1,4 @@
-CaptureCageMaterial=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [4649270] = <function 1>,
@@ -84,3 +84,4 @@ CaptureCageMaterial=<1>{
   __newindex = <function 80>,
   <metatable> = <table 1>
 }
+return this

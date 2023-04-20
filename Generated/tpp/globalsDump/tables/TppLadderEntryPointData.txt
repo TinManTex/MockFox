@@ -1,6 +1,7 @@
-TppLadderEntryPointData=<1>{
+local this=<1>{
   __index = <function 1>,
   __newindex = <function 2>,
   _className = "TppLadderEntryPointData",
   <metatable> = <table 1>
 }
+return this

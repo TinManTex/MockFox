@@ -1,4 +1,5 @@
-CaptureCage={
+local this={
   GetCaptureAnimalList = <function 1>,
   RegisterCaptureAnimal = <function 2>
 }
+return this

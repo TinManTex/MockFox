@@ -1,7 +1,8 @@
-TppVideoPlayer={
+local this={
   AllocateMemoryPool = <function 1>,
   IsVideoLoadDone = <function 2>,
   IsVideoStopped = <function 3>,
   LoadVideo = <function 4>,
   PlayVideo = <function 5>
 }
+return this

@@ -1,4 +1,4 @@
-GameCore={
+local this={
   DebugDumpRecord = <function 1>,
   EraseRecord = <function 2>,
   ExportGameObjectPerf = <function 3>,
@@ -10,3 +10,4 @@ GameCore={
   StopPlayingRecord = <function 9>,
   StopRecording = <function 10>
 }
+return this

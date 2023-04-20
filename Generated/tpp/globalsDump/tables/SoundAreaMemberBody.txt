@@ -1,4 +1,4 @@
-SoundAreaMemberBody=<1>{
+local this=<1>{
   ResetOverWrite = <function 1>,
   SetOverWrite = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ SoundAreaMemberBody=<1>{
   _className = "SoundAreaMemberBody",
   <metatable> = <table 1>
 }
+return this

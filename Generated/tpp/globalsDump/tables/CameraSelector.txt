@@ -1,4 +1,4 @@
-CameraSelector=<1>{
+local this=<1>{
   DumpActiveCamera = <function 1>,
   GetMainInstance = <function 2>,
   GetRenderName = <function 3>,
@@ -11,3 +11,4 @@ CameraSelector=<1>{
   _className = "CameraSelector",
   <metatable> = <table 1>
 }
+return this

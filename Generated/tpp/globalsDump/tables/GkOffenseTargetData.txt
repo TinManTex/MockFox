@@ -1,4 +1,4 @@
-GkOffenseTargetData=<1>{
+local this=<1>{
   GetAttackerHandle = <function 1>,
   GetKeyName = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ GkOffenseTargetData=<1>{
   _className = "GkOffenseTargetData",
   <metatable> = <table 1>
 }
+return this

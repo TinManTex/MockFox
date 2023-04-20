@@ -1,4 +1,4 @@
-UiCommonDataManager=<1>{
+local this=<1>{
   Create = <function 1>,
   End = <function 2>,
   GetInstance = <function 3>,
@@ -16,3 +16,4 @@ UiCommonDataManager=<1>{
   _className = "UiCommonDataManager",
   <metatable> = <table 1>
 }
+return this

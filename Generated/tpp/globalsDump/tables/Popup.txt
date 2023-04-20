@@ -1,4 +1,4 @@
-Popup=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [75387665] = <function 1>,
@@ -12,3 +12,4 @@ Popup=<1>{
   __newindex = <function 8>,
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,5 @@
-GsRoute={
+local this={
   GetRouteId = <function 1>,
   ROUTE_ID_EMPTY = 3205930904
 }
+return this

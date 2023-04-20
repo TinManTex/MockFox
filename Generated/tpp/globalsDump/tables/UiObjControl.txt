@@ -1,4 +1,4 @@
-UiObjControl=<1>{
+local this=<1>{
   Create = <function 1>,
   GetWindowNameForPreview = <function 2>,
   SendTrigger = <function 3>,
@@ -11,3 +11,4 @@ UiObjControl=<1>{
   _className = "UiObjControl",
   <metatable> = <table 1>
 }
+return this

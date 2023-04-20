@@ -1,4 +1,4 @@
-TppOffenseTargetData=<1>{
+local this=<1>{
   GetAttackerHandle = <function 1>,
   __call = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ TppOffenseTargetData=<1>{
   _className = "TppOffenseTargetData",
   <metatable> = <table 1>
 }
+return this

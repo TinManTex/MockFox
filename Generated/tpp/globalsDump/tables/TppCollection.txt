@@ -1,4 +1,4 @@
-TppCollection={
+local this={
   GetTypeIdByLocatorName = <function 1>,
   GetUniqueIdByLocatorName = <function 2>,
   IsDiamondByType = <function 3>,
@@ -77,3 +77,4 @@ TppCollection={
   TYPE_SHIPPING_LABEL = 6,
   TYPE_STATION = 130
 }
+return this

@@ -1,4 +1,4 @@
-Game=<1>{
+local this=<1>{
   CreateBucket = <function 1>,
   CreateScene = <function 2>,
   DeleteBucket = <function 3>,
@@ -17,3 +17,4 @@ Game=<1>{
   _className = "Game",
   <metatable> = <table 1>
 }
+return this

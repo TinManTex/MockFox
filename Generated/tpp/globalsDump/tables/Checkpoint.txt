@@ -1,4 +1,4 @@
-Checkpoint=<1>{
+local this=<1>{
   ClearLatestCheckpointTag = <function 1>,
   DeleteObserver = <function 2>,
   DeleteObserverScript = <function 3>,
@@ -19,3 +19,4 @@ Checkpoint=<1>{
   _className = "Checkpoint",
   <metatable> = <table 1>
 }
+return this

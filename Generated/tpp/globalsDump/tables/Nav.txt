@@ -1,4 +1,4 @@
-Nav={
+local this={
   AddAttributeTacticalActionInRange = <function 1>,
   GetNavigationGraphNodePosition = <function 2>,
   GetNavmeshBelongPosition = <function 3>,
@@ -20,3 +20,4 @@ Nav={
   SetEnabledTacticalActionEdgeInRange = <function 19>,
   SetEnabledTacticalActionInRange = <function 20>
 }
+return this

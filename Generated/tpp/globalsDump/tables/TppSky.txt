@@ -1,3 +1,4 @@
-TppSky={
+local this={
   SetEnable = <function 1>
 }
+return this

@@ -1,4 +1,4 @@
-DemoPlayback={
+local this={
   GetCurrentFrame = <function 1>,
   Pause = <function 2>,
   Restart = <function 3>,
@@ -7,3 +7,4 @@ DemoPlayback={
   SetTransform = <function 6>,
   Skip = <function 7>
 }
+return this

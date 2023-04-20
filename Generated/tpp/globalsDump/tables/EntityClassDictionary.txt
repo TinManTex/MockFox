@@ -1,4 +1,4 @@
-EntityClassDictionary=<1>{
+local this=<1>{
   GetCategoryList = <function 1>,
   GetClassNameList = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ EntityClassDictionary=<1>{
   _className = "EntityClassDictionary",
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-TppHostage2={
+local this={
   ClearDefaultBodyFovaId = <function 1>,
   ClearHostageType = <function 2>,
   ClearUniquePartsPath = <function 3>,
@@ -9,3 +9,4 @@ TppHostage2={
   SetSVarsKeyNames2 = <function 8>,
   SetUniquePartsPath = <function 9>
 }
+return this

@@ -1,4 +1,4 @@
-Replay=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   StartPlay = <function 2>,
   StartRecord = <function 3>,
@@ -10,3 +10,4 @@ Replay=<1>{
   _className = "Replay",
   <metatable> = <table 1>
 }
+return this

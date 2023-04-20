@@ -1,4 +1,4 @@
-DataSet=<1>{
+local this=<1>{
   GetAllDataList = <function 1>,
   GetBucket = <function 2>,
   GetData = <function 3>,
@@ -10,3 +10,4 @@ DataSet=<1>{
   _className = "DataSet",
   <metatable> = <table 1>
 }
+return this

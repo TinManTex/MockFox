@@ -1,4 +1,4 @@
-NclDaemon=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   IsLogin = <function 2>,
   SetLogin = <function 3>,
@@ -11,3 +11,4 @@ NclDaemon=<1>{
   _className = "NclDaemon",
   <metatable> = <table 1>
 }
+return this

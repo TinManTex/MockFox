@@ -1,4 +1,4 @@
-SubtitlesCommand={
+local this={
   ConvertMsgIDInt = <function 1>,
   ConvertMsgIDString = <function 2>,
   ConvertToSubtitlesId = <function 3>,
@@ -31,3 +31,4 @@ SubtitlesCommand={
   Stop = <function 30>,
   StopAll = <function 31>
 }
+return this

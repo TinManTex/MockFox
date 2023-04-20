@@ -1,4 +1,4 @@
-FoxDataLinkCollector=<1>{
+local this=<1>{
   GetData = <function 1>,
   GetDataBody = <function 2>,
   ShowWarningIfUse = <function 3>,
@@ -7,3 +7,4 @@ FoxDataLinkCollector=<1>{
   _className = "FoxDataLinkCollector",
   <metatable> = <table 1>
 }
+return this

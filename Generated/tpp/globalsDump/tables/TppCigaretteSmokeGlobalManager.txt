@@ -1,4 +1,4 @@
-TppCigaretteSmokeGlobalManager=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   ResetInitAlphaRate = <function 2>,
   SetBaseColorSmoke = <function 3>,
@@ -8,3 +8,4 @@ TppCigaretteSmokeGlobalManager=<1>{
   _className = "TppCigaretteSmokeGlobalManager",
   <metatable> = <table 1>
 }
+return this

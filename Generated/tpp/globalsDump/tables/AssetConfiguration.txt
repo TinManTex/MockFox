@@ -1,4 +1,4 @@
-AssetConfiguration={
+local this={
   AddProjectName = <function 1>,
   ClearProjectName = <function 2>,
   GetConfigurationFromAssetManager = <function 3>,
@@ -25,3 +25,4 @@ AssetConfiguration={
   SetProjectRootPath = <function 24>,
   SetTargetDirectory = <function 25>
 }
+return this

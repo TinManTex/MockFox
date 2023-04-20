@@ -1,4 +1,4 @@
-TppRainFilterInterruptBody=<1>{
+local this=<1>{
   AddInterruptFlag = <function 1>,
   AddMaskTexturePath = <function 2>,
   AddPlaneMatrix = <function 3>,
@@ -7,3 +7,4 @@ TppRainFilterInterruptBody=<1>{
   _className = "TppRainFilterInterruptBody",
   <metatable> = <table 1>
 }
+return this

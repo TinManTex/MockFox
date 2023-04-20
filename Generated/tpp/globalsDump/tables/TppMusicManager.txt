@@ -1,4 +1,4 @@
-TppMusicManager=<1>{
+local this=<1>{
   ChangeParameter = <function 1>,
   ChangeParameterById = <function 2>,
   ClearParameter = <function 3>,
@@ -33,3 +33,4 @@ TppMusicManager=<1>{
   _className = "TppMusicManager",
   <metatable> = <table 1>
 }
+return this

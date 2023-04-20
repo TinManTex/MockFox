@@ -1,4 +1,4 @@
-Entity=<1>{
+local this=<1>{
   AddProperty = <function 1>,
   DebugGetEntityCount = <function 2>,
   GetClassName = <function 3>,
@@ -15,3 +15,4 @@ Entity=<1>{
   _scriptPath = "Entity",
   <metatable> = <table 1>
 }
+return this

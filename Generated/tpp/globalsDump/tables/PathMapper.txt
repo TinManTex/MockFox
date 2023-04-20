@@ -1,4 +1,4 @@
-PathMapper=<1>{
+local this=<1>{
   Add = <function 1>,
   Dump = <function 2>,
   Register = <function 3>,
@@ -9,3 +9,4 @@ PathMapper=<1>{
   _className = "PathMapper",
   <metatable> = <table 1>
 }
+return this

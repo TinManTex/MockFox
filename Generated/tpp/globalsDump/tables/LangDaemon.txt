@@ -1,4 +1,4 @@
-LangDaemon=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   GetManager = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ LangDaemon=<1>{
   _className = "LangDaemon",
   <metatable> = <table 1>
 }
+return this

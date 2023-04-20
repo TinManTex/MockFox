@@ -1,4 +1,4 @@
-TppFootPrintBody=<1>{
+local this=<1>{
   AddAlpha = <function 1>,
   AddBlood = <function 2>,
   AddEnable = <function 3>,
@@ -10,3 +10,4 @@ TppFootPrintBody=<1>{
   _className = "TppFootPrintBody",
   <metatable> = <table 1>
 }
+return this

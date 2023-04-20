@@ -1,4 +1,5 @@
-Shop={
+local this={
   AllocatePSStoreMemory = <function 1>,
   FreePSStoreMemory = <function 2>
 }
+return this

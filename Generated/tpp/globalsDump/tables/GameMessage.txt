@@ -1,4 +1,4 @@
-GameMessage=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {},
   [234444819] = <function 1>,
@@ -6,3 +6,4 @@ GameMessage=<1>{
   __newindex = <function 3>,
   <metatable> = <table 1>
 }
+return this

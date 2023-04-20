@@ -1,3 +1,4 @@
-FoxGameFrame={
+local this={
   SetGameFrameWaitType = <function 1>
 }
+return this

@@ -1,3 +1,4 @@
-NtDaemon={
+local this={
   Create = <function 1>
 }
+return this

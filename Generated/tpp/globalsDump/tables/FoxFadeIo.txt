@@ -1,4 +1,4 @@
-FoxFadeIo=<1>{
+local this=<1>{
   Create = <function 1>,
   EditModeDisregard = <function 2>,
   FadeDisregard = <function 3>,
@@ -15,3 +15,4 @@ FoxFadeIo=<1>{
   _className = "FoxFadeIo",
   <metatable> = <table 1>
 }
+return this

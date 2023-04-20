@@ -1,3 +1,4 @@
-TppGenerativeClouds={
+local this={
   SetActive = <function 1>
 }
+return this

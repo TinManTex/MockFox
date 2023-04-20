@@ -1,4 +1,4 @@
-TppSoldierFace={
+local this={
   CheckFemale = <function 1>,
   ClearExtendFova = <function 2>,
   ConvertFova2PathToFovaFile = <function 3>,
@@ -32,3 +32,4 @@ TppSoldierFace={
   SetUseFaceIdListMode = <function 31>,
   SetUseZombieFova = <function 32>
 }
+return this

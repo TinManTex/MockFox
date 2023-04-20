@@ -1,4 +1,4 @@
-TppSystem=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {
     BGM_PHASE_ALERT = <function 1>,
@@ -17,3 +17,4 @@ TppSystem=<1>{
   __newindex = <function 13>,
   <metatable> = <table 1>
 }
+return this

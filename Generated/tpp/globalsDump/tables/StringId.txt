@@ -1,4 +1,4 @@
-StringId=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {
     Null = <function 1>
@@ -9,3 +9,4 @@ StringId=<1>{
   __newindex = <function 5>,
   <metatable> = <table 1>
 }
+return this

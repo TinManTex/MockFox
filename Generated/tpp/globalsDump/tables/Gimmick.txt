@@ -1,4 +1,4 @@
-Gimmick={
+local this={
   BreakGimmick = <function 1>,
   CallBurglarAlarm = <function 2>,
   CallFindContainerResourceLog = <function 3>,
@@ -58,3 +58,4 @@ Gimmick={
   StoreSaveDataPermanentGimmickFromMission = <function 57>,
   StoreSaveDataPermanentGimmickFromMissionAfterClear = <function 58>
 }
+return this

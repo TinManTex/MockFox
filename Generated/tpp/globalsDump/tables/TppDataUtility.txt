@@ -1,4 +1,4 @@
-TppDataUtility={
+local this={
   CreateEffectFromGroupId = <function 1>,
   CreateEffectFromId = <function 2>,
   DestroyEffectFromGroupId = <function 3>,
@@ -19,3 +19,4 @@ TppDataUtility={
   SetVisibleEffectFromId = <function 18>,
   VisibleMeshFromIdentifier = <function 19>
 }
+return this

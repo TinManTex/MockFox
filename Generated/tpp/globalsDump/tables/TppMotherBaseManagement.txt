@@ -1,4 +1,4 @@
-TppMotherBaseManagement=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {},
   ActivateAutoAssign = <function 1>,
@@ -368,3 +368,4 @@ TppMotherBaseManagement=<1>{
   __newindex = <function 365>,
   <metatable> = <table 1>
 }
+return this

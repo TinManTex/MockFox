@@ -1,4 +1,4 @@
-LanguageBlock=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [5094028] = <function 1>,
@@ -23,3 +23,4 @@ LanguageBlock=<1>{
   __newindex = <function 19>,
   <metatable> = <table 1>
 }
+return this

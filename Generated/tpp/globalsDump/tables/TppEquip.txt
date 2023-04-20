@@ -1,4 +1,4 @@
-TppEquip={
+local this={
   AM_10001 = 1,
   AM_10003 = 2,
   AM_10015 = 3,
@@ -2501,3 +2501,4 @@ TppEquip={
   WP_Wood_ar_010 = 416,
   WP_mgm0_mgun0 = 415
 }
+return this

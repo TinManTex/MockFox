@@ -1,4 +1,4 @@
-ObjectBrushBlock=<1>{
+local this=<1>{
   Activate = <function 1>,
   __call = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ ObjectBrushBlock=<1>{
   _className = "ObjectBrushBlock",
   <metatable> = <table 1>
 }
+return this

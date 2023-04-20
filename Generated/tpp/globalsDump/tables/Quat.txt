@@ -1,4 +1,4 @@
-Quat=<1>{
+local this=<1>{
   GetW = <function 1>,
   GetX = <function 2>,
   GetY = <function 3>,
@@ -13,3 +13,4 @@ Quat=<1>{
   __call = <function 12>,
   <metatable> = <table 1>
 }
+return this

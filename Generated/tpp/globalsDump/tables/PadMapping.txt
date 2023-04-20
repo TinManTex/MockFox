@@ -1,4 +1,4 @@
-PadMapping=<1>{
+local this=<1>{
   Dump = <function 1>,
   GetInstance = <function 2>,
   GetPad0LogicalNum = <function 3>,
@@ -17,3 +17,4 @@ PadMapping=<1>{
   _className = "PadMapping",
   <metatable> = <table 1>
 }
+return this

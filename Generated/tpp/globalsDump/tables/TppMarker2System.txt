@@ -1,4 +1,4 @@
-TppMarker2System=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {},
   [5904019] = <function 1>,
@@ -16,3 +16,4 @@ TppMarker2System=<1>{
   __newindex = <function 13>,
   <metatable> = <table 1>
 }
+return this

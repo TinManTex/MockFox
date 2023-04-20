@@ -1,4 +1,4 @@
-SignIn=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [18679250] = <function 1>,
@@ -26,3 +26,4 @@ SignIn=<1>{
   __newindex = <function 22>,
   <metatable> = <table 1>
 }
+return this

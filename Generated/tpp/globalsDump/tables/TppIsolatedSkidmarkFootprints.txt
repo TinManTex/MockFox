@@ -1,3 +1,4 @@
-TppIsolatedSkidmarkFootprints={
+local this={
   SetVisible = <function 1>
 }
+return this

@@ -1,4 +1,4 @@
-EnvironmentDaemon=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   __call = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ EnvironmentDaemon=<1>{
   _className = "EnvironmentDaemon",
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-TppCyprusBlockControl=<1>{
+local this=<1>{
   GetCyprusStep = <function 1>,
   IsCyprusBlockControllerCreated = <function 2>,
   IsCyprusLoading = <function 3>,
@@ -9,3 +9,4 @@ TppCyprusBlockControl=<1>{
   _className = "TppCyprusBlockControl",
   <metatable> = <table 1>
 }
+return this

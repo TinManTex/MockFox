@@ -1,4 +1,4 @@
-StageLightFadeDataBody=<1>{
+local this=<1>{
   FadeIn = <function 1>,
   FadeOut = <function 2>,
   StageLightOff = <function 3>,
@@ -8,3 +8,4 @@ StageLightFadeDataBody=<1>{
   _className = "StageLightFadeDataBody",
   <metatable> = <table 1>
 }
+return this

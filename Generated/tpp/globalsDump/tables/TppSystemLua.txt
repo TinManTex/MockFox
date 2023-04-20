@@ -1,7 +1,8 @@
-TppSystemLua={
+local this={
   IsCombatTest1 = <function 1>,
   IsCombatTest2 = <function 2>,
   IsMissionFullOpen = <function 3>,
   SetEnabledOldCharacterSystem = <function 4>,
   UseAiSystem = <function 5>
 }
+return this

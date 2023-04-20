@@ -1,4 +1,4 @@
-Pad=<1>{
+local this=<1>{
   CalculateStickDirection = <function 1>,
   CalculateStickForce = <function 2>,
   ClearAssign = <function 3>,
@@ -56,3 +56,4 @@ Pad=<1>{
   _scriptPath = "Pad",
   <metatable> = <table 1>
 }
+return this

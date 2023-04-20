@@ -1,7 +1,8 @@
-Gr={
+local this={
   DBGColor = <function 1>,
   DBGFontSize = <function 2>,
   DBGLocate = <function 3>,
   DBGPrint = <function 4>,
   ModelConvert = <function 5>
 }
+return this

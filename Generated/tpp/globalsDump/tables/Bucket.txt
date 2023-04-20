@@ -1,4 +1,4 @@
-Bucket=<1>{
+local this=<1>{
   AddActor = <function 1>,
   GetEditableDataBodySet = <function 2>,
   GetEditableDataSet = <function 3>,
@@ -17,3 +17,4 @@ Bucket=<1>{
   _className = "Bucket",
   <metatable> = <table 1>
 }
+return this

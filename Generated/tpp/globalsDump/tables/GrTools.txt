@@ -1,4 +1,4 @@
-GrTools=<1>{
+local this=<1>{
   CalcAvgLumInLogSpace = <function 1>,
   ChangeMainViewportSize = <function 2>,
   ClampAvgLumLDR = <function 3>,
@@ -58,3 +58,4 @@ GrTools=<1>{
   _className = "GrTools",
   <metatable> = <table 1>
 }
+return this

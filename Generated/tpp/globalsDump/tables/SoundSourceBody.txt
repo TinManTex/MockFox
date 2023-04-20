@@ -1,4 +1,4 @@
-SoundSourceBody=<1>{
+local this=<1>{
   IsPlaying = <function 1>,
   PostEvent = <function 2>,
   ResetRTPC = <function 3>,
@@ -10,3 +10,4 @@ SoundSourceBody=<1>{
   _className = "SoundSourceBody",
   <metatable> = <table 1>
 }
+return this

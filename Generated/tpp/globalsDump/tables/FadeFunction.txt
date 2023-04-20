@@ -1,4 +1,4 @@
-FadeFunction={
+local this={
   CallFadeIn = <function 1>,
   CallFadeOut = <function 2>,
   CallStrongFadeOut = <function 3>,
@@ -14,3 +14,4 @@ FadeFunction={
   SetFadeColor = <function 13>,
   SetFadeTime = <function 14>
 }
+return this

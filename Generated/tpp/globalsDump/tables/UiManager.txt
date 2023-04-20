@@ -1,4 +1,4 @@
-UiManager=<1>{
+local this=<1>{
   DumpEntryUig = <function 1>,
   ResetScrollDebugPrint = <function 2>,
   ScrollDownDebugPrint = <function 3>,
@@ -8,3 +8,4 @@ UiManager=<1>{
   _className = "UiManager",
   <metatable> = <table 1>
 }
+return this

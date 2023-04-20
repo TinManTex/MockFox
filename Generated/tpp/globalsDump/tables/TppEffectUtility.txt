@@ -1,4 +1,4 @@
-TppEffectUtility=<1>{
+local this=<1>{
   ClearFxCutLevelMaximum = <function 1>,
   CreateHeliSpaceAvatarReflection = <function 2>,
   CreateHighSpeedFilter_NameEntrySpecial = <function 3>,
@@ -59,3 +59,4 @@ TppEffectUtility=<1>{
   _className = "TppEffectUtility",
   <metatable> = <table 1>
 }
+return this

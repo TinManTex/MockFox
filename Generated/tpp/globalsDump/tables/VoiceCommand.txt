@@ -1,4 +1,5 @@
-VoiceCommand={
+local this={
   SetVoiceEventType = <function 1>,
   SetVoiceTypePriority = <function 2>
 }
+return this

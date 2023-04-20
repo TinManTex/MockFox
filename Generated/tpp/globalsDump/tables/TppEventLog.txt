@@ -1,7 +1,8 @@
-TppEventLog={
+local this={
   PauseRecording = <function 1>,
   ResumeRecording = <function 2>,
   StartRecording = <function 3>,
   StopRecording = <function 4>,
   WriteEvent = <function 5>
 }
+return this

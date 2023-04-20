@@ -1,4 +1,4 @@
-TppSoundDaemon=<1>{
+local this=<1>{
   CheckCurrentMuteIs = <function 1>,
   CheckCurrentMuteMoreThan = <function 2>,
   CheckHighestMuteIs = <function 3>,
@@ -30,3 +30,4 @@ TppSoundDaemon=<1>{
   _className = "TppSoundDaemon",
   <metatable> = <table 1>
 }
+return this

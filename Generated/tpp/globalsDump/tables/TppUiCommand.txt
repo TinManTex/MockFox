@@ -1,4 +1,4 @@
-TppUiCommand={
+local this={
   AbortFobMissionPreparation = <function 1>,
   AbortMissionPreparation = <function 2>,
   ActivateSpySearchForCP = <function 3>,
@@ -426,3 +426,4 @@ TppUiCommand={
   UnregisterAllMapRadios = <function 425>,
   UnregisterMapRadio = <function 426>
 }
+return this

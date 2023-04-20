@@ -1,6 +1,7 @@
-PlatformConfiguration={
+local this={
   SetAudioRecordingEnabled = <function 1>,
   SetScreenShotEnabled = <function 2>,
   SetShareScreenEnabled = <function 3>,
   SetVideoRecordingEnabled = <function 4>
 }
+return this

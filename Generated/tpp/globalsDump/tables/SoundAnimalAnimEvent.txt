@@ -1,4 +1,5 @@
-SoundAnimalAnimEvent={
+local this={
   SetupAnimalFootStep = <function 1>,
   SetupAnimalRattleSuit = <function 2>
 }
+return this

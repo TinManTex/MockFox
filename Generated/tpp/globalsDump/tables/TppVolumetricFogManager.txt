@@ -1,4 +1,4 @@
-TppVolumetricFogManager=<1>{
+local this=<1>{
   IsEnableAreaFog = <function 1>,
   SetEnableAreaFog = <function 2>,
   SetEnableFog = <function 3>,
@@ -7,3 +7,4 @@ TppVolumetricFogManager=<1>{
   _className = "TppVolumetricFogManager",
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-IhkCharacter={
+local this={
   SetAvatarHornFpkPath = <function 1>,
   SetAvatarHornFv2Path = <function 2>,
   SetBionicHandFpkPath = <function 3>,
@@ -17,3 +17,4 @@ IhkCharacter={
   SetUseCamoForPlayerParts = <function 16>,
   SetUseHeadForPlayerParts = <function 17>
 }
+return this

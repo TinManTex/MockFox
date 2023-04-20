@@ -1,4 +1,4 @@
-MaterialInfoBase=<1>{
+local this=<1>{
   SetName = <function 1>,
   __call = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ MaterialInfoBase=<1>{
   _className = "MaterialInfoBase",
   <metatable> = <table 1>
 }
+return this

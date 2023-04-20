@@ -1,4 +1,4 @@
-SoundAreaGroupBody=<1>{
+local this=<1>{
   CancelParameter = <function 1>,
   OverwriteParameter = <function 2>,
   SetActive = <function 3>,
@@ -7,3 +7,4 @@ SoundAreaGroupBody=<1>{
   _className = "SoundAreaGroupBody",
   <metatable> = <table 1>
 }
+return this

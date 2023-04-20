@@ -1,4 +1,4 @@
-TppCombatLocatorSetData=<1>{
+local this=<1>{
   GetLocatorNum = <function 1>,
   GetLocatorPosition = <function 2>,
   GetLocatorRadius = <function 3>,
@@ -7,3 +7,4 @@ TppCombatLocatorSetData=<1>{
   _className = "TppCombatLocatorSetData",
   <metatable> = <table 1>
 }
+return this

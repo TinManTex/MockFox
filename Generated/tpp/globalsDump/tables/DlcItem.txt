@@ -1,4 +1,4 @@
-DlcItem=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [3468118] = <function 1>,
@@ -36,3 +36,4 @@ DlcItem=<1>{
   __newindex = <function 32>,
   <metatable> = <table 1>
 }
+return this

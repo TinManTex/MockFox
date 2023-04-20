@@ -1,4 +1,4 @@
-GeoPathService=<1>{
+local this=<1>{
   BindEdgeTag = <function 1>,
   BindNodeTag = <function 2>,
   InvalidPath = <function 3>,
@@ -10,3 +10,4 @@ GeoPathService=<1>{
   _className = "GeoPathService",
   <metatable> = <table 1>
 }
+return this

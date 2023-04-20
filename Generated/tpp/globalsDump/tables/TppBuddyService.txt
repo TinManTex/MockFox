@@ -1,4 +1,4 @@
-TppBuddyService={
+local this={
   AddFriendlyCount = <function 1>,
   AddFriendlyPoint = <function 2>,
   AdjustFromDropPoint = <function 3>,
@@ -80,3 +80,4 @@ TppBuddyService={
   UnsetObtainedBuddyType = <function 79>,
   UnsetSortieBuddyType = <function 80>
 }
+return this

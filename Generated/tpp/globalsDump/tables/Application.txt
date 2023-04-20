@@ -1,4 +1,4 @@
-Application=<1>{
+local this=<1>{
   AddGame = <function 1>,
   GetGame = <function 2>,
   GetGames = <function 3>,
@@ -13,3 +13,4 @@ Application=<1>{
   _className = "Application",
   <metatable> = <table 1>
 }
+return this

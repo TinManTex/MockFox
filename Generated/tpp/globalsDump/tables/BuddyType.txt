@@ -1,4 +1,4 @@
-BuddyType=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {
     BATTLE_GEAR = <function 1>,
@@ -13,3 +13,4 @@ BuddyType=<1>{
   __newindex = <function 9>,
   <metatable> = <table 1>
 }
+return this

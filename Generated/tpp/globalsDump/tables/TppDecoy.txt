@@ -1,1 +1,2 @@
-TppDecoy={}
+local this={}
+return this

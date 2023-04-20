@@ -1,4 +1,5 @@
-LuxuryBlockController={
+local this={
   AddList = <function 1>,
   Init = <function 2>
 }
+return this

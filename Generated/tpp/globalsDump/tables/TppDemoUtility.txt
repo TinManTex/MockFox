@@ -1,4 +1,4 @@
-TppDemoUtility={
+local this={
   AddSubjectMapping = <function 1>,
   DisablePadZoom = <function 2>,
   EnablePadZoom = <function 3>,
@@ -8,3 +8,4 @@ TppDemoUtility={
   SetInvisibleUniqueCharacter = <function 7>,
   SetUseBlackDiamond = <function 8>
 }
+return this

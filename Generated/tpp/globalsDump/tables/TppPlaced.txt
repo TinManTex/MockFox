@@ -1,4 +1,4 @@
-TppPlaced={
+local this={
   ChangeEquipIdByLocatorName = <function 1>,
   DeleteAllCaptureCage = <function 2>,
   GetCaptureCageInfo = <function 3>,
@@ -11,3 +11,4 @@ TppPlaced={
   SetFobFreePositionMineId = <function 10>,
   StartToCreateFromLocators = <function 11>
 }
+return this

@@ -1,4 +1,4 @@
-GameObject=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [81335893] = <function 1>
@@ -15,3 +15,4 @@ GameObject=<1>{
   __newindex = <function 11>,
   <metatable> = <table 1>
 }
+return this

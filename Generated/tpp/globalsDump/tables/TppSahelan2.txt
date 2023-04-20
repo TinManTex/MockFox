@@ -1,4 +1,4 @@
-TppSahelan2=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [15142215] = <function 1>,
@@ -35,3 +35,4 @@ TppSahelan2=<1>{
   __newindex = <function 31>,
   <metatable> = <table 1>
 }
+return this

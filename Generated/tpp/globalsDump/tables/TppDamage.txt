@@ -1,4 +1,4 @@
-TppDamage={
+local this={
   ATK_10001 = 319,
   ATK_10004 = 320,
   ATK_10006 = 321,
@@ -525,3 +525,4 @@ TppDamage={
   IsActiveByAttackId = <function 1>,
   ReloadDamageParameter = <function 2>
 }
+return this

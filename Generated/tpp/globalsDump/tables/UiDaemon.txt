@@ -1,4 +1,4 @@
-UiDaemon=<1>{
+local this=<1>{
   ClearDrawPriorityTable = <function 1>,
   CreateButtonMap = <function 2>,
   CreateKeyData = <function 3>,
@@ -25,3 +25,4 @@ UiDaemon=<1>{
   _className = "UiDaemon",
   <metatable> = <table 1>
 }
+return this

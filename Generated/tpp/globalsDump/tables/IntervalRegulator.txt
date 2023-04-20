@@ -1,4 +1,4 @@
-IntervalRegulator=<1>{
+local this=<1>{
   IsReady = <function 1>,
   SetInterval = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ IntervalRegulator=<1>{
   _className = "IntervalRegulator",
   <metatable> = <table 1>
 }
+return this

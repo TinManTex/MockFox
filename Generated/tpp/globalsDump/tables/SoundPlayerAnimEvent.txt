@@ -1,6 +1,7 @@
-SoundPlayerAnimEvent={
+local this={
   SetupPlayerFootStep = <function 1>,
   SetupPlayerRattleSuit = <function 2>,
   SetupPlayerRattleWeapon = <function 3>,
   SetupPlayerType = <function 4>
 }
+return this

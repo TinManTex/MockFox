@@ -1,4 +1,4 @@
-TppNetworkUtil={
+local this={
   CloseSession = <function 1>,
   EnableMultiPlaySession = <function 2>,
   GetClientFobGrade = <function 3>,
@@ -23,3 +23,4 @@ TppNetworkUtil={
   StartNetSynchronizer = <function 22>,
   SyncedExecute = <function 23>
 }
+return this

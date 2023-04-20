@@ -1,4 +1,4 @@
-GkEventTimerManager=<1>{
+local this=<1>{
   IsTimerActive = <function 1>,
   SetPaused = <function 2>,
   Start = <function 3>,
@@ -10,3 +10,4 @@ GkEventTimerManager=<1>{
   _className = "GkEventTimerManager",
   <metatable> = <table 1>
 }
+return this

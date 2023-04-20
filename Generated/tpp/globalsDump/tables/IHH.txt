@@ -1,4 +1,4 @@
-IHH={
+local this={
   FileExists = <function 1>,
   GetGamePath = <function 2>,
   GetMenuMessages = <function 3>,
@@ -19,3 +19,4 @@ IHH={
   UpdateChangeLocationMenu = <function 18>,
   menuInitialized = true
 }
+return this

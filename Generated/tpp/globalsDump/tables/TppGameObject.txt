@@ -1,4 +1,4 @@
-TppGameObject=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {
     BRING_PLAYER_FAILED = <function 1>,
@@ -157,3 +157,4 @@ TppGameObject=<1>{
   __newindex = <function 153>,
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-TppSoldier2={
+local this={
   DisableMarkerModelEffect = <function 1>,
   LoadRequestSoldierDefaultWeapon = <function 2>,
   LoadRequestSoldierWeapon = <function 3>,
@@ -10,3 +10,4 @@ TppSoldier2={
   SetExtendPartsInfo = <function 9>,
   SetSVarsKeyNames = <function 10>
 }
+return this

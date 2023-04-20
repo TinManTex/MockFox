@@ -1,4 +1,4 @@
-Vector3=<1>{
+local this=<1>{
   Add = <function 1>,
   Cross = <function 2>,
   Dot = <function 3>,
@@ -9,3 +9,4 @@ Vector3=<1>{
   __call = <function 8>,
   <metatable> = <table 1>
 }
+return this

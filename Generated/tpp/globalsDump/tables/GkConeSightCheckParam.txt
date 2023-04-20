@@ -1,4 +1,4 @@
-GkConeSightCheckParam=<1>{
+local this=<1>{
   GetAngleLeftRight = <function 1>,
   GetAngleUpDown = <function 2>,
   GetHeadBackDistance = <function 3>,
@@ -13,3 +13,4 @@ GkConeSightCheckParam=<1>{
   _className = "GkConeSightCheckParam",
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-imgui={
+local this={
   AlignTextToFramePadding = <function 1>,
   Begin = <function 2>,
   BeginChild = <function 3>,
@@ -698,3 +698,4 @@ imgui={
     }
   }
 }
+return this

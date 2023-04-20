@@ -1,4 +1,4 @@
-IhkBuddy={
+local this={
   SetBuddyDogCommonFpkPath = <function 1>,
   SetBuddyDogPartsFpkPath = <function 2>,
   SetBuddyHorseCommonFpkPath = <function 3>,
@@ -18,3 +18,4 @@ IhkBuddy={
   SetOverrideBuddyEquipmentSystem = <function 17>,
   SetOverrideBuddySystem = <function 18>
 }
+return this

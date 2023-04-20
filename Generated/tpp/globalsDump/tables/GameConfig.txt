@@ -1,4 +1,4 @@
-GameConfig={
+local this={
   ApplyAllConfig = <function 1>,
   GetCameraLRIsReversed = <function 2>,
   GetCameraUDIsReversed = <function 3>,
@@ -9,3 +9,4 @@ GameConfig={
   SetCameraUDIsReversed = <function 8>,
   SetStealthAssistEnabled = <function 9>
 }
+return this

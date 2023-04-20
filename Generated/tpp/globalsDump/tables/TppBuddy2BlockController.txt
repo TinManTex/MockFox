@@ -1,4 +1,4 @@
-TppBuddy2BlockController={
+local this={
   CallBuddy = <function 1>,
   CallBuddyWithHalo = <function 2>,
   CreateBlock = <function 3>,
@@ -30,3 +30,4 @@ TppBuddy2BlockController={
   Unload = <function 29>,
   UnsetObtainedBuddyType = <function 30>
 }
+return this

@@ -1,4 +1,4 @@
-Mission=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [50737449] = <function 1>,
@@ -37,3 +37,4 @@ Mission=<1>{
   __newindex = <function 33>,
   <metatable> = <table 1>
 }
+return this

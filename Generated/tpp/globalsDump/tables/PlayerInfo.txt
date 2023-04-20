@@ -1,5 +1,6 @@
-PlayerInfo={
+local this={
   AndCheckStatus = <function 1>,
   GetLocalPlayerIndex = <function 2>,
   OrCheckStatus = <function 3>
 }
+return this

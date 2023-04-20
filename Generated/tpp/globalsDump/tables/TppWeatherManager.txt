@@ -1,4 +1,4 @@
-TppWeatherManager=<1>{
+local this=<1>{
   GetCurrentClock = <function 1>,
   GetInstance = <function 2>,
   PauseClock = <function 3>,
@@ -16,3 +16,4 @@ TppWeatherManager=<1>{
   _className = "TppWeatherManager",
   <metatable> = <table 1>
 }
+return this

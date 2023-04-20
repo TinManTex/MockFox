@@ -1,4 +1,4 @@
-TppServerManager={
+local this={
   AbortDefenseMotherBase = <function 1>,
   AbortSneakMotherBase = <function 2>,
   CheckPlayerEquipmentServerItemCorrect = <function 3>,
@@ -23,3 +23,4 @@ TppServerManager={
   SynchronizeEmblem = <function 22>,
   SynchronizeServer = <function 23>
 }
+return this

@@ -1,4 +1,4 @@
-MotherBaseConstructConnector=<1>{
+local this=<1>{
   ClearVariableGimmickList = <function 1>,
   Create = <function 2>,
   GetContainerResourceId = <function 3>,
@@ -13,3 +13,4 @@ MotherBaseConstructConnector=<1>{
   _className = "MotherBaseConstructConnector",
   <metatable> = <table 1>
 }
+return this

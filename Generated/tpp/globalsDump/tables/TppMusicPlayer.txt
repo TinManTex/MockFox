@@ -1,6 +1,7 @@
-TppMusicPlayer={
+local this={
   SetAlbum = <function 1>,
   SetStructure = <function 2>,
   SetStructureDlc = <function 3>,
   SetTrack = <function 4>
 }
+return this

@@ -1,6 +1,7 @@
-Demo={
+local this={
   DisableCharacterIntetrp = <function 1>,
   DisableTempCamera = <function 2>,
   EnableCharacterInterpolation = <function 3>,
   EnableTempCamera = <function 4>
 }
+return this

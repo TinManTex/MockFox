@@ -1,4 +1,4 @@
-DemoDaemon={
+local this={
   FindBlockPositionSetter = <function 1>,
   FindDemoBody = <function 2>,
   GetDemoBodies = <function 3>,
@@ -22,3 +22,4 @@ DemoDaemon={
   StopAll = <function 21>,
   StopProceduralDemo = <function 22>
 }
+return this

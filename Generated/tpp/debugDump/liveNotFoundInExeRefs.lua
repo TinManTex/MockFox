@@ -723,9 +723,6 @@ local this={
     Print = true
   },
   foxmath = true,
-  gvars = true,
-  imgui = true,
-  mvars = true,
-  svars = true
+  imgui = true
 }
 return this

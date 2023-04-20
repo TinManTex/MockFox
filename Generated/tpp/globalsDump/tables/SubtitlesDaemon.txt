@@ -1,4 +1,4 @@
-SubtitlesDaemon=<1>{
+local this=<1>{
   GetDefaultVoiceLanguage = <function 1>,
   GetInstance = <function 2>,
   SetDefaultVoiceLanguage = <function 3>,
@@ -8,3 +8,4 @@ SubtitlesDaemon=<1>{
   _className = "SubtitlesDaemon",
   <metatable> = <table 1>
 }
+return this

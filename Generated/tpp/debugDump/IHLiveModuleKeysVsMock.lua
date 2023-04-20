@@ -2832,13 +2832,8 @@ local this={
     [249032246] = "SetNewNextWeatherChangeTime"
   },
   _IHHook_TestTable = { "NOT_FOUND " },
-  cvars = "MOCK_MODULE_NOT_FOUND",
   foxde = {
     [-285212671] = {}
-  },
-  gvars = "MOCK_MODULE_NOT_FOUND",
-  mvars = "MOCK_MODULE_NOT_FOUND",
-  svars = "MOCK_MODULE_NOT_FOUND",
-  vars = "MOCK_MODULE_NOT_FOUND"
+  }
 }
 return this

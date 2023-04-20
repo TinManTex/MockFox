@@ -1,4 +1,4 @@
-FobMode=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [27806863] = <function 1>,
@@ -10,3 +10,4 @@ FobMode=<1>{
   __newindex = <function 6>,
   <metatable> = <table 1>
 }
+return this

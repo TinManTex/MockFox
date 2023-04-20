@@ -1,4 +1,4 @@
-MbInterrogate=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [194371] = <function 1>,
@@ -21,3 +21,4 @@ MbInterrogate=<1>{
   __newindex = <function 17>,
   <metatable> = <table 1>
 }
+return this

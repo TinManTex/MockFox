@@ -1,4 +1,4 @@
-ScriptUpdater=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {},
   [135184022] = <function 1>,
@@ -7,3 +7,4 @@ ScriptUpdater=<1>{
   __newindex = <function 4>,
   <metatable> = <table 1>
 }
+return this

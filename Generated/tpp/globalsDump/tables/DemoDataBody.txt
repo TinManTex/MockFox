@@ -1,4 +1,4 @@
-DemoDataBody=<1>{
+local this=<1>{
   SetupPlayback = <function 1>,
   Start = <function 2>,
   Stop = <function 3>,
@@ -9,3 +9,4 @@ DemoDataBody=<1>{
   _className = "DemoDataBody",
   <metatable> = <table 1>
 }
+return this

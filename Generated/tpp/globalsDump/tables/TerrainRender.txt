@@ -1,4 +1,4 @@
-TerrainRender=<1>{
+local this=<1>{
   ClearPackedMaterialTexture = <function 1>,
   ExportPackedMaterialTexture = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ TerrainRender=<1>{
   _className = "TerrainRender",
   <metatable> = <table 1>
 }
+return this

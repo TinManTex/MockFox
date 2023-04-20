@@ -1,4 +1,4 @@
-PlayerInitialAction=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [2813519] = <function 1>,
@@ -12,3 +12,4 @@ PlayerInitialAction=<1>{
   __newindex = <function 8>,
   <metatable> = <table 1>
 }
+return this

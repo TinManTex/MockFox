@@ -1,4 +1,4 @@
-TppScriptVars=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [11867952] = <function 1>,
@@ -90,3 +90,4 @@ TppScriptVars=<1>{
   __newindex = <function 86>,
   <metatable> = <table 1>
 }
+return this

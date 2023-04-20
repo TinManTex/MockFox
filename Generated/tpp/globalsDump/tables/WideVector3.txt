@@ -1,6 +1,7 @@
-WideVector3=<1>{
+local this=<1>{
   ToString = <function 1>,
   Zero = <function 2>,
   __call = <function 3>,
   <metatable> = <table 1>
 }
+return this

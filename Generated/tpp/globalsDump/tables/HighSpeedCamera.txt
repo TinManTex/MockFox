@@ -1,5 +1,6 @@
-HighSpeedCamera={
+local this={
   RequestEvent = <function 1>,
   RequestToCancel = <function 2>,
   RequestToCancelAll = <function 3>
 }
+return this

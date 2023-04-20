@@ -1,7 +1,8 @@
-DataSetFile2=<1>{
+local this=<1>{
   Save = <function 1>,
   __index = <function 2>,
   __newindex = <function 3>,
   _className = "DataSetFile2",
   <metatable> = <table 1>
 }
+return this

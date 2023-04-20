@@ -1,4 +1,4 @@
-GeoSearchObject=<1>{
+local this=<1>{
   GetData = <function 1>,
   GetPosition = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ GeoSearchObject=<1>{
   _className = "GeoSearchObject",
   <metatable> = <table 1>
 }
+return this

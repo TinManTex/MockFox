@@ -1,4 +1,4 @@
-Data=<1>{
+local this=<1>{
   GetDataBody = <function 1>,
   GetDataBodyOnEditing = <function 2>,
   GetDataBodyWithReferrer = <function 3>,
@@ -9,3 +9,4 @@ Data=<1>{
   _className = "Data",
   <metatable> = <table 1>
 }
+return this

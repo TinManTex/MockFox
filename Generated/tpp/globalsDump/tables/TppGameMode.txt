@@ -1,4 +1,4 @@
-TppGameMode=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [44702532] = <function 1>,
@@ -12,3 +12,4 @@ TppGameMode=<1>{
   __newindex = <function 8>,
   <metatable> = <table 1>
 }
+return this

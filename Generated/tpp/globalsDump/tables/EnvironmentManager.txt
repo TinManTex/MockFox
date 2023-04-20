@@ -1,4 +1,4 @@
-EnvironmentManager=<1>{
+local this=<1>{
   IsEditMode = <function 1>,
   SetEditMode = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ EnvironmentManager=<1>{
   _className = "EnvironmentManager",
   <metatable> = <table 1>
 }
+return this

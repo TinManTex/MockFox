@@ -1,4 +1,4 @@
-FoxFlagContainer=<1>{
+local this=<1>{
   Add = <function 1>,
   AllClear = <function 2>,
   AndCheck = <function 3>,
@@ -14,3 +14,4 @@ FoxFlagContainer=<1>{
   _className = "FoxFlagContainer",
   <metatable> = <table 1>
 }
+return this

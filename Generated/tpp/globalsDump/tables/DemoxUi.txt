@@ -1,3 +1,4 @@
-DemoxUi={
+local this={
   SetDemoUiTriggerInvalid = <function 1>
 }
+return this

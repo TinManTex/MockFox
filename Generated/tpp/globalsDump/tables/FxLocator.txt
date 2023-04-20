@@ -1,4 +1,4 @@
-FxLocator=<1>{
+local this=<1>{
   Create = <function 1>,
   Destroy = <function 2>,
   Invisible = <function 3>,
@@ -8,3 +8,4 @@ FxLocator=<1>{
   _className = "FxLocator",
   <metatable> = <table 1>
 }
+return this

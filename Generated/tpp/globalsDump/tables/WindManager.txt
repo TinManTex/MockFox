@@ -1,4 +1,4 @@
-WindManager=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   RestartTimer = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ WindManager=<1>{
   _className = "WindManager",
   <metatable> = <table 1>
 }
+return this

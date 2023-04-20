@@ -1,4 +1,4 @@
-HudCommonDataManager=<1>{
+local this=<1>{
   CallMessage = <function 1>,
   CombatMessage = <function 2>,
   Create = <function 3>,
@@ -9,3 +9,4 @@ HudCommonDataManager=<1>{
   _className = "HudCommonDataManager",
   <metatable> = <table 1>
 }
+return this

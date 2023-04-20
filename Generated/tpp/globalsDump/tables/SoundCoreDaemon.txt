@@ -1,4 +1,4 @@
-SoundCoreDaemon={
+local this={
   Create = <function 1>,
   ResetGlobalAttenuationRate = <function 2>,
   ResetGlobalRTPC = <function 3>,
@@ -14,3 +14,4 @@ SoundCoreDaemon={
   SetState = <function 13>,
   WaitAsync = <function 14>
 }
+return this

@@ -1,4 +1,4 @@
-CollisionObject=<1>{
+local this=<1>{
   SetInvalidRequest = <function 1>,
   SetValidRequest = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ CollisionObject=<1>{
   _className = "CollisionObject",
   <metatable> = <table 1>
 }
+return this

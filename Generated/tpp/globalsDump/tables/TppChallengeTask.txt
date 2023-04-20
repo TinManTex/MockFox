@@ -1,4 +1,4 @@
-TppChallengeTask={
+local this={
   IsCompletedOnlineTask = <function 1>,
   RegisterCheckerFunction = <function 2>,
   RequestUpdate = <function 3>,
@@ -6,3 +6,4 @@ TppChallengeTask={
   RequestUpdateAllChecker = <function 5>,
   SetFlagCompletedOnlineTask = <function 6>
 }
+return this

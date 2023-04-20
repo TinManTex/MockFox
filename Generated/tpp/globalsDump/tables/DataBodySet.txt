@@ -1,4 +1,4 @@
-DataBodySet=<1>{
+local this=<1>{
   GetDataBody = <function 1>,
   GetDataBodyList = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ DataBodySet=<1>{
   _className = "DataBodySet",
   <metatable> = <table 1>
 }
+return this

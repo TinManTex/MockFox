@@ -1,4 +1,4 @@
-GrGraphicsSettingManager=<1>{
+local this=<1>{
   GetError = <function 1>,
   GetStatus = <function 2>,
   SetEasySetting = <function 3>,
@@ -8,3 +8,4 @@ GrGraphicsSettingManager=<1>{
   _className = "GrGraphicsSettingManager",
   <metatable> = <table 1>
 }
+return this

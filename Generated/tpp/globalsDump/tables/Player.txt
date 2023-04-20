@@ -1,4 +1,4 @@
-Player={
+local this={
   AddHeliSpaceZoomCameraInfo = <function 1>,
   AddSearchTarget = <function 2>,
   AddTrapDetailCondition = <function 3>,
@@ -172,3 +172,4 @@ Player={
   VisibleGasMask = <function 171>,
   WriteSequenceWork = <function 172>
 }
+return this

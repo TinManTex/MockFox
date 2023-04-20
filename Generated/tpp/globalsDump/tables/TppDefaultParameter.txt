@@ -1,4 +1,4 @@
-TppDefaultParameter=<1>{
+local this=<1>{
   AddParam = <function 1>,
   GetDataFromGroupName = <function 2>,
   GetParam = <function 3>,
@@ -9,3 +9,4 @@ TppDefaultParameter=<1>{
   _className = "TppDefaultParameter",
   <metatable> = <table 1>
 }
+return this

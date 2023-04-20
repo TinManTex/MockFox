@@ -1,3 +1,4 @@
-TppCombatLocatorProvider={
+local this={
   RegisterCombatLocatorSetToCpforLua = <function 1>
 }
+return this

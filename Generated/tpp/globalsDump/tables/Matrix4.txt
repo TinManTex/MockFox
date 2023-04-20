@@ -1,4 +1,4 @@
-Matrix4=<1>{
+local this=<1>{
   Identity = <function 1>,
   Inverse = <function 2>,
   RotTranslation = <function 3>,
@@ -13,3 +13,4 @@ Matrix4=<1>{
   __call = <function 12>,
   <metatable> = <table 1>
 }
+return this

@@ -1,4 +1,4 @@
-TppRainFilterInterruptManager=<1>{
+local this=<1>{
   FadeInFxFallRainOutside = <function 1>,
   FadeOutFxFallRainOutside = <function 2>,
   GetInstance = <function 3>,
@@ -10,3 +10,4 @@ TppRainFilterInterruptManager=<1>{
   _className = "TppRainFilterInterruptManager",
   <metatable> = <table 1>
 }
+return this

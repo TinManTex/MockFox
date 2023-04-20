@@ -1,4 +1,4 @@
-TppMotherBaseManagementConst=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [217981] = <function 1>,
@@ -693,3 +693,4 @@ TppMotherBaseManagementConst=<1>{
   __newindex = <function 689>,
   <metatable> = <table 1>
 }
+return this

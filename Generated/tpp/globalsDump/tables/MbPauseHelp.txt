@@ -1,4 +1,4 @@
-MbPauseHelp=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [344752] = <function 1>,
@@ -108,3 +108,4 @@ MbPauseHelp=<1>{
   __newindex = <function 104>,
   <metatable> = <table 1>
 }
+return this

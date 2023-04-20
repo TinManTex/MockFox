@@ -1,4 +1,4 @@
-NavWorldDaemon=<1>{
+local this=<1>{
   AddScene = <function 1>,
   AddWorld = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ NavWorldDaemon=<1>{
   _className = "NavWorldDaemon",
   <metatable> = <table 1>
 }
+return this

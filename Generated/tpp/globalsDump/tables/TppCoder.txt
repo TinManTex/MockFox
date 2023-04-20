@@ -1,4 +1,5 @@
-TppCoder={
+local this={
   GetWorldCenter = <function 1>,
   SetWorldCenter = <function 2>
 }
+return this

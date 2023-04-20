@@ -1,4 +1,4 @@
-StageBlockCurrentPositionSetter=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {},
   [80171496] = <function 1>,
@@ -9,3 +9,4 @@ StageBlockCurrentPositionSetter=<1>{
   __newindex = <function 6>,
   <metatable> = <table 1>
 }
+return this

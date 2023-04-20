@@ -1,4 +1,4 @@
-Chunk=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [13116004] = <function 1>,
@@ -24,3 +24,4 @@ Chunk=<1>{
   __newindex = <function 20>,
   <metatable> = <table 1>
 }
+return this

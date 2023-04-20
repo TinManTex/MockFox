@@ -1,4 +1,4 @@
-PlayerStatus=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [180504] = <function 1>,
@@ -54,3 +54,4 @@ PlayerStatus=<1>{
   __newindex = <function 50>,
   <metatable> = <table 1>
 }
+return this

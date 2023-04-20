@@ -1,4 +1,4 @@
-DesDaemon=<1>{
+local this=<1>{
   GetInstance = <function 1>,
   PrintDesObjectAll = <function 2>,
   __call = <function 3>,
@@ -7,3 +7,4 @@ DesDaemon=<1>{
   _className = "DesDaemon",
   <metatable> = <table 1>
 }
+return this

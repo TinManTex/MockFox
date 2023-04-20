@@ -1,3 +1,4 @@
-TppEula={
+local this={
   Start = <function 1>
 }
+return this

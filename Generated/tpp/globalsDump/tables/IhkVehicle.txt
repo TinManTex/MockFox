@@ -1,4 +1,4 @@
-IhkVehicle={
+local this={
   SetOverrideVehicleSystem = <function 1>,
   SetVehicleEastLvFpkPath = <function 2>,
   SetVehicleEastTnkFpkPath = <function 3>,
@@ -11,3 +11,4 @@ IhkVehicle={
   SetVehicleWestWavCannonFpkPath = <function 10>,
   SetVehicleWestWavMachineGunFpkPath = <function 11>
 }
+return this

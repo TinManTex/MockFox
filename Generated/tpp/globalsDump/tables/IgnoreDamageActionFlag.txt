@@ -1,4 +1,4 @@
-IgnoreDamageActionFlag=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [6387808] = <function 1>,
@@ -16,3 +16,4 @@ IgnoreDamageActionFlag=<1>{
   __newindex = <function 12>,
   <metatable> = <table 1>
 }
+return this

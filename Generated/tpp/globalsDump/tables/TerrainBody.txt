@@ -1,4 +1,4 @@
-TerrainBody=<1>{
+local this=<1>{
   GetNumBlocksHeight = <function 1>,
   GetNumBlocksWidth = <function 2>,
   GetSize = <function 3>,
@@ -7,3 +7,4 @@ TerrainBody=<1>{
   _className = "TerrainBody",
   <metatable> = <table 1>
 }
+return this

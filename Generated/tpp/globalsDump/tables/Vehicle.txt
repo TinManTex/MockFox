@@ -1,4 +1,4 @@
-Vehicle=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [98925158] = <function 1>
@@ -152,3 +152,4 @@ Vehicle=<1>{
   __newindex = <function 88>,
   <metatable> = <table 1>
 }
+return this

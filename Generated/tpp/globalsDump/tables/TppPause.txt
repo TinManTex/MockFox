@@ -1,4 +1,4 @@
-TppPause=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {
     [1013578] = <function 1>,
@@ -30,3 +30,4 @@ TppPause=<1>{
   __newindex = <function 26>,
   <metatable> = <table 1>
 }
+return this

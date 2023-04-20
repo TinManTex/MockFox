@@ -1,4 +1,4 @@
-SyncRouteManager=<1>{
+local this=<1>{
   [-285212672] = 4,
   [-285212671] = {},
   [52831430] = <function 1>,
@@ -7,3 +7,4 @@ SyncRouteManager=<1>{
   __newindex = <function 4>,
   <metatable> = <table 1>
 }
+return this

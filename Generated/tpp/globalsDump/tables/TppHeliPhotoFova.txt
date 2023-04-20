@@ -1,4 +1,5 @@
-TppHeliPhotoFova={
+local this={
   ClearGroupSetting = <function 1>,
   SetGroupUnit = <function 2>
 }
+return this

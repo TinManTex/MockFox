@@ -1,6 +1,8 @@
 --fox.lua
 --GENERATED: by IHTearDown.GenerateMockModules
 --as setThisAsGlobal style
+--GOTCHA: 'fox' and 'Fox' modules collide in Windows due to case insensitivenes
+--see WORKAROUND on Fox_CapitalF.lua
 fox={
   EX_CODE_KEY_LR=105,
   EX_CODE_KEY_UD=104,

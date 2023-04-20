@@ -1,4 +1,4 @@
-TppRadioCommand={
+local this={
   ClearAllRadioGroupRegisteredInfo = <function 1>,
   ClearEspionageRadioTable = <function 2>,
   ConvertToGroupNameID = <function 3>,
@@ -70,3 +70,4 @@ TppRadioCommand={
   UnregisterRadioGroupSetFromRadioGroupSet = <function 69>,
   UnregisterTutorialRadioGroupSet = <function 70>
 }
+return this

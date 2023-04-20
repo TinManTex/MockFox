@@ -1,4 +1,5 @@
-TppRouteAnimationCollector={
+local this={
   ClearGaniPath = <function 1>,
   RegisterGaniPath = <function 2>
 }
+return this

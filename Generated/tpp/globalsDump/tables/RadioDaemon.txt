@@ -1,4 +1,4 @@
-RadioDaemon=<1>{
+local this=<1>{
   ClearAllRadioGroupRegisteredInfo = <function 1>,
   ConvertToGroupNameID = <function 2>,
   DisableAllFlagIsMarkAsRead = <function 3>,
@@ -53,3 +53,4 @@ RadioDaemon=<1>{
   _className = "RadioDaemon",
   <metatable> = <table 1>
 }
+return this

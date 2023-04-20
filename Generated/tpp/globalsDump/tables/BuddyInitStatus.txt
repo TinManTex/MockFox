@@ -1,4 +1,4 @@
-BuddyInitStatus=<1>{
+local this=<1>{
   [-285212672] = 0,
   [-285212671] = {
     ENTRY_GATE = <function 1>,
@@ -11,3 +11,4 @@ BuddyInitStatus=<1>{
   __newindex = <function 7>,
   <metatable> = <table 1>
 }
+return this

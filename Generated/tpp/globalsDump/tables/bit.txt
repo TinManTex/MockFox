@@ -1,4 +1,4 @@
-bit={
+local this={
   arshift = <function 1>,
   band = <function 2>,
   bnot = <function 3>,
@@ -12,3 +12,4 @@ bit={
   tobit = <function 11>,
   tohex = <function 12>
 }
+return this

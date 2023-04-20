@@ -1,4 +1,4 @@
-TppDefaultParameterContainer=<1>{
+local this=<1>{
   AddParam = <function 1>,
   GetParam = <function 2>,
   __index = <function 3>,
@@ -6,3 +6,4 @@ TppDefaultParameterContainer=<1>{
   _className = "TppDefaultParameterContainer",
   <metatable> = <table 1>
 }
+return this

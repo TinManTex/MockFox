@@ -1,4 +1,4 @@
-TppSoldier2CommonBlockController={
+local this={
   CreateCommonMotionBlockGroup = <function 1>,
   IsBlockActive = <function 2>,
   IsBlockEmpty = <function 3>,
@@ -8,3 +8,4 @@ TppSoldier2CommonBlockController={
   RequestToUnloadCommonMotionBlock = <function 7>,
   SetPackagePathWithPrerequisites = <function 8>
 }
+return this

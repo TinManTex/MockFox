@@ -1,4 +1,5 @@
-TppLightProbe={
+local this={
   SetReadLpshDebugLogDisable = <function 1>,
   SetReadLpshDebugLogEnable = <function 2>
 }
+return this
